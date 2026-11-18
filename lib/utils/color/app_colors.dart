@@ -46,6 +46,10 @@ class AppColors {
   static const Color redRing8 = Color(0x14CC1C1C);
   static const Color chipInk = Color(0xFF333333);
 
+  /// branches frame: active-tab underline #fdda2c, call button border #e5af1a @2%
+  static const Color tabUnderline = Color(0xFFFDDA2C);
+  static const Color callBorder = Color(0x05E5AF1A);
+
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
 

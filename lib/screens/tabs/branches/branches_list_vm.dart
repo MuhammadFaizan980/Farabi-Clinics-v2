@@ -9,13 +9,17 @@ class BranchesListVm extends AppBaseVm {
   int? _regionId;
 
   Future<void> onInit() async {
-    await Future.wait([_loadRegions(), load()]);
+    // the frame always has a city selected, so the first region (Riyadh, the
+    // lowest id) is picked before the first fetch
+    await _loadRegions();
+    _regionId ??= _regions.isEmpty ? null : _regions.first.id;
+    await load();
   }
 
   Future<void> _loadRegions() async {
     final response = await repo<RegionsRepo>().regions();
     if (response.success && response.data != null) {
-      _regions = response.data!;
+      _regions = [...response.data!]..sort((a, b) => a.id.compareTo(b.id));
       notifyListeners();
     }
   }
@@ -38,6 +42,7 @@ class BranchesListVm extends AppBaseVm {
   Future<void> refresh() => load();
 
   void setRegion(int? regionId) {
+    if (regionId == _regionId) return;
     _regionId = regionId;
     load();
   }

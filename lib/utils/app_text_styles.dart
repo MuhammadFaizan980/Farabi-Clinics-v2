@@ -120,4 +120,15 @@ class AppTextStyles {
 
   /// rating pill: 12, 600
   static TextStyle get rating => _figma(12, 13, FontWeight.w600);
+
+  /// branches city tab: 15 / 24, +2% tracking, 600 active / 500 inactive
+  static TextStyle branchTab({required bool active}) =>
+      _figma(15, 24, active ? FontWeight.w600 : FontWeight.w500)
+          .copyWith(letterSpacing: 0.3.rf);
+
+  /// branch address line: 14 / 24, 400
+  static TextStyle get branchAddress => _figma(14, 24, FontWeight.w400);
+
+  /// pill labels on the branch card (closes at, call, distance): 13.5, 600
+  static TextStyle get pillLabel => _figma(13.5, 17, FontWeight.w600);
 }

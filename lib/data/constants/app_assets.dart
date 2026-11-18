@@ -14,6 +14,13 @@ class AppAssets {
   static const String iconFilter = '$_svg/icons/filter.svg';
   static const String iconGridView = '$_svg/icons/grid_view.svg';
 
+  // branches
+  static const String iconMapSearch = '$_svg/icons/map_search.svg';
+  static const String iconPinOutlineWhite = '$_svg/icons/pin_outline_white.svg';
+  static const String iconCall = '$_svg/icons/call.svg';
+  static const String iconClosesAt = '$_svg/icons/closes_at.svg';
+  static const String iconDistance = '$_svg/icons/distance.svg';
+
   // home
   static const String iconChevronDown = '$_svg/icons/chevron_down_vector.svg';
   static const String iconLocationPin = '$_svg/icons/location_pin.svg';
