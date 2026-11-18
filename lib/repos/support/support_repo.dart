@@ -12,5 +12,7 @@ abstract class SupportRepo with AppBaseRepo {
 
   Future<ApiResponseModel<List<BlogPostDataModel>>> posts({int? page});
 
+  Future<ApiResponseModel<List<OfferDataModel>>> offers({int? page});
+
   Future<ApiResponseModel<dynamic>> submitContact(ContactRequestModel request);
 }

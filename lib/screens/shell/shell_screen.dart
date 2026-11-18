@@ -9,7 +9,7 @@ import '../tabs/branches/branches_list_screen.dart';
 import '../tabs/doctors/doctors_list_screen.dart';
 import '../tabs/home/home_screen.dart';
 import '../tabs/more/more_screen.dart';
-import '../tabs/specialities/specialities_screen.dart';
+import '../tabs/offers/offers_screen.dart';
 import 'shell_vm.dart';
 
 class ShellScreen extends StatelessWidget {
@@ -29,8 +29,8 @@ class ShellScreen extends StatelessWidget {
           children: const [
             HomeScreen(),
             DoctorsListScreen(),
+            OffersScreen(),
             BranchesListScreen(),
-            SpecialitiesScreen(),
             MoreScreen(),
           ],
         ),
@@ -52,14 +52,14 @@ class ShellScreen extends StatelessWidget {
               label: LocaleKeys.tabs_doctors.tr(),
             ),
             NavigationDestination(
+              icon: const Icon(Icons.local_offer_outlined),
+              selectedIcon: const Icon(Icons.local_offer),
+              label: LocaleKeys.tabs_offers.tr(),
+            ),
+            NavigationDestination(
               icon: const Icon(Icons.location_on_outlined),
               selectedIcon: const Icon(Icons.location_on),
               label: LocaleKeys.tabs_branches.tr(),
-            ),
-            NavigationDestination(
-              icon: const Icon(Icons.medical_services_outlined),
-              selectedIcon: const Icon(Icons.medical_services),
-              label: LocaleKeys.tabs_specialities.tr(),
             ),
             NavigationDestination(
               icon: const Icon(Icons.menu),

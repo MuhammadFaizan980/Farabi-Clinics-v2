@@ -70,6 +70,11 @@ class MoreScreen extends StatelessWidget {
                   : null,
             ),
             _MenuRow(
+              icon: Icons.medical_services_outlined,
+              label: LocaleKeys.more_specialities.tr(),
+              onTap: () => AppNavigator.push(AppRoutes.specialities),
+            ),
+            _MenuRow(
               icon: Icons.calendar_month_outlined,
               label: LocaleKeys.more_my_bookings.tr(),
               onTap: () => AppNavigator.push(AppRoutes.bookings),
@@ -93,6 +98,26 @@ class MoreScreen extends StatelessWidget {
               icon: Icons.work_outline,
               label: LocaleKeys.more_careers.tr(),
               onTap: () => AppNavigator.push(AppRoutes.careers),
+            ),
+            _MenuRow(
+              icon: Icons.info_outline,
+              label: LocaleKeys.more_about.tr(),
+              onTap: () => AppNavigator.push(AppRoutes.aboutUs),
+            ),
+            _MenuRow(
+              icon: Icons.star_outline,
+              label: LocaleKeys.more_reviews.tr(),
+              onTap: () => AppNavigator.push(AppRoutes.reviews),
+            ),
+            _MenuRow(
+              icon: Icons.privacy_tip_outlined,
+              label: LocaleKeys.more_privacy.tr(),
+              onTap: () => AppNavigator.push(AppRoutes.privacyPolicy),
+            ),
+            _MenuRow(
+              icon: Icons.description_outlined,
+              label: LocaleKeys.more_terms.tr(),
+              onTap: () => AppNavigator.push(AppRoutes.terms),
             ),
             SizedBox(height: 24.rh),
             if (session.isLoggedIn)

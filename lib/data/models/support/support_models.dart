@@ -50,6 +50,22 @@ class BlogPostDataModel {
   final DateTime? publishedAt;
 }
 
+class OfferDataModel {
+  const OfferDataModel({
+    required this.id,
+    required this.names,
+    this.description,
+    this.image,
+    this.endsAt,
+  });
+
+  final int id;
+  final LocalisedName names;
+  final String? description;
+  final String? image;
+  final DateTime? endsAt;
+}
+
 class ContactRequestModel {
   const ContactRequestModel({
     required this.name,

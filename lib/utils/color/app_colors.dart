@@ -5,10 +5,15 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._();
 
-  static const Color primary = Color(0xFFC21C22);
+  /// brand red as measured in the figma frames (the website css uses #c21c22)
+  static const Color primary = Color(0xFFCC1C1C);
   static const Color primaryLight = Color(0xD9FFECED);
   static const Color pinkLight = Color(0xFFFFECED);
   static const Color secondary = Color(0xFF222222);
+
+  /// figma text colours: headings/body ink and the grey used for secondary text
+  static const Color ink = Color(0xFF1D1D24);
+  static const Color inkSecondary = Color(0xFF797777);
   static const Color brightGrey = Color(0xFF2C2C2C);
 
   static const Color error = Color(0xFFEA5454);

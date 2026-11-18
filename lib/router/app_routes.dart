@@ -20,4 +20,9 @@ class AppRoutes {
   static const String contactUs = '/contact-us';
   static const String careers = '/careers';
   static const String blogs = '/blogs';
+  static const String specialities = '/specialities';
+  static const String aboutUs = '/about';
+  static const String reviews = '/reviews';
+  static const String privacyPolicy = '/privacy-policy';
+  static const String terms = '/terms-and-conditions';
 }

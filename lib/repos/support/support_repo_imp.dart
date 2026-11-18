@@ -25,6 +25,13 @@ class SupportRepoImp extends SupportRepo {
   }
 
   @override
+  Future<ApiResponseModel<List<OfferDataModel>>> offers({int? page}) async {
+    final response =
+        await apiClient.get(EndPoints.offers, query: {'page': page});
+    return response.mapData(supportMapper.offers);
+  }
+
+  @override
   Future<ApiResponseModel<dynamic>> submitContact(
     ContactRequestModel request,
   ) =>

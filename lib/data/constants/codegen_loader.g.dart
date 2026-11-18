@@ -98,7 +98,8 @@ class CodegenLoader extends AssetLoader{
     "doctors": "الأطباء",
     "branches": "الفروع",
     "specialities": "التخصصات",
-    "more": "المزيد"
+    "more": "المزيد",
+    "offers": "العروض"
   },
   "home": {
     "title": "الرئيسية",
@@ -146,7 +147,11 @@ class CodegenLoader extends AssetLoader{
     "contact_us": "اتصل بنا",
     "about": "من نحن",
     "careers": "الوظائف",
-    "sign_in_prompt": "سجّل الدخول لإدارة حجوزاتك"
+    "sign_in_prompt": "سجّل الدخول لإدارة حجوزاتك",
+    "specialities": "التخصصات",
+    "reviews": "آراء المرضى",
+    "privacy": "سياسة الخصوصية",
+    "terms": "الشروط والأحكام"
   },
   "doctor_detail": {
     "title": "الطبيب",
@@ -276,6 +281,91 @@ class CodegenLoader extends AssetLoader{
   "blogs": {
     "title": "الأخبار والمقالات",
     "no_posts": "لا توجد مقالات بعد"
+  },
+  "offers": {
+    "title": "عروض مصممة خصيصاً لك.",
+    "subtitle": "اكتشف أحدث عروضنا وخصوماتنا في جميع التخصصات والفروع.",
+    "no_offers": "لا توجد عروض حالياً"
+  },
+  "about_page": {
+    "title": "من نحن",
+    "l01": "تأسست مجموعة الفارابي الطبية في عام 1990 وتمتلك أكثر من 22 فرعاً في جميع أنحاء المملكة العربية السعودية",
+    "l02": "تتميز بتنوع مجالاتها الطبية، بما في ذلك",
+    "l03": "طب الأسنان",
+    "l04": "الطب العام",
+    "l05": "طب النساء والتوليد",
+    "l06": "العظام",
+    "l07": "الطب الباطني والقلب",
+    "l08": "العيون",
+    "l09": "العلاج الطبيعي",
+    "l10": "طب الأطفال",
+    "l11": "الأنف والأذنين",
+    "l12": "الجلد والتجميل",
+    "l13": "الحجامة",
+    "l14": "رؤيتنا",
+    "l15": "رؤيتنا في عيادات الفارابي هي أن نكون واحدة من أفضل وأكثر مزودي الرعاية الصحية ثقة وتميزاً في مختلف المجالات الطبية.",
+    "l16": "رسالتنا",
+    "l17": "التزامنا بتطوير معايير الجودة واستخدام أحدث التقنيات والأجهزة الطبية لتلبية متطلبات عملائنا وتقديم أفضل الخدمات.",
+    "l18": "الاستراتيجية والأهداف",
+    "l19": "الحفاظ على مكانة واسم العيادات في قطاع الرعاية الصحية، حيث تمتلك خبرة طويلة في مجال الرعاية الطبية لأكثر من 30 عامًا.",
+    "l20": "تهتم عيادات الفارابي في استراتيجيتها بتقديم خدماتها الطبية لجميع شرائح المجتمع بالمساواة. نسعى باستمرار لتوظيف وجذب الكوادر الطبية ذات أعلى مستوى من الاحترافية.",
+    "l21": "السعي باستمرار لمواكبة أحدث التقنيات في مجال الطب والرعاية الطبية.",
+    "l22": "السعي باستمرار لتقديم خدمات طبية عالية الجودة، ولهذا حصلت العيادات على شهادة الآيزو.",
+    "l23": "التعاقد مع العديد من شركات التأمين لتلبية احتياجات أكبر شريحة من المجتمع."
+  },
+  "privacy_page": {
+    "title": "سياسة الخصوصية",
+    "l01": "هذا إشعار لإبلاغك بسياستنا بشأن جميع المعلومات التي نسجلها عنك من خلال موقعنا.",
+    "l02": "فهو يحدد الشروط التي يمكننا بموجبها معالجة أي معلومات نجمعها منك، أو تقدمها لنا.",
+    "l03": "وهو يغطي المعلومات التي يمكن أن تحدد هويتك (\"المعلومات الشخصية\") والمعلومات التي لا يمكن التعرف عليها.",
+    "l04": "في سياق القانون وهذا الإشعار، تعني كلمة \"المعالجة\" جمع المعلومات أو تخزينها أو نقلها أو استخدامها أو التصرف بناءً عليها.",
+    "l05": "نحن نأخذ على محمل الجد حماية خصوصيتك وسريتك.",
+    "l06": "نحن ندرك أنه يحق لجميع زوار موقعنا معرفة أن بياناتهم الشخصية لن يتم استخدامها لأي غرض غير مقصود منهم، ولن تقع عن طريق الخطأ في أيدي طرف ثالث.",
+    "l07": "نتعهد بالحفاظ على سرية كافة المعلومات التي تقدمها لنا، ونأمل أن تقوم بالمثل.",
+    "l08": "تتوافق سياستنا مع قانون المملكة العربية السعودية الذي تم تنفيذه وفقًا لذلك.",
+    "l09": "يتطلب القانون منا أن نخبرك بحقوقك والتزاماتنا تجاهك فيما يتعلق بمعالجة بياناتك الشخصية والتحكم فيها.",
+    "l10": "باستثناء ما هو منصوص عليه أدناه، نحن لا نشارك أو نبيع أو نكشف لطرف ثالث عن أي معلومات تم جمعها من خلال موقعنا."
+  },
+  "terms_page": {
+    "title": "الشروط والأحكام",
+    "l01": "يقتصر على البالغين يجب أن يكون عمرك 18 عامًا على الأقل حتى تتمكن من استخدام الموقع.",
+    "l02": "أنت توافق على أن تكون المسؤول الوحيد عن (1) الحفاظ على هذه الضوابط على استخدام و/أو الوصول إلى موقع الويب من قبل القاصرين في عائلتك أو (2) الوصول إلى جهاز الكمبيوتر الخاص بك أو تسجيل الدخول يقتصر على الحد اللازم لتقييد الاستخدام للبالغين.",
+    "l03": "طاقم العمل لدينا يشمل فريق العمل لدينا، جزئيًا، أطباء الأسنان وغيرهم من المتخصصين في الرعاية الصحية.",
+    "l04": "لن يدخل أي من أطباء الأسنان لدينا في علاقة معك بين طبيب الأسنان والمريض، ولن يقوم أي مشاركين محترفين آخرين بإنشاء أي علاقة سريرية معك أثناء استخدامهم لخدمات موقعنا الإلكتروني.",
+    "l05": "يمكنهم مساعدتك في بحثك الشخصي العام، لكنهم لن ينخرطوا في أي سلوك يتضمن ممارسة طب الأسنان أو الطب أو أي مهنة رعاية صحية أخرى.",
+    "l06": "لا ينبغي أن تحل المعلومات التي تحصل عليها من الموقع الإلكتروني محل العلاقة السريرية أو العلاجية مع أخصائي الرعاية الصحية أو استخدامها بدلاً من ذلك.",
+    "l07": "أنت مسؤول عن مراجعة وفهم جميع الأبحاث والمعلومات الأخرى التي حصلت عليها من الموقع.",
+    "l08": "لن يقوم المشاركون المحترفون بإنشاء أو الاحتفاظ بأي سجلات طبية عنك أو مراقبة رعايتك.",
+    "l09": "لا ينبغي اعتبار المشاركين المحترفين بمثابة متخصصين في العلاج أو تقديم الرعاية الصحية ولن يتواصلوا مع مقدم الرعاية الصحية الخاص بك.",
+    "l10": "وبالتالي، فإن أي معلومات تحصل عليها من موقع الويب لا ينبغي أن تحل محل أو تستخدم بدلاً من العلاقة مع أخصائي الرعاية الصحية.",
+    "l11": "يتم تشجيع جميع المستخدمين على طلب المشورة والتشاور بانتظام مع أطباء الأسنان وغيرهم من المتخصصين في الرعاية الصحية الذين يختارونهم.",
+    "l12": "يجب ألا تتجاهل أو تؤخر المشورة الطبية أو العلاج بناءً على المعلومات الموجودة على الموقع.",
+    "l13": "لا يقوم موقع الويب بتقييم أو إجراء اعتمادات سريرية للمشاركين المحترفين، لأن المشاركين المحترفين لا يمارسون طب الأسنان أو يقدمون نصائح في مجال طب الأسنان حول مسائل العلاج الخاصة بالفرد.",
+    "l14": "لا يقوم المشاركون المحترفون بتشخيص أو علاج أي حالات طبية أو أسنانية أو وصف أدوية أو علاجات لأي شخص يستخدم الموقع.",
+    "l15": "لا يجوز للمشاركين المحترفين قبول الدفع منك ولا يجوز لهم إرسال فاتورة إلى أي شركة تأمين أو برنامج دفع حكومي أو أي مصدر آخر للمزايا الصحية كتعويض عن تقديم المعلومات لك على الموقع الإلكتروني.",
+    "l16": "إذا قررت طلب المعلومات أو الحصول على العلاج من أي جهة راعية (كما هو موضح أدناه)، فلن يقوم المشاركون المحترفون بمتابعة أو مراقبة رعايتك.",
+    "l17": "يرجى عدم مشاركة المعلومات الطبية الشخصية من النوع الذي ترغب في الحفاظ على سريته في علاقة طبيب الأسنان بالمريض أو في علاقة سريرية مماثلة.",
+    "l18": "لا يحتفظ أعضاء المشاركين المحترفين بأي سجلات طبية ولن يكون لديهم أي سجلات تتعلق بالاتصالات السابقة التي قد تكون قمت بها على موقعنا.",
+    "l19": "نظرًا لأن المشاركين المحترفين ليسوا على علاقة معك بين طبيب الأسنان والمريض، فإن المعلومات التي تقدمها لن تعتبر سجلاً طبيًا.",
+    "l20": "يحق للشركة استخدام أي أسئلة أو تعليقات أو معلومات أخرى مقدمة من المستخدمين في الكتب أو مقالات المجلات أو التعليقات أو الأبحاث أو طرق مماثلة.",
+    "l21": "عندما نتلقى بريدًا إلكترونيًا، فإننا نبذل جهودًا معقولة للرد في الوقت المناسب قدر الإمكان، لكن الشركة لا تضمن أنها سترد على جميع الاستفسارات.",
+    "l22": "نحن نحتفظ بالحق في تجاهل أو حذف أي معلومات، بما في ذلك، على سبيل المثال لا الحصر، المعلومات الاحتيالية أو المسيئة أو التشهيرية أو الفاحشة أو التي تنتهك حقوق الطبع والنشر أو العلامة التجارية أو غيرها من حقوق الملكية الفكرية أو حقوق الملكية لأي شخص آخر.",
+    "l23": "يجب أن تكون على دراية بالمخاطر العامة لنقل المعلومات عبر الإنترنت.",
+    "l24": "بينما نحاول منع الأشخاص غير المصرح لهم من الوصول إلى ملفاتنا أو التلاعب بموقعنا، لا يمكننا ضمان أن تكون هذه الجهود ناجحة دائمًا أو أن المعلومات سيتم نقلها دون انقطاع أو خطأ.",
+    "l25": "وتتنصل الشركة على وجه التحديد من أي مسؤولية فيما يتعلق بذلك."
+  },
+  "reviews_page": {
+    "title": "آراء المرضى في عيادات الفارابي.",
+    "subtitle": "استمع مباشرةً من مرضانا عن تجاربهم مع عيادات الفارابي. تصفّح آراء المرضى والشهادات المصوّرة التي تبرز ثقة أطبائنا وجودة رعايتنا.",
+    "r1_quote": "“جئت لتنظيف روتيني وخرجت بثقة متجددة. كانت أخصائية التنظيف لطيفة ومُطّلعة، وكانت التجربة بأكملها خالية من التوتر.”",
+    "r1_name": "هلا الغامدي",
+    "r1_detail": "تقويم الأسنان · الرياض",
+    "r2_quote": "“لطالما كنت خجولة بشأن أسناني، لكن كل شيء تغيّر بعد زيارة هذه العيادة. كان الفريق لطيفاً ومحترفاً وصبوراً معي في كل خطوة.”",
+    "r2_name": "نور الحربي",
+    "r2_detail": "رعاية الأسنان · الرياض",
+    "r3_quote": "“كنت دائماً قلقاً من زيارة طبيب الأسنان، لكن هذه العيادة غيّرت ذلك تماماً. كان الطاقم متفهماً ولطيفاً، والآن أنتظر زياراتي بشغف.”",
+    "r3_name": "محمد الشمّري",
+    "r3_detail": "تبييض الأسنان · الدمام"
   }
 };
 static const Map<String,dynamic> _en_US = {
@@ -362,7 +452,8 @@ static const Map<String,dynamic> _en_US = {
     "doctors": "Doctors",
     "branches": "Branches",
     "specialities": "Specialities",
-    "more": "More"
+    "more": "More",
+    "offers": "Offers"
   },
   "home": {
     "title": "Home",
@@ -410,7 +501,11 @@ static const Map<String,dynamic> _en_US = {
     "contact_us": "Contact us",
     "about": "About us",
     "careers": "Careers",
-    "sign_in_prompt": "Sign in to manage your bookings"
+    "sign_in_prompt": "Sign in to manage your bookings",
+    "specialities": "Specialities",
+    "reviews": "Patient reviews",
+    "privacy": "Privacy policy",
+    "terms": "Terms and conditions"
   },
   "doctor_detail": {
     "title": "Doctor",
@@ -540,6 +635,91 @@ static const Map<String,dynamic> _en_US = {
   "blogs": {
     "title": "News and articles",
     "no_posts": "No articles yet"
+  },
+  "offers": {
+    "title": "Offers made just for you.",
+    "subtitle": "Discover our latest deals and discounts across all specialties and branches.",
+    "no_offers": "No offers right now"
+  },
+  "about_page": {
+    "title": "About us",
+    "l01": "Al-Farabi Medical Group was established in 1990 and has more than 22 branches throughout the Kingdom of Saudi Arabia",
+    "l02": "It is distinguished by its diverse medical fields, including",
+    "l03": "Dental",
+    "l04": "General Medicine",
+    "l05": "Obstetrics & Gynecology",
+    "l06": "Bones",
+    "l07": "Internal Medicine & Heart",
+    "l08": "The Eyes",
+    "l09": "Natural Therapy",
+    "l10": "Children",
+    "l11": "Nose and Ears",
+    "l12": "Skin & Beauty",
+    "l13": "Cupping",
+    "l14": "Our vision",
+    "l15": "Our vision at Al-Farabi Clinics is to be one of the best, most trusted and distinguished health care providers in various medical fields.",
+    "l16": "Our message",
+    "l17": "Commitment to developing quality standards and using the latest technologies and medical devices to meet our customers’ requirements and provide the best service.",
+    "l18": "Strategy and objectives",
+    "l19": "Maintaining the position and name of the clinics in the medical care sector, as it has long experience in the field of medical care for more than 30 years.",
+    "l20": "Al-Farabi Clinics is keen in its strategy to provide its medical services to all segments of society equally We constantly seek to employ and attract medical staff with the highest level of professionalism",
+    "l21": "Constantly striving to keep pace with the latest technologies in the field of medicine and medical care",
+    "l22": "Constantly striving to provide high-quality medical services, which is why the clinics obtained the ISO certificate",
+    "l23": "Contracting with many insurance companies to meet the needs of the largest segment of society"
+  },
+  "privacy_page": {
+    "title": "Privacy Policy",
+    "l01": "This is a notice to inform you of our policy about all information that we record about you through our website.",
+    "l02": "It sets out the conditions under which we may process any information that we collect from you or that you provide to us.",
+    "l03": "It covers information that could identify you (“personal information”) and information that could not.",
+    "l04": "In the context of the law and this notice, “process” means collect, store, transfer, use or otherwise act on information.",
+    "l05": "We take seriously the protection of your privacy and confidentiality.",
+    "l06": "We understand that all visitors to our website are entitled to know that their personal data will not be used for any purpose unintended by them and will not accidentally fall into the hands of a third party.",
+    "l07": "We undertake to preserve the confidentiality of all information you provide to us and hope that you reciprocate.",
+    "l08": "Our policy complies with KSA law accordingly implemented.",
+    "l09": "The law requires us to tell you about your rights and our obligations to you in regards to the processing and control of your personal data.",
+    "l10": "Except as set out below, we do not share, or sell, or disclose to a third party any information collected through our website."
+  },
+  "terms_page": {
+    "title": "Terms and Conditions",
+    "l01": "RESTRICTED TO ADULTS You must be at least 18 years of age to use the Website.",
+    "l02": "You agree to be solely responsible for (i) maintaining such controls over the use and/or access to the Website by minors in your family or (ii) having access to your computer or login limited to the extent necessary to restrict use to adults.",
+    "l03": "OUR STAFF Our staff includes, in part, dentists and other health care professionals.",
+    "l04": "None of our dentists will enter into a dentist-patient relationship with you, and no other Professional participants will establish any clinical relationship with you while they are using our Website services.",
+    "l05": "They can assist you in your personal, general research but they will not engage in any conduct that involves the practice of dentistry, medicine or other health care profession.",
+    "l06": "The information you obtain from the Website should not substitute for or be used instead of a clinical or therapeutic relationship with a health care professional.",
+    "l07": "You are responsible for reviewing and understanding all research and other information obtained by you from the Website.",
+    "l08": "The Professional participants will not create or retain any medical records about you or monitor your care.",
+    "l09": "The Professional participants should not be considered to be your treating or care giving health care professional and will not communicate with your own health care provider.",
+    "l10": "Consequently, any information you obtain from the Website should not substitute or be used instead of a relationship with a health care professional.",
+    "l11": "All users are encouraged to seek the advice of, and regularly consult with, dentists and other health care professionals of their selection.",
+    "l12": "You should not disregard or delay medical advice or treatment based on information on the Website.",
+    "l13": "The Website does not clinically evaluate or perform credentialing of the Professional participants, because the Professional participants are not practicing dentistry or providing dental advice about individual-specific treatment matters.",
+    "l14": "The Professional participants do not diagnose or treat any dental or medical conditions or prescribe medication or treatments for anyone using the Website.",
+    "l15": "The Professional participants may not accept payment from you and may not bill any insurance company, government payment program, or other source of health benefits in compensation for providing information to you on the Website.",
+    "l16": "If you decide to seek information or obtain treatment from any Sponsor (as described below), the Professional participants will not follow up or monitor your care.",
+    "l17": "Please do not share personal medical information of a kind you would wish to be held confidential in a dentist-patient or similar clinical relationship.",
+    "l18": "The members of the Professional participants do not keep any medical records and will not have any records concerning prior contacts you may have made to our Website.",
+    "l19": "Since the Professional participants are not in a dentist-patient relationship with you, the information you provide will not be considered a medical record.",
+    "l20": "The Company shall have the right to use any questions, comments, or other information submitted by users in books, magazine articles, commentaries, research or similar ways.",
+    "l21": "When we receive an e-mail, we make reasonable efforts to respond in as timely a manner as possible, but the Company does not guarantee that it will respond to all inquiries.",
+    "l22": "We reserve the right to ignore or delete any information, including, without limitation, information that is fraudulent, abusive, defamatory, and obscene or in violation of a copyright, trademark or other intellectual property or ownership right of any other person.",
+    "l23": "You should be aware of the general risks of transmitting information over the Internet.",
+    "l24": "While we attempt to prevent unauthorized persons from accessing our files or tampering with our site, we cannot guarantee that these efforts will always be successful or that information will be transmitted without interruption or error.",
+    "l25": "The Company specifically disclaims any liability with respect thereto."
+  },
+  "reviews_page": {
+    "title": "Patient reviews at Al-Farabi Clinics.",
+    "subtitle": "Hear directly from our patients about their experiences with Al-Farabi Clinics. Explore patient reviews and video testimonials highlighting our trusted doctors and quality of care.",
+    "r1_quote": "“I came in for a routine cleaning and left with a renewed sense of confidence. The hygienist was kind and informative, and the whole experience was stress-free.”",
+    "r1_name": "Hala Al-Ghamdi",
+    "r1_detail": "Orthodontics · Riyadh",
+    "r2_quote": "“I've always been self-conscious about my teeth, but everything changed after visiting this clinic. The team was incredibly kind, professional, and patient with me throughout every step.”",
+    "r2_name": "Noor Al-Harbi",
+    "r2_detail": "Dental Care · Riyadh",
+    "r3_quote": "“I was always anxious about going to the dentist, but this clinic completely changed that. The staff was so understanding and gentle, and now I actually look forward to my visits.”",
+    "r3_name": "Mohammed Al-Shammari",
+    "r3_detail": "Teeth Whitening · Dammam"
   }
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar_SA": _ar_SA, "en_US": _en_US};

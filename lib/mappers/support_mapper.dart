@@ -37,6 +37,26 @@ class SupportMapper extends AppBaseMapper {
       .toSet()
       .toList(growable: false);
 
+  /// the offers list is empty on the test host, so this shape is read
+  /// defensively: the same title/title_ar/title_en convention as every other
+  /// localisable payload, and every other field optional.
+  List<OfferDataModel> offers(dynamic raw) =>
+      AppBaseMapper.asList(raw).map((map) {
+        return OfferDataModel(
+          id: AppBaseMapper.asInt(map['id']) ?? 0,
+          names: LocalisedName(
+            name: AppBaseMapper.asString(map['title'] ?? map['name']),
+            nameAr: AppBaseMapper.asString(map['title_ar'] ?? map['name_ar']),
+            nameEn: AppBaseMapper.asString(map['title_en'] ?? map['name_en']),
+          ),
+          description: AppBaseMapper.asString(
+              map['description'] ?? map['summary']),
+          image: AppBaseMapper.asString(map['image']),
+          endsAt: AppBaseMapper.asUtcDateTime(
+              map['ends_at'] ?? map['end_date'] ?? map['expires_at']),
+        );
+      }).toList(growable: false);
+
   List<BlogPostDataModel> posts(dynamic raw) =>
       AppBaseMapper.asList(raw).map((map) {
         return BlogPostDataModel(

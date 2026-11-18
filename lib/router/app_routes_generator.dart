@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../data/constants/locale_keys.g.dart';
 import '../data/models/auth/otp_args_model.dart';
 import '../data/models/booking/booking_models.dart';
 import '../data/models/discovery/detail_args_models.dart';
@@ -12,6 +13,10 @@ import '../screens/detail/doctor_detail_screen.dart';
 import '../screens/detail/service_detail_screen.dart';
 import '../screens/profile/profile_screen.dart';
 import '../screens/support/blogs_screen.dart';
+import '../screens/support/reviews_screen.dart';
+import '../screens/support/static_page_screen.dart';
+import '../screens/support/static_pages_content.dart';
+import '../screens/tabs/specialities/specialities_screen.dart';
 import '../screens/support/careers_screen.dart';
 import '../screens/support/contact_us_screen.dart';
 import '../screens/auth/forgot_password_screen.dart';
@@ -101,6 +106,39 @@ class AppRoutesGenerator {
 
       case AppRoutes.blogs:
         return _page(settings, const BlogsScreen());
+
+      case AppRoutes.specialities:
+        return _page(settings, const SpecialitiesScreen());
+
+      case AppRoutes.aboutUs:
+        return _page(
+          settings,
+          const StaticPageScreen(
+            titleKey: LocaleKeys.about_page_title,
+            blocks: aboutBlocks,
+          ),
+        );
+
+      case AppRoutes.reviews:
+        return _page(settings, const ReviewsScreen());
+
+      case AppRoutes.privacyPolicy:
+        return _page(
+          settings,
+          const StaticPageScreen(
+            titleKey: LocaleKeys.privacy_page_title,
+            blocks: privacyBlocks,
+          ),
+        );
+
+      case AppRoutes.terms:
+        return _page(
+          settings,
+          const StaticPageScreen(
+            titleKey: LocaleKeys.terms_page_title,
+            blocks: termsBlocks,
+          ),
+        );
 
       default:
         return _unknown(settings);
