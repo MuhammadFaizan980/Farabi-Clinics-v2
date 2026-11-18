@@ -53,6 +53,7 @@ flutter:
   assets:
     - assets/translations/
     - assets/svgs/icons/
+    - assets/svgs/icons/more/
     - assets/svgs/nav/
     - assets/svgs/brand/
     - assets/images/

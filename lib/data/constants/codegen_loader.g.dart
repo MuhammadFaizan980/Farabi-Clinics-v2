@@ -167,7 +167,19 @@ class CodegenLoader extends AssetLoader{
     "specialities": "التخصصات",
     "reviews": "آراء المرضى",
     "privacy": "سياسة الخصوصية",
-    "terms": "الشروط والأحكام"
+    "terms": "الشروط والأحكام",
+    "profile_setting": "إعدادات الملف الشخصي",
+    "patient_id": "رقم المريض: {}",
+    "stat_upcoming": "القادمة",
+    "stat_booked": "المحجوزة",
+    "stat_visits": "إجمالي الزيارات",
+    "your_activity": "نشاطك",
+    "account_settings": "إعدادات الحساب",
+    "explore": "استكشف",
+    "appointments_sub": "رقم الحجز، وقت الموعد، الرسوم…",
+    "language_sub": "لغة التطبيق المفضلة",
+    "about_sub": "معلومات الشركة، الرسالة، تفاصيل التواصل…",
+    "logout_sub": "تسجيل الخروج بأمان وإنهاء الجلسة"
   },
   "doctor_detail": {
     "title": "الطبيب",
@@ -537,7 +549,19 @@ static const Map<String,dynamic> _en_US = {
     "specialities": "Specialities",
     "reviews": "Patient reviews",
     "privacy": "Privacy policy",
-    "terms": "Terms and conditions"
+    "terms": "Terms and conditions",
+    "profile_setting": "Profile Setting",
+    "patient_id": "Patient ID: {}",
+    "stat_upcoming": "Upcoming",
+    "stat_booked": "Booked",
+    "stat_visits": "Total Visits",
+    "your_activity": "Your Activity",
+    "account_settings": "Account Settings",
+    "explore": "Explore",
+    "appointments_sub": "Booking ID, Appointment Time, Fee…",
+    "language_sub": "Preferred App Language",
+    "about_sub": "Company Info, Mission, Contact Details…",
+    "logout_sub": "Sign Out Securely, End Active Session"
   },
   "doctor_detail": {
     "title": "Doctor",

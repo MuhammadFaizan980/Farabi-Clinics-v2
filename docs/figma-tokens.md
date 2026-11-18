@@ -63,3 +63,26 @@ status bar included).
 
 Distance and closing time are not in the branches API (no coordinates for the device, no hours on the list
 payload), so those two rows are not rendered from data.
+
+## More tab (`More tab_ Profile Setting`, `2656-48127`)
+
+Frame 414 x 1,300, fill `#F8F8F8`.
+
+| Element | Measurement |
+| :--- | :--- |
+| Header | 414 x 108, bottom radius 16, `#CC1C1C`; title "Profile Setting" 18 / 28, 600, white, y 64 |
+| Profile card | 382 x 158 at x 16, y 117, radius 16 |
+| Avatar | 80 x 80 group at x 31, y 131; photo 66.98 round; ring is a red progress arc |
+| Name | 17 / 22, 600, `#1D1D24`, x 36, y 222; verified badge 17px `#1AB6C3` |
+| Patient ID | 15 / 20, 500, 18px pulse icon, x 56, y 244 |
+| Card chevron | 22 x 22, x 348, y 178 |
+| Card art | circle 346 x 346, black 4%, x 113, y -22 |
+| Stats card | 382 x 74 at y 277, radius 14, 1px `#211722` 4%, shadow 0 4 8 `#F2F2F2` 80% |
+| Stat number | 20 / 24, 600, `#1D1D24`; label 14 / 23, 500, `#797777`; icons 18px; dividers `#797777` 32% |
+| Section heading | 15 / 16, 700, +2% tracking, `#000`, x 22 |
+| Menu row | 382 x 70 at x 16, radius 14, 1px black 4%; 4 between rows |
+| Row title / subtitle | 15 / 20 600 `#1D1D24`, x 62 / 14 / 18 500 `#797777`; icon `#989898`; chevron 18px |
+| Logout row | 378 x 70 at x 18, radius 14, 1px `#AC150A` 12%; title 15 / 20 700 `#AC150A`; icon 20px |
+
+Not measured (the panel did not expose a fill): the profile card's own gradient. The app uses white to
+`#F2F2F2`.

@@ -131,4 +131,21 @@ class AppTextStyles {
 
   /// pill labels on the branch card (closes at, call, distance): 13.5, 600
   static TextStyle get pillLabel => _figma(13.5, 17, FontWeight.w600);
+
+  /// more tab: profile name 17 / 22 600, patient id 15 / 20 500
+  static TextStyle get profileName => _figma(17, 22, FontWeight.w600);
+  static TextStyle get profileMeta => _figma(15, 20, FontWeight.w500);
+
+  /// stats strip: number 20 / 24 600, label 14 / 23 500
+  static TextStyle get statNumber => _figma(20, 24, FontWeight.w600);
+  static TextStyle get statLabel => _figma(14, 23, FontWeight.w500);
+
+  /// section headings: 15 / 16 700, +2% tracking
+  static TextStyle get sectionHeading =>
+      _figma(15, 16, FontWeight.w700).copyWith(letterSpacing: 0.3.rf);
+
+  /// menu rows: title 15 / 20 600, subtitle 14 / 18 500; logout title 15 / 20 700
+  static TextStyle get rowTitle => _figma(15, 20, FontWeight.w600);
+  static TextStyle get rowSubtitle => _figma(14, 18, FontWeight.w500);
+  static TextStyle get logoutTitle => _figma(15, 20, FontWeight.w700);
 }

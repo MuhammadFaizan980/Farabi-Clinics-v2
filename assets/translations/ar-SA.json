@@ -151,7 +151,19 @@
     "specialities": "التخصصات",
     "reviews": "آراء المرضى",
     "privacy": "سياسة الخصوصية",
-    "terms": "الشروط والأحكام"
+    "terms": "الشروط والأحكام",
+    "profile_setting": "إعدادات الملف الشخصي",
+    "patient_id": "رقم المريض: {}",
+    "stat_upcoming": "القادمة",
+    "stat_booked": "المحجوزة",
+    "stat_visits": "إجمالي الزيارات",
+    "your_activity": "نشاطك",
+    "account_settings": "إعدادات الحساب",
+    "explore": "استكشف",
+    "appointments_sub": "رقم الحجز، وقت الموعد، الرسوم…",
+    "language_sub": "لغة التطبيق المفضلة",
+    "about_sub": "معلومات الشركة، الرسالة، تفاصيل التواصل…",
+    "logout_sub": "تسجيل الخروج بأمان وإنهاء الجلسة"
   },
   "doctor_detail": {
     "title": "الطبيب",

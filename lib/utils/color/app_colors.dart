@@ -50,6 +50,16 @@ class AppColors {
   static const Color tabUnderline = Color(0xFFFDDA2C);
   static const Color callBorder = Color(0x05E5AF1A);
 
+  /// more frame: row icons #989898, logout #ac150a (border @12%), stat divider
+  /// #797777 @32%, stats card shadow #f2f2f2 @80%
+  static const Color iconGrey = Color(0xFF989898);
+  static const Color logout = Color(0xFFAC150A);
+  static const Color logoutBorder = Color(0x1FAC150A);
+  static const Color divider32 = Color(0x52797777);
+  static const Color statShadow = Color(0xCCF2F2F2);
+  static const Color rowBorder4 = Color(0x0A000000);
+  static const Color decoration4 = Color(0x0A000000);
+
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
 

@@ -14,6 +14,19 @@ class AppAssets {
   static const String iconFilter = '$_svg/icons/filter.svg';
   static const String iconGridView = '$_svg/icons/grid_view.svg';
 
+  // more
+  static const String _more = '$_svg/icons/more';
+  static const String moreVerified = '$_more/verified_badge.svg';
+  static const String morePatientId = '$_more/patient_id.svg';
+  static const String moreStatUpcoming = '$_more/stat_upcoming.svg';
+  static const String moreStatBooked = '$_more/stat_booked.svg';
+  static const String moreStatVisits = '$_more/stat_visits.svg';
+  static const String moreRowAppointments = '$_more/row_appointments.svg';
+  static const String moreRowLanguage = '$_more/row_language.svg';
+  static const String moreRowAbout = '$_more/row_about.svg';
+  static const String moreChevron = '$_more/chevron_right.svg';
+  static const String moreLogout = '$_more/logout.svg';
+
   // branches
   static const String iconMapSearch = '$_svg/icons/map_search.svg';
   static const String iconPinOutlineWhite = '$_svg/icons/pin_outline_white.svg';
