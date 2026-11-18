@@ -1,0 +1,42 @@
+# dart / flutter
+.dart_tool/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+*.g.dart.bak
+coverage/
+
+# ide
+.idea/
+*.iml
+.vscode/
+*.swp
+
+# macos
+.DS_Store
+
+# ios
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/ephemeral/
+ios/Runner.xcworkspace/xcuserdata/
+ios/Runner.xcodeproj/xcuserdata/
+ios/Runner.xcodeproj/project.xcworkspace/xcuserdata/
+
+# android
+android/.gradle/
+android/local.properties
+android/key.properties
+android/app/*.jks
+android/app/*.keystore
+android/.kotlin/
+**/GeneratedPluginRegistrant.java
+
+# secrets — live test credentials come from the environment, never a file
+.env
+*.env

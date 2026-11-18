@@ -1,0 +1,56 @@
+name: farabi_booking_app
+description: Farabi Clinics patient booking app.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # state management — stacked mvvm
+  stacked: ^3.4.3
+
+  # dependency injection
+  get_it: ^8.0.3
+
+  # networking
+  dio: ^5.7.0
+
+  # responsiveness — every dimension goes through this
+  sizer: ^3.0.4
+
+  # localisation + codegen
+  easy_localization: ^3.0.7
+
+  # dev / prod flavors
+  flutter_flavor: ^3.1.3
+
+  # local storage
+  shared_preferences: ^2.3.3
+  flutter_secure_storage: ^9.2.2
+
+  # ui
+  flutter_svg: ^2.0.16
+  shimmer: ^3.0.0
+  cached_network_image: ^3.4.1
+  intl: ^0.20.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  mocktail: ^1.0.4
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/translations/
+    - assets/svgs/
+    - assets/images/

@@ -1,0 +1,5 @@
+tags:
+  live:
+    # these hit the real dev api and write to it, so they are opt-in:
+    #   flutter test --tags live
+    skip: "network tests — run explicitly with --tags live"
