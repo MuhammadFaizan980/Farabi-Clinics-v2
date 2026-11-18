@@ -119,7 +119,12 @@
     "end_of_list": "That's everyone",
     "load_more_failed": "Couldn't load more",
     "experience": "{years} yrs experience",
-    "patients": "{count} patients"
+    "patients": "{count} patients",
+    "available_title": "Available Doctors",
+    "find_hint": "Find doctors here...",
+    "all": "All",
+    "gender_male": "Male",
+    "gender_female": "Female"
   },
   "branches": {
     "title": "Branches",

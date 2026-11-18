@@ -37,6 +37,15 @@ class AppColors {
   static const Color redBorder4 = Color(0x0ACC1C1C);
   static const Color chipFill = Color(0x05211722);
 
+  /// doctors frame: list #f8f8f8, search pill #fbfbfb, hairlines black @8%,
+  /// selected chip #cc1c1c @6%, filter button ring #cc1c1c @8%
+  static const Color listBackground = Color(0xFFF8F8F8);
+  static const Color fieldFill = Color(0xFFFBFBFB);
+  static const Color hairline8 = Color(0x14000000);
+  static const Color redSelected6 = Color(0x0FCC1C1C);
+  static const Color redRing8 = Color(0x14CC1C1C);
+  static const Color chipInk = Color(0xFF333333);
+
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
 

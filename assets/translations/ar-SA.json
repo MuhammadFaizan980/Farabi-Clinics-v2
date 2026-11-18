@@ -119,7 +119,12 @@
     "end_of_list": "هذا كل شيء",
     "load_more_failed": "تعذر تحميل المزيد",
     "experience": "{years} سنوات خبرة",
-    "patients": "{count} مريض"
+    "patients": "{count} مريض",
+    "available_title": "الأطباء المتاحون",
+    "find_hint": "ابحث عن طبيب هنا...",
+    "all": "الكل",
+    "gender_male": "ذكر",
+    "gender_female": "أنثى"
   },
   "branches": {
     "title": "الفروع",

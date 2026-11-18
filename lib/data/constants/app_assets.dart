@@ -10,6 +10,10 @@ class AppAssets {
   static const String iconUser = '$_svg/icons/user.svg';
   static const String iconSearch = '$_svg/icons/search.svg';
 
+  // doctors
+  static const String iconFilter = '$_svg/icons/filter.svg';
+  static const String iconGridView = '$_svg/icons/grid_view.svg';
+
   // home
   static const String iconChevronDown = '$_svg/icons/chevron_down_vector.svg';
   static const String iconLocationPin = '$_svg/icons/location_pin.svg';

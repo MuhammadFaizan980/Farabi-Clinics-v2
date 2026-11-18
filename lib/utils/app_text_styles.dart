@@ -107,4 +107,17 @@ class AppTextStyles {
   /// bottom navigation label: 14, 500 inactive / 600 active
   static TextStyle navLabel({required bool active}) =>
       _figma(14, 18, active ? FontWeight.w600 : FontWeight.w500);
+
+  /// doctors header title: 18 / 28, 600
+  static TextStyle get screenTitle => _figma(18, 28, FontWeight.w600);
+
+  /// doctor list name: 17 / 26, 700
+  static TextStyle get listCardTitle => _figma(17, 26, FontWeight.w700);
+
+  /// filter chip label: 14 / 20, 600, -2% tracking
+  static TextStyle get filterChip =>
+      _figma(14, 20, FontWeight.w600).copyWith(letterSpacing: -0.28.rf);
+
+  /// rating pill: 12, 600
+  static TextStyle get rating => _figma(12, 13, FontWeight.w600);
 }

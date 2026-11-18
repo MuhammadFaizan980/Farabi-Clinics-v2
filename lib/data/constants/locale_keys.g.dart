@@ -114,6 +114,11 @@ abstract class  LocaleKeys {
   static const doctors_load_more_failed = 'doctors.load_more_failed';
   static const doctors_experience = 'doctors.experience';
   static const doctors_patients = 'doctors.patients';
+  static const doctors_available_title = 'doctors.available_title';
+  static const doctors_find_hint = 'doctors.find_hint';
+  static const doctors_all = 'doctors.all';
+  static const doctors_gender_male = 'doctors.gender_male';
+  static const doctors_gender_female = 'doctors.gender_female';
   static const doctors = 'doctors';
   static const branches_title = 'branches.title';
   static const branches_no_branches = 'branches.no_branches';

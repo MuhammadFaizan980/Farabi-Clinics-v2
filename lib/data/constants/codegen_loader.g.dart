@@ -135,7 +135,12 @@ class CodegenLoader extends AssetLoader{
     "end_of_list": "هذا كل شيء",
     "load_more_failed": "تعذر تحميل المزيد",
     "experience": "{years} سنوات خبرة",
-    "patients": "{count} مريض"
+    "patients": "{count} مريض",
+    "available_title": "الأطباء المتاحون",
+    "find_hint": "ابحث عن طبيب هنا...",
+    "all": "الكل",
+    "gender_male": "ذكر",
+    "gender_female": "أنثى"
   },
   "branches": {
     "title": "الفروع",
@@ -500,7 +505,12 @@ static const Map<String,dynamic> _en_US = {
     "end_of_list": "That's everyone",
     "load_more_failed": "Couldn't load more",
     "experience": "{years} yrs experience",
-    "patients": "{count} patients"
+    "patients": "{count} patients",
+    "available_title": "Available Doctors",
+    "find_hint": "Find doctors here...",
+    "all": "All",
+    "gender_male": "Male",
+    "gender_female": "Female"
   },
   "branches": {
     "title": "Branches",
