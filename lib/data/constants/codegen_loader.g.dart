@@ -108,7 +108,18 @@ class CodegenLoader extends AssetLoader{
     "offers": "العروض",
     "view_all": "عرض الكل",
     "greeting": "مرحباً",
-    "guest": "زائر"
+    "guest": "زائر",
+    "search_hint": "ابحث عن عيادات أو خدمات أو أطباء...",
+    "book_by_service": "احجز حسب الخدمة",
+    "virtual_title": "خدمات العيادة الافتراضية",
+    "video_consultation": "استشارة بالفيديو",
+    "audio_consultation": "استشارة صوتية",
+    "available_doctors": "الأطباء المتاحون",
+    "expert_title": "احصل على استشارة طبية متخصصة",
+    "expert_body": "يقدم أطباؤنا نصائح واستشارات طبية متخصصة.",
+    "expert_link": "زيارة الاستشارة",
+    "location_title": "المواعيد حسب الموقع",
+    "doctors_available": "{} طبيب متاح"
   },
   "doctors": {
     "title": "الأطباء",
@@ -462,7 +473,18 @@ static const Map<String,dynamic> _en_US = {
     "offers": "Offers",
     "view_all": "View all",
     "greeting": "Hello",
-    "guest": "Guest"
+    "guest": "Guest",
+    "search_hint": "Find clinics, services, or doctors...",
+    "book_by_service": "Book by Service",
+    "virtual_title": "Virtual Clinic Services",
+    "video_consultation": "Video Consultation",
+    "audio_consultation": "Audio Consultation",
+    "available_doctors": "Available Doctors",
+    "expert_title": "Get Expert Medical Consultation",
+    "expert_body": "Our doctor provide expert medical advice & consultation.",
+    "expert_link": "Visit Consultation",
+    "location_title": "Location Base Appointment",
+    "doctors_available": "{} Doctors Available"
   },
   "doctors": {
     "title": "Doctors",

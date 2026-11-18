@@ -66,4 +66,45 @@ class AppTextStyles {
         fontWeight: FontWeight.w600,
         height: 1.2,
       );
+
+  // ---- figma text styles (all Neue Regrade once the font files land) ----
+
+  static TextStyle _figma(double size, double lineHeight, FontWeight weight) =>
+      TextStyle(
+        fontFamily: _family,
+        fontSize: size.rf,
+        fontWeight: weight,
+        height: lineHeight / size,
+      );
+
+  /// "Book by Service", "Virtual Clinic Services", city names: 17 / 24, 600
+  static TextStyle get sectionTitle => _figma(17, 24, FontWeight.w600);
+
+  /// doctor name: 17 / 26, 600
+  static TextStyle get cardTitle => _figma(17, 26, FontWeight.w600);
+
+  /// doctor branch line: 15 / 26, 500
+  static TextStyle get cardSubtitle => _figma(15, 26, FontWeight.w500);
+
+  /// chips and secondary lines: 14 / 18, 500
+  static TextStyle get chip => _figma(14, 18, FontWeight.w500);
+
+  /// speciality tile label: 14 / 16, 500, +2% tracking
+  static TextStyle get tileLabel =>
+      _figma(14, 16, FontWeight.w500).copyWith(letterSpacing: 0.28.rf);
+
+  /// virtual-clinic card title: 18 / 22, 500
+  static TextStyle get virtualTitle => _figma(18, 22, FontWeight.w500);
+
+  /// search placeholder: 16 / 24, 500
+  static TextStyle get searchHint => _figma(16, 24, FontWeight.w500);
+
+  /// expert card: title 20 / 24 600, body 14 / 18 400, link 15 / 18 600
+  static TextStyle get expertTitle => _figma(20, 24, FontWeight.w600);
+  static TextStyle get expertBody => _figma(14, 18, FontWeight.w400);
+  static TextStyle get expertLink => _figma(15, 18, FontWeight.w600);
+
+  /// bottom navigation label: 14, 500 inactive / 600 active
+  static TextStyle navLabel({required bool active}) =>
+      _figma(14, 18, active ? FontWeight.w600 : FontWeight.w500);
 }

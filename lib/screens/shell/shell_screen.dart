@@ -2,9 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../data/constants/app_assets.dart';
 import '../../data/constants/locale_keys.g.dart';
 import '../../utils/color/app_theme_colors.dart';
-import '../../utils/extensions/responsive_extensions.dart';
+import '../../widgets/common/app_bottom_nav.dart';
 import '../tabs/branches/branches_list_screen.dart';
 import '../tabs/doctors/doctors_list_screen.dart';
 import '../tabs/home/home_screen.dart';
@@ -26,44 +27,36 @@ class ShellScreen extends StatelessWidget {
         // IndexedStack keeps each tab's scroll position and loaded data
         body: IndexedStack(
           index: vm.index,
-          children: const [
-            HomeScreen(),
-            DoctorsListScreen(),
-            OffersScreen(),
-            BranchesListScreen(),
-            MoreScreen(),
+          children: [
+            HomeScreen(onSelectTab: vm.setIndex),
+            const DoctorsListScreen(),
+            const OffersScreen(),
+            const BranchesListScreen(),
+            const MoreScreen(),
           ],
         ),
-        bottomNavigationBar: NavigationBar(
+        bottomNavigationBar: AppBottomNav(
           selectedIndex: vm.index,
-          onDestinationSelected: vm.setIndex,
-          backgroundColor: colors.surface,
-          height: 68.rh,
-          labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-          destinations: [
-            NavigationDestination(
-              icon: const Icon(Icons.home_outlined),
-              selectedIcon: const Icon(Icons.home),
+          onSelected: vm.setIndex,
+          items: [
+            AppBottomNavItem(
+              asset: AppAssets.navHome,
               label: LocaleKeys.tabs_home.tr(),
             ),
-            NavigationDestination(
-              icon: const Icon(Icons.person_search_outlined),
-              selectedIcon: const Icon(Icons.person_search),
+            AppBottomNavItem(
+              asset: AppAssets.navDoctors,
               label: LocaleKeys.tabs_doctors.tr(),
             ),
-            NavigationDestination(
-              icon: const Icon(Icons.local_offer_outlined),
-              selectedIcon: const Icon(Icons.local_offer),
+            AppBottomNavItem(
+              asset: AppAssets.navOffers,
               label: LocaleKeys.tabs_offers.tr(),
             ),
-            NavigationDestination(
-              icon: const Icon(Icons.location_on_outlined),
-              selectedIcon: const Icon(Icons.location_on),
+            AppBottomNavItem(
+              asset: AppAssets.navBranches,
               label: LocaleKeys.tabs_branches.tr(),
             ),
-            NavigationDestination(
-              icon: const Icon(Icons.menu),
-              selectedIcon: const Icon(Icons.menu_open),
+            AppBottomNavItem(
+              asset: AppAssets.navMore,
               label: LocaleKeys.tabs_more.tr(),
             ),
           ],

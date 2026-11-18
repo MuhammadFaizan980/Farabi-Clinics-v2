@@ -90,6 +90,17 @@ abstract class  LocaleKeys {
   static const home_view_all = 'home.view_all';
   static const home_greeting = 'home.greeting';
   static const home_guest = 'home.guest';
+  static const home_search_hint = 'home.search_hint';
+  static const home_book_by_service = 'home.book_by_service';
+  static const home_virtual_title = 'home.virtual_title';
+  static const home_video_consultation = 'home.video_consultation';
+  static const home_audio_consultation = 'home.audio_consultation';
+  static const home_available_doctors = 'home.available_doctors';
+  static const home_expert_title = 'home.expert_title';
+  static const home_expert_body = 'home.expert_body';
+  static const home_expert_link = 'home.expert_link';
+  static const home_location_title = 'home.location_title';
+  static const home_doctors_available = 'home.doctors_available';
   static const home = 'home';
   static const doctors_title = 'doctors.title';
   static const doctors_search_hint = 'doctors.search_hint';

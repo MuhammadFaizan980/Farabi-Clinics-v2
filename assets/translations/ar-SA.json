@@ -92,7 +92,18 @@
     "offers": "العروض",
     "view_all": "عرض الكل",
     "greeting": "مرحباً",
-    "guest": "زائر"
+    "guest": "زائر",
+    "search_hint": "ابحث عن عيادات أو خدمات أو أطباء...",
+    "book_by_service": "احجز حسب الخدمة",
+    "virtual_title": "خدمات العيادة الافتراضية",
+    "video_consultation": "استشارة بالفيديو",
+    "audio_consultation": "استشارة صوتية",
+    "available_doctors": "الأطباء المتاحون",
+    "expert_title": "احصل على استشارة طبية متخصصة",
+    "expert_body": "يقدم أطباؤنا نصائح واستشارات طبية متخصصة.",
+    "expert_link": "زيارة الاستشارة",
+    "location_title": "المواعيد حسب الموقع",
+    "doctors_available": "{} طبيب متاح"
   },
   "doctors": {
     "title": "الأطباء",

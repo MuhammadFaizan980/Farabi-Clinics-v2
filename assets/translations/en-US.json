@@ -92,7 +92,18 @@
     "offers": "Offers",
     "view_all": "View all",
     "greeting": "Hello",
-    "guest": "Guest"
+    "guest": "Guest",
+    "search_hint": "Find clinics, services, or doctors...",
+    "book_by_service": "Book by Service",
+    "virtual_title": "Virtual Clinic Services",
+    "video_consultation": "Video Consultation",
+    "audio_consultation": "Audio Consultation",
+    "available_doctors": "Available Doctors",
+    "expert_title": "Get Expert Medical Consultation",
+    "expert_body": "Our doctor provide expert medical advice & consultation.",
+    "expert_link": "Visit Consultation",
+    "location_title": "Location Base Appointment",
+    "doctors_available": "{} Doctors Available"
   },
   "doctors": {
     "title": "Doctors",

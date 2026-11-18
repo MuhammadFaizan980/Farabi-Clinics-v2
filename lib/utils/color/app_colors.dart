@@ -30,6 +30,13 @@ class AppColors {
   static const Color cardBorder = Color(0x0A211722);
   static const Color doctorBackground = Color(0xFFFDF6F6);
 
+  /// tints measured on the home frame: #edc5c5 @12%, #f1f1f1 @32%, #cc1c1c @20%/4%
+  static const Color tileTint = Color(0x1FEDC5C5);
+  static const Color stripFill = Color(0x52F1F1F1);
+  static const Color redTint20 = Color(0x33CC1C1C);
+  static const Color redBorder4 = Color(0x0ACC1C1C);
+  static const Color chipFill = Color(0x05211722);
+
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
 
