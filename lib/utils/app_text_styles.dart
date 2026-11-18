@@ -148,4 +148,24 @@ class AppTextStyles {
   static TextStyle get rowTitle => _figma(15, 20, FontWeight.w600);
   static TextStyle get rowSubtitle => _figma(14, 18, FontWeight.w500);
   static TextStyle get logoutTitle => _figma(15, 20, FontWeight.w700);
+
+  // ---- auth / form styles, built from the same Figma scale ----
+
+  /// auth card title: 22 / 28, 600
+  static TextStyle get authTitle => _figma(22, 28, FontWeight.w600);
+
+  /// auth card subtitle and body copy: 15 / 22, 500
+  static TextStyle get authSubtitle => _figma(15, 22, FontWeight.w500);
+
+  /// field label: 14 / 20, 600
+  static TextStyle get fieldLabel => _figma(14, 20, FontWeight.w600);
+
+  /// field text and hint: 15 / 22, 500
+  static TextStyle get fieldText => _figma(15, 22, FontWeight.w500);
+
+  /// inline links: 14 / 20, 600
+  static TextStyle get link => _figma(14, 20, FontWeight.w600);
+
+  /// field error line: 12 / 16, 500
+  static TextStyle get fieldError => _figma(12, 16, FontWeight.w500);
 }

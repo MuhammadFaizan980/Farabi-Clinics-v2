@@ -86,3 +86,21 @@ Frame 414 x 1,300, fill `#F8F8F8`.
 
 Not measured (the panel did not expose a fill): the profile card's own gradient. The app uses white to
 `#F2F2F2`.
+
+## Auth screens (derived, not measured)
+
+The Figma file has no frames for the booking app's sign-in, register, OTP, forgot or reset screens (the only
+login frames belong to the HR app). These screens apply the booking frames' concept instead, with the
+website's login and register panels as the content reference. Nothing here was read from a Figma node.
+
+| Element | Value | Taken from |
+| :--- | :--- | :--- |
+| Header | red `#CC1C1C`, bottom radius 16, white FARABI wordmark centred | Home / More headers |
+| Card | white, radius 16, 1px `#211722` 4%, shadow 0 4 8 `#F2F2F2` 80%, overlaps the header | More stats card |
+| Field | 52 tall, radius 14, fill `#FBFBFB`, 1px black 8%; focus red 1.5px; error `#EA5454` | Doctors search pill |
+| Label | 14 / 20, 600, `#1D1D24` | Doctors filter chip scale |
+| Field text / hint | 15 / 22, 500; hint `#797777` 64% | Branches address scale |
+| Button | 52 tall, radius 14, `#CC1C1C`, 16 / 600 white; disabled at 40% | Figma "Continue" button |
+| Links | 14 / 20, 600, red, underlined | website |
+| Title / subtitle | 22 / 28 600 `#1D1D24` / 15 / 22 500 `#797777` | website, Figma type scale |
+| Splash | full `#CC1C1C`, white wordmark and tagline | Figma header colour |

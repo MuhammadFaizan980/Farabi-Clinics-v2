@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../data/constants/app_border_radius.dart';
 import '../../utils/app_text_styles.dart';
-import '../../utils/color/app_theme_colors.dart';
+import '../../utils/color/app_colors.dart';
 import '../../utils/extensions/responsive_extensions.dart';
 
 class AppErrorBanner extends StatelessWidget {
@@ -12,7 +11,6 @@ class AppErrorBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = AppThemeColors.of(context);
     return Container(
       width: double.infinity,
       padding: EdgeInsetsDirectional.symmetric(
@@ -20,20 +18,24 @@ class AppErrorBanner extends StatelessWidget {
         vertical: 10.rh,
       ),
       decoration: BoxDecoration(
-        color: colors.error.withValues(alpha: 0.08),
-        borderRadius: AppBorderRadius.sm,
-        border: Border.all(color: colors.error.withValues(alpha: 0.4)),
+        color: AppColors.error.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(14.r),
+        border: Border.all(color: AppColors.error.withValues(alpha: 0.4)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // not colour-only: the icon carries the same meaning
-          Icon(Icons.error_outline, size: 16.r, color: colors.error),
+          Icon(Icons.error_outline, size: 16.rw, color: AppColors.error),
           SizedBox(width: 8.rw),
           Expanded(
             child: Text(
               message,
-              style: AppTextStyles.bodyMedium.copyWith(color: colors.error),
+              style: AppTextStyles.fieldError.copyWith(
+                color: AppColors.error,
+                fontSize: 13.rf,
+                height: 1.4,
+              ),
             ),
           ),
         ],

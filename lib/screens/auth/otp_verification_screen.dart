@@ -4,10 +4,10 @@ import 'package:stacked/stacked.dart';
 
 import '../../data/constants/locale_keys.g.dart';
 import '../../data/models/auth/otp_args_model.dart';
-import '../../utils/app_text_styles.dart';
-import '../../utils/color/app_theme_colors.dart';
+import '../../utils/color/app_colors.dart';
 import '../../utils/extensions/responsive_extensions.dart';
 import '../../utils/extensions/vm_init_extension.dart';
+import '../../widgets/auth/auth_scaffold.dart';
 import '../../widgets/common/app_button.dart';
 import '../../widgets/common/app_error_banner.dart';
 import '../../widgets/common/app_text_field.dart';
@@ -20,97 +20,66 @@ class OtpVerificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = AppThemeColors.of(context);
     return ViewModelBuilder<OtpVerificationVm>.reactive(
       viewModelBuilder: () => OtpVerificationVm(args),
       onViewModelReady: (vm) => runAfterFirstFrame(vm.onInit),
-      builder: (context, vm, child) => Scaffold(
-        backgroundColor: colors.background,
-        appBar: AppBar(
-          backgroundColor: colors.background,
-          surfaceTintColor: Colors.transparent,
+      builder: (context, vm, child) => AuthScaffold(
+        title: LocaleKeys.auth_otp_title.tr(),
+        subtitle: LocaleKeys.auth_otp_subtitle.tr(
+          namedArgs: {'count': '6', 'mobile': vm.mobile},
         ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            padding: EdgeInsetsDirectional.symmetric(
-              horizontal: 20.rw,
-              vertical: 12.rh,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (vm.validationKey != null) ...[
+              AppErrorBanner(
+                message: vm.validationKey!.tr(namedArgs: {'count': '6'}),
+              ),
+              SizedBox(height: 14.rh),
+            ] else if (vm.errorMessage != null) ...[
+              AppErrorBanner(message: vm.errorMessage!),
+              SizedBox(height: 14.rh),
+            ],
+            AppTextField(
+              controller: vm.otpController,
+              label: LocaleKeys.auth_otp_verify.tr(),
+              keyboardType: TextInputType.number,
+              digitsOnly: true,
+              maxLength: 6,
+              textAlign: TextAlign.center,
+              letterSpacing: 8.rw,
+              errorText: vm.fieldError('otp'),
+              onChanged: vm.onOtpChanged,
+              textInputAction: TextInputAction.done,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            SizedBox(height: 8.rh),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  LocaleKeys.auth_otp_title.tr(),
-                  style: AppTextStyles.h1.copyWith(color: colors.textPrimary),
+                AuthLink(
+                  label: vm.canResend
+                      ? LocaleKeys.auth_otp_resend.tr()
+                      : LocaleKeys.auth_otp_resend_in
+                          .tr(namedArgs: {'seconds': '${vm.secondsRemaining}'}),
+                  underline: vm.canResend,
+                  color: vm.canResend ? AppColors.primary : AppColors.greyLight,
+                  onTap: vm.canResend ? vm.resend : null,
                 ),
-                SizedBox(height: 6.rh),
-                Text(
-                  LocaleKeys.auth_otp_subtitle.tr(
-                    namedArgs: {'count': '6', 'mobile': vm.mobile},
-                  ),
-                  style: AppTextStyles.bodyMedium
-                      .copyWith(color: colors.textSecondary),
-                ),
-                SizedBox(height: 24.rh),
-                if (vm.validationKey != null) ...[
-                  AppErrorBanner(
-                    message: vm.validationKey!.tr(namedArgs: {'count': '6'}),
-                  ),
-                  SizedBox(height: 12.rh),
-                ] else if (vm.errorMessage != null) ...[
-                  AppErrorBanner(message: vm.errorMessage!),
-                  SizedBox(height: 12.rh),
-                ],
-                AppTextField(
-                  controller: vm.otpController,
-                  label: LocaleKeys.auth_otp_verify.tr(),
-                  keyboardType: TextInputType.number,
-                  digitsOnly: true,
-                  maxLength: 6,
-                  errorText: vm.fieldError('otp'),
-                  onChanged: vm.onOtpChanged,
-                  textInputAction: TextInputAction.done,
-                ),
-                SizedBox(height: 12.rh),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextButton(
-                      onPressed: vm.canResend ? vm.resend : null,
-                      child: Text(
-                        vm.canResend
-                            ? LocaleKeys.auth_otp_resend.tr()
-                            : LocaleKeys.auth_otp_resend_in.tr(
-                                namedArgs: {
-                                  'seconds': '${vm.secondsRemaining}',
-                                },
-                              ),
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          color: vm.canResend
-                              ? colors.primary
-                              : colors.textMuted,
-                        ),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: vm.changeNumber,
-                      child: Text(
-                        LocaleKeys.auth_change_number.tr(),
-                        style: AppTextStyles.bodyMedium
-                            .copyWith(color: colors.textSecondary),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 16.rh),
-                AppButton(
-                  label: LocaleKeys.auth_otp_verify.tr(),
-                  isLoading: vm.isBusy,
-                  onPressed: vm.canSubmit ? vm.verify : null,
+                AuthLink(
+                  label: LocaleKeys.auth_change_number.tr(),
+                  underline: false,
+                  color: AppColors.inkSecondary,
+                  onTap: vm.changeNumber,
                 ),
               ],
             ),
-          ),
+            SizedBox(height: 12.rh),
+            AppButton(
+              label: LocaleKeys.auth_otp_verify.tr(),
+              isLoading: vm.isBusy,
+              onPressed: vm.canSubmit ? vm.verify : null,
+            ),
+          ],
         ),
       ),
     );

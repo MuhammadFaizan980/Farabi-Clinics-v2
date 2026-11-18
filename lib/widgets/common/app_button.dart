@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../data/constants/app_border_radius.dart';
 import '../../utils/app_text_styles.dart';
-import '../../utils/color/app_theme_colors.dart';
+import '../../utils/color/app_colors.dart';
 import '../../utils/extensions/responsive_extensions.dart';
 
+/// brand button: 52 tall, radius 14, `#CC1C1C` fill with white 16 / 600 label.
+/// the outlined variant is red text on a red hairline.
 class AppButton extends StatelessWidget {
   const AppButton({
     super.key,
@@ -21,8 +22,13 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = AppThemeColors.of(context);
     final isEnabled = onPressed != null && !isLoading;
+    // the disabled fill is the brand red at ~40%, like the website's button
+    final fill = isOutlined
+        ? Colors.transparent
+        : (isEnabled
+            ? AppColors.primary
+            : AppColors.primary.withValues(alpha: 0.4));
 
     return Semantics(
       button: true,
@@ -30,16 +36,13 @@ class AppButton extends StatelessWidget {
       label: label,
       child: SizedBox(
         width: double.infinity,
-        // 48dp clears the 44pt minimum touch target
-        height: 48.rh,
+        height: 52.rh,
         child: Material(
-          color: isOutlined
-              ? Colors.transparent
-              : (isEnabled ? colors.primary : colors.border),
+          color: fill,
           shape: RoundedRectangleBorder(
-            borderRadius: AppBorderRadius.sm,
+            borderRadius: BorderRadius.circular(14.r),
             side: isOutlined
-                ? BorderSide(color: colors.primary, width: 1.r)
+                ? const BorderSide(color: AppColors.primary, width: 1)
                 : BorderSide.none,
           ),
           clipBehavior: Clip.antiAlias,
@@ -53,16 +56,15 @@ class AppButton extends StatelessWidget {
                       child: CircularProgressIndicator(
                         strokeWidth: 2.r,
                         valueColor: AlwaysStoppedAnimation<Color>(
-                          isOutlined ? colors.primary : Colors.white,
+                          isOutlined ? AppColors.primary : AppColors.white,
                         ),
                       ),
                     )
                   : Text(
                       label,
                       style: AppTextStyles.button.copyWith(
-                        color: isOutlined
-                            ? colors.primary
-                            : (isEnabled ? Colors.white : colors.textMuted),
+                        color:
+                            isOutlined ? AppColors.primary : AppColors.white,
                       ),
                     ),
             ),
