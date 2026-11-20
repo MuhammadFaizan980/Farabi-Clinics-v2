@@ -7,6 +7,7 @@ import '../../utils/app_text_styles.dart';
 import '../../utils/color/app_colors.dart';
 import '../../utils/extensions/responsive_extensions.dart';
 import '../common/app_button.dart';
+import '../sheet/app_sheet.dart';
 
 class DoctorsFilterResult {
   const DoctorsFilterResult({
@@ -33,13 +34,8 @@ Future<DoctorsFilterResult?> showDoctorsFilterSheet(
   required List<RegionDataModel> regions,
   required String language,
 }) {
-  return showModalBottomSheet<DoctorsFilterResult>(
-    context: context,
-    isScrollControlled: true,
-    backgroundColor: AppColors.white,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
-    ),
+  return showAppSheet<DoctorsFilterResult>(
+    context,
     builder: (_) => _FilterSheet(
       gender: gender,
       regionId: regionId,
@@ -76,111 +72,85 @@ class _FilterSheetState extends State<_FilterSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.sizeOf(context).height * 0.85,
-        ),
-        child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(16.rw, 12.rh, 16.rw, 16.rh),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 40.rw,
-                height: 4.rh,
-                decoration: BoxDecoration(
-                  color: AppColors.hairline8,
-                  borderRadius: BorderRadius.circular(4.r),
-                ),
-              ),
-              SizedBox(height: 14.rh),
-              Text(
-                LocaleKeys.doctors_filter.tr(),
-                style: AppTextStyles.sectionTitle.copyWith(color: AppColors.ink),
-              ),
-              SizedBox(height: 8.rh),
-              Flexible(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      _Section(
-                        title: LocaleKeys.doctors_gender.tr(),
-                        initiallyOpen: true,
-                        children: [
-                          _CheckRow(
-                            label: LocaleKeys.doctors_gender_male.tr(),
-                            checked: _gender == 'Male',
-                            onTap: () => setState(() => _gender = 'Male'),
-                          ),
-                          _CheckRow(
-                            label: LocaleKeys.doctors_gender_female.tr(),
-                            checked: _gender == 'Female',
-                            onTap: () => setState(() => _gender = 'Female'),
-                          ),
-                          _CheckRow(
-                            label: LocaleKeys.doctors_any.tr(),
-                            checked: _gender == null,
-                            onTap: () => setState(() => _gender = null),
-                          ),
-                        ],
-                      ),
-                      _Section(
-                        title: LocaleKeys.doctors_location.tr(),
-                        children: [
-                          for (final region in widget.regions)
-                            _CheckRow(
-                              label: region.names.display(widget.language),
-                              checked: _regionId == region.id,
-                              onTap: () =>
-                                  setState(() => _regionId = region.id),
-                            ),
-                        ],
-                      ),
-                      _Section(
-                        title: LocaleKeys.doctors_rating.tr(),
-                        children: [
-                          for (final stars in const [5, 4, 3, 2, 1])
-                            _CheckRow(
-                              checked: _ratings.contains(stars),
-                              onTap: () => setState(() {
-                                _ratings = {..._ratings};
-                                if (!_ratings.add(stars)) {
-                                  _ratings.remove(stars);
-                                }
-                              }),
-                              leading: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  for (var i = 0; i < stars; i++)
-                                    Icon(
-                                      Icons.star_rounded,
-                                      size: 18.rw,
-                                      color: const Color(0xFFF7C948),
-                                    ),
-                                ],
-                              ),
-                            ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: 12.rh),
-              AppButton(
-                label: LocaleKeys.doctors_apply_filter.tr(),
-                onPressed: () => Navigator.pop(
-                  context,
-                  DoctorsFilterResult(
-                    gender: _gender,
-                    regionId: _regionId,
-                    ratings: _ratings,
-                  ),
-                ),
-              ),
-            ],
+    return AppSheet(
+      title: LocaleKeys.doctors_filter.tr(),
+      actions: [
+        AppButton(
+          label: LocaleKeys.doctors_apply_filter.tr(),
+          figma: true,
+          onPressed: () => Navigator.pop(
+            context,
+            DoctorsFilterResult(
+              gender: _gender,
+              regionId: _regionId,
+              ratings: _ratings,
+            ),
           ),
+        ),
+      ],
+      child: SingleChildScrollView(
+        padding: EdgeInsetsDirectional.symmetric(horizontal: 22.rw),
+        child: Column(
+          children: [
+            _Section(
+              title: LocaleKeys.doctors_gender.tr(),
+              initiallyOpen: true,
+              children: [
+                _CheckRow(
+                  label: LocaleKeys.doctors_gender_male.tr(),
+                  checked: _gender == 'Male',
+                  onTap: () => setState(() => _gender = 'Male'),
+                ),
+                _CheckRow(
+                  label: LocaleKeys.doctors_gender_female.tr(),
+                  checked: _gender == 'Female',
+                  onTap: () => setState(() => _gender = 'Female'),
+                ),
+                _CheckRow(
+                  label: LocaleKeys.doctors_any.tr(),
+                  checked: _gender == null,
+                  onTap: () => setState(() => _gender = null),
+                ),
+              ],
+            ),
+            _Section(
+              title: LocaleKeys.doctors_location.tr(),
+              children: [
+                for (final region in widget.regions)
+                  _CheckRow(
+                    label: region.names.display(widget.language),
+                    checked: _regionId == region.id,
+                    onTap: () => setState(() => _regionId = region.id),
+                  ),
+              ],
+            ),
+            _Section(
+              title: LocaleKeys.doctors_rating.tr(),
+              children: [
+                for (final stars in const [5, 4, 3, 2, 1])
+                  _CheckRow(
+                    checked: _ratings.contains(stars),
+                    onTap: () => setState(() {
+                      _ratings = {..._ratings};
+                      if (!_ratings.add(stars)) {
+                        _ratings.remove(stars);
+                      }
+                    }),
+                    leading: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        for (var i = 0; i < stars; i++)
+                          Icon(
+                            Icons.star_rounded,
+                            size: 18.rw,
+                            color: const Color(0xFFF7C948),
+                          ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -219,8 +189,9 @@ class _SectionState extends State<_Section> {
                 Expanded(
                   child: Text(
                     widget.title,
-                    style: AppTextStyles.rowTitle
-                        .copyWith(color: AppColors.ink),
+                    style: AppTextStyles.rowTitle.copyWith(
+                      color: AppColors.ink,
+                    ),
                   ),
                 ),
                 Icon(
@@ -282,8 +253,9 @@ class _CheckRow extends StatelessWidget {
               if (label != null)
                 Text(
                   label!,
-                  style: AppTextStyles.cardSubtitle
-                      .copyWith(color: AppColors.ink),
+                  style: AppTextStyles.cardSubtitle.copyWith(
+                    color: AppColors.ink,
+                  ),
                 ),
             ],
           ),

@@ -70,7 +70,7 @@ class BookingsVm extends AppBaseVm {
 
   /// the reschedule screen answers `true` when it moved the booking
   Future<void> openReschedule(BookingDataModel booking) async {
-    final moved = await AppNavigator.push<bool>(
+    final moved = await AppNavigator.push<Object?>(
       AppRoutes.reschedule,
       arguments: RescheduleArgsModel(booking: booking),
     );

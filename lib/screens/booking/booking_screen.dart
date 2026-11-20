@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -11,8 +10,9 @@ import '../../utils/app_text_styles.dart';
 import '../../utils/color/app_colors.dart';
 import '../../utils/extensions/responsive_extensions.dart';
 import '../../utils/extensions/vm_init_extension.dart';
+import '../../widgets/booking/booking_widgets.dart';
 import '../../widgets/common/bottom_action_bar.dart';
-import '../../widgets/common/verified_badge.dart';
+import '../../widgets/doctor/doctor_profile_card.dart';
 import '../../widgets/more/more_header.dart';
 import 'booking_vm.dart';
 
@@ -43,29 +43,32 @@ class BookingScreen extends StatelessWidget {
               child: ListView(
                 padding: EdgeInsetsDirectional.fromSTEB(
                   16.rw,
-                  16.rh,
+                  8.rh,
                   16.rw,
-                  24.rh,
+                  16.rh,
                 ),
                 children: [
-                  _DoctorCard(vm: vm, language: language),
-                  SizedBox(height: 12.rh),
-                  _Section(
+                  DoctorProfileCard(
+                    doctor: vm.doctor,
+                    name: vm.doctor.names.display(language),
+                  ),
+                  SizedBox(height: 4.rh),
+                  BookingSection(
                     title: LocaleKeys.booking_choose_service.tr(),
                     child: _TreatmentRow(vm: vm, language: language),
                   ),
-                  SizedBox(height: 12.rh),
-                  _Section(
+                  SizedBox(height: 4.rh),
+                  BookingSection(
                     title: LocaleKeys.booking_choose_branch.tr(),
                     child: _BranchRow(vm: vm, language: language),
                   ),
-                  SizedBox(height: 12.rh),
-                  _Section(
+                  SizedBox(height: 4.rh),
+                  BookingSection(
                     title: LocaleKeys.booking_choose_date.tr(),
                     child: _DatePicker(vm: vm),
                   ),
-                  SizedBox(height: 12.rh),
-                  _Section(
+                  SizedBox(height: 4.rh),
+                  BookingSection(
                     title: LocaleKeys.booking_choose_time.tr(),
                     child: _TimeGrid(vm: vm),
                   ),
@@ -83,112 +86,22 @@ class BookingScreen extends StatelessWidget {
   }
 }
 
-class _Section extends StatelessWidget {
-  const _Section({required this.title, required this.child});
-
-  final String title;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsetsDirectional.all(16.r),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: AppColors.cardBorder),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: AppTextStyles.sectionTitle.copyWith(color: AppColors.ink),
-          ),
-          SizedBox(height: 14.rh),
-          child,
-        ],
-      ),
-    );
-  }
-}
-
-class _DoctorCard extends StatelessWidget {
-  const _DoctorCard({required this.vm, required this.language});
-
-  final BookingVm vm;
-  final String language;
-
-  @override
-  Widget build(BuildContext context) {
-    final image = vm.doctor.image;
-    final placeholder = Icon(
-      Icons.person_outline,
-      size: 34.rw,
-      color: AppColors.primary.withValues(alpha: 0.5),
-    );
-
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsetsDirectional.all(16.r),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: AppColors.cardBorder),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipOval(
-            child: Container(
-              width: 64.rw,
-              height: 64.rw,
-              color: AppColors.redSelected6,
-              child: (image == null || image.isEmpty)
-                  ? placeholder
-                  : CachedNetworkImage(
-                      imageUrl: image,
-                      fit: BoxFit.cover,
-                      errorWidget: (_, __, ___) => placeholder,
-                    ),
-            ),
-          ),
-          SizedBox(height: 12.rh),
-          Row(
-            children: [
-              Flexible(
-                child: Text(
-                  vm.doctor.names.display(language),
-                  style: AppTextStyles.listCardTitle.copyWith(
-                    color: AppColors.ink,
-                  ),
-                ),
-              ),
-              SizedBox(width: 6.rw),
-              const VerifiedBadge(size: 18),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// a selectable card with a soft icon tile above its label (treatments,
-/// branches)
 class _OptionCard extends StatelessWidget {
   const _OptionCard({
     required this.label,
     required this.selected,
     required this.onTap,
     required this.icon,
+    this.subtitle,
+    this.width,
   });
 
   final String label;
+  final String? subtitle;
   final bool selected;
   final VoidCallback onTap;
   final Widget icon;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
@@ -198,42 +111,60 @@ class _OptionCard extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          constraints: BoxConstraints(minWidth: 140.rw, maxWidth: 220.rw),
-          padding: EdgeInsetsDirectional.all(14.r),
+          width: width,
+          constraints: width == null
+              ? BoxConstraints(minWidth: 148.rw, maxWidth: 248.rw)
+              : null,
+          height: 116.rh,
+          padding: EdgeInsetsDirectional.fromSTEB(16.rw, 12.rh, 16.rw, 0),
           decoration: BoxDecoration(
-            color: selected ? AppColors.redSelected6 : AppColors.white,
-            borderRadius: BorderRadius.circular(16.r),
+            color: selected ? const Color(0x0ACC1C1C) : AppColors.white,
+            borderRadius: BorderRadius.circular(14.r),
             border: Border.all(
               color: selected
-                  ? AppColors.primary.withValues(alpha: 0.2)
-                  : AppColors.hairline8,
+                  ? AppColors.primary.withValues(alpha: 0.12)
+                  : AppColors.cardBorder,
             ),
           ),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: 38.rw,
-                height: 38.rw,
+                width: 36.rw,
+                height: 36.rw,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: selected
-                      ? AppColors.primary.withValues(alpha: 0.12)
-                      : AppColors.listBackground,
-                  borderRadius: BorderRadius.circular(10.r),
+                      ? const Color(0x0FCC1C1C)
+                      : const Color(0x0F797777),
+                  borderRadius: BorderRadius.circular(selected ? 14.r : 12.r),
                 ),
                 child: icon,
               ),
-              SizedBox(height: 18.rh),
+              SizedBox(height: 14.rh),
               Text(
                 label,
-                maxLines: 2,
+                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.rowTitle.copyWith(
-                  color: selected ? AppColors.ink : AppColors.inkSecondary,
+                style: AppTextStyles.sectionTitle.copyWith(
+                  color: AppColors.ink,
+                  fontSize: 16.rf,
+                  height: 18 / 16,
                 ),
               ),
+              if ((subtitle ?? '').isNotEmpty) ...[
+                SizedBox(height: 2.rh),
+                Text(
+                  subtitle!,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.branchAddress.copyWith(
+                    color: AppColors.inkSecondary,
+                    fontWeight: FontWeight.w400,
+                    height: 18 / 14,
+                  ),
+                ),
+              ],
             ],
           ),
         ),
@@ -254,6 +185,7 @@ class _TreatmentRow extends StatelessWidget {
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
+      padding: EdgeInsetsDirectional.symmetric(horizontal: 12.rw),
       child: Row(
         children: [
           for (final service in vm.services) ...[
@@ -269,7 +201,7 @@ class _TreatmentRow extends StatelessWidget {
                     : AppColors.iconGrey,
               ),
             ),
-            SizedBox(width: 10.rw),
+            SizedBox(width: 8.rw),
           ],
         ],
       ),
@@ -297,26 +229,25 @@ class _BranchRow extends StatelessWidget {
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
+      padding: EdgeInsetsDirectional.symmetric(horizontal: 12.rw),
       child: Row(
         children: [
           for (final branch in vm.branches) ...[
             _OptionCard(
+              width: 248.rw,
               label: branch.names.display(language),
+              subtitle: branch.address,
               selected: vm.branchId == branch.id,
               onTap: () => vm.selectBranch(branch.id),
               icon: SvgPicture.asset(
-                AppAssets.iconLocationPin,
-                width: 20.rw,
-                height: 20.rw,
-                colorFilter: ColorFilter.mode(
-                  vm.branchId == branch.id
-                      ? AppColors.primary
-                      : AppColors.iconGrey,
-                  BlendMode.srcIn,
-                ),
+                vm.branchId == branch.id
+                    ? AppAssets.iconUserPinRed
+                    : AppAssets.iconUserPinDark,
+                width: 18.rw,
+                height: 18.rw,
               ),
             ),
-            SizedBox(width: 10.rw),
+            SizedBox(width: 8.rw),
           ],
         ],
       ),
@@ -342,34 +273,42 @@ class _DatePicker extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Wrap(
-          spacing: 8.rw,
-          children: [
-            for (final month in months)
-              _Chip(
-                label: DateFormat.MMMM(
-                  locale,
-                ).format(vm.dates.firstWhere((d) => d.month == month)),
-                selected: month == selectedMonth,
-                onTap: () =>
-                    vm.selectDate(vm.dates.firstWhere((d) => d.month == month)),
-              ),
-          ],
-        ),
-        SizedBox(height: 14.rh),
+        if (months.length > 1) ...[
+          Padding(
+            padding: EdgeInsetsDirectional.symmetric(horizontal: 16.rw),
+            child: Wrap(
+              spacing: 8.rw,
+              children: [
+                for (final month in months)
+                  _MonthChip(
+                    label: DateFormat.MMMM(
+                      locale,
+                    ).format(vm.dates.firstWhere((d) => d.month == month)),
+                    selected: month == selectedMonth,
+                    onTap: () => vm.selectDate(
+                      vm.dates.firstWhere((d) => d.month == month),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          SizedBox(height: 10.rh),
+        ],
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
+          padding: EdgeInsetsDirectional.symmetric(horizontal: 16.rw),
           child: Row(
             children: [
-              for (final date in days) ...[
-                _DayChip(
-                  date: date,
+              for (var i = 0; i < days.length; i++) ...[
+                if (i > 0) SizedBox(width: 12.rw),
+                BookingDayChip(
+                  date: days[i],
                   locale: locale,
                   selected:
-                      vm.date?.day == date.day && vm.date?.month == date.month,
-                  onTap: () => vm.selectDate(date),
+                      vm.date?.day == days[i].day &&
+                      vm.date?.month == days[i].month,
+                  onTap: () => vm.selectDate(days[i]),
                 ),
-                SizedBox(width: 8.rw),
               ],
             ],
           ),
@@ -379,16 +318,16 @@ class _DatePicker extends StatelessWidget {
   }
 }
 
-class _DayChip extends StatelessWidget {
-  const _DayChip({
-    required this.date,
-    required this.locale,
+/// month switcher pill above the day tiles (the site has it; Figma shows the
+/// days straight through)
+class _MonthChip extends StatelessWidget {
+  const _MonthChip({
+    required this.label,
     required this.selected,
     required this.onTap,
   });
 
-  final DateTime date;
-  final String locale;
+  final String label;
   final bool selected;
   final VoidCallback onTap;
 
@@ -400,27 +339,24 @@ class _DayChip extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          width: 56.rw,
-          padding: EdgeInsetsDirectional.symmetric(vertical: 10.rh),
+          padding: EdgeInsetsDirectional.symmetric(
+            horizontal: 14.rw,
+            vertical: 5.5.rh,
+          ),
           decoration: BoxDecoration(
             color: selected ? AppColors.redSelected6 : AppColors.white,
-            borderRadius: BorderRadius.circular(14.r),
+            borderRadius: BorderRadius.circular(100.r),
             border: Border.all(
-              color: selected ? AppColors.primary : AppColors.hairline8,
+              color: selected ? AppColors.primary : bookingHairline,
             ),
           ),
-          child: Column(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                DateFormat.E(locale).format(date).toUpperCase(),
-                style: AppTextStyles.chip.copyWith(
-                  color: selected ? AppColors.primary : AppColors.inkSecondary,
-                ),
-              ),
-              SizedBox(height: 6.rh),
-              Text(
-                '${date.day}',
-                style: AppTextStyles.sectionTitle.copyWith(
+                label,
+                style: AppTextStyles.profileBody.copyWith(
+                  fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
                   color: selected ? AppColors.primary : AppColors.ink,
                 ),
               ),
@@ -472,70 +408,29 @@ class _TimeGrid extends StatelessWidget {
       );
     }
 
-    return Wrap(
-      spacing: 8.rw,
-      runSpacing: 8.rh,
-      children: [
-        for (final slot in vm.slots)
-          _Chip(
-            label: format(slot.startTime, locale),
-            selected: vm.slot?.slot == slot.slot,
-            enabled: slot.isBookable,
-            onTap: () => vm.selectSlot(slot),
-          ),
-      ],
-    );
-  }
-}
-
-class _Chip extends StatelessWidget {
-  const _Chip({
-    required this.label,
-    required this.selected,
-    required this.onTap,
-    this.enabled = true,
-  });
-
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-  final bool enabled;
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      selected: selected,
-      enabled: enabled,
-      button: true,
-      child: GestureDetector(
-        onTap: enabled ? onTap : null,
-        child: Container(
-          height: 40.rh,
-          padding: EdgeInsetsDirectional.symmetric(horizontal: 16.rw),
-          decoration: BoxDecoration(
-            color: selected ? AppColors.redSelected6 : AppColors.white,
-            borderRadius: BorderRadius.circular(100.r),
-            border: Border.all(
-              color: selected ? AppColors.primary : AppColors.hairline8,
-            ),
-          ),
-          // a Row keeps the chip hugging its label inside a Wrap
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
+    // three equal columns, 10 apart, inside a 16 inset
+    return Padding(
+      padding: EdgeInsetsDirectional.symmetric(horizontal: 16.rw),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final chipWidth = (constraints.maxWidth - 20.rw) / 3;
+          return Wrap(
+            spacing: 10.rw,
+            runSpacing: 10.rh,
             children: [
-              Text(
-                label,
-                style: AppTextStyles.filterChip.copyWith(
-                  color: !enabled
-                      ? AppColors.inkSecondary.withValues(alpha: 0.5)
-                      : selected
-                      ? AppColors.primary
-                      : Colors.black,
+              for (final slot in vm.slots)
+                SizedBox(
+                  width: chipWidth,
+                  child: BookingTimeChip(
+                    label: format(slot.startTime, locale),
+                    selected: vm.slot?.slot == slot.slot,
+                    enabled: slot.isBookable,
+                    onTap: () => vm.selectSlot(slot),
+                  ),
                 ),
-              ),
             ],
-          ),
-        ),
+          );
+        },
       ),
     );
   }

@@ -12,60 +12,60 @@ class AppTextStyles {
   static const String? _family = null;
 
   static TextStyle get h1 => TextStyle(
-        fontFamily: _family,
-        fontSize: 24.rf,
-        fontWeight: FontWeight.w700,
-        height: 1.3,
-      );
+    fontFamily: _family,
+    fontSize: 24.rf,
+    fontWeight: FontWeight.w700,
+    height: 1.3,
+  );
 
   static TextStyle get h2 => TextStyle(
-        fontFamily: _family,
-        fontSize: 20.rf,
-        fontWeight: FontWeight.w700,
-        height: 1.3,
-      );
+    fontFamily: _family,
+    fontSize: 20.rf,
+    fontWeight: FontWeight.w700,
+    height: 1.3,
+  );
 
   static TextStyle get h3 => TextStyle(
-        fontFamily: _family,
-        fontSize: 18.rf,
-        fontWeight: FontWeight.w600,
-        height: 1.35,
-      );
+    fontFamily: _family,
+    fontSize: 18.rf,
+    fontWeight: FontWeight.w600,
+    height: 1.35,
+  );
 
   static TextStyle get bodyLarge => TextStyle(
-        fontFamily: _family,
-        fontSize: 16.rf,
-        fontWeight: FontWeight.w400,
-        height: 1.45,
-      );
+    fontFamily: _family,
+    fontSize: 16.rf,
+    fontWeight: FontWeight.w400,
+    height: 1.45,
+  );
 
   static TextStyle get bodyMedium => TextStyle(
-        fontFamily: _family,
-        fontSize: 14.rf,
-        fontWeight: FontWeight.w400,
-        height: 1.45,
-      );
+    fontFamily: _family,
+    fontSize: 14.rf,
+    fontWeight: FontWeight.w400,
+    height: 1.45,
+  );
 
   static TextStyle get bodySemiBold => TextStyle(
-        fontFamily: _family,
-        fontSize: 14.rf,
-        fontWeight: FontWeight.w600,
-        height: 1.45,
-      );
+    fontFamily: _family,
+    fontSize: 14.rf,
+    fontWeight: FontWeight.w600,
+    height: 1.45,
+  );
 
   static TextStyle get caption => TextStyle(
-        fontFamily: _family,
-        fontSize: 12.rf,
-        fontWeight: FontWeight.w400,
-        height: 1.4,
-      );
+    fontFamily: _family,
+    fontSize: 12.rf,
+    fontWeight: FontWeight.w400,
+    height: 1.4,
+  );
 
   static TextStyle get button => TextStyle(
-        fontFamily: _family,
-        fontSize: 16.rf,
-        fontWeight: FontWeight.w600,
-        height: 1.2,
-      );
+    fontFamily: _family,
+    fontSize: 16.rf,
+    fontWeight: FontWeight.w600,
+    height: 1.2,
+  );
 
   // ---- figma text styles (all Neue Regrade once the font files land) ----
 
@@ -79,6 +79,21 @@ class AppTextStyles {
 
   /// "Book by Service", "Virtual Clinic Services", city names: 17 / 24, 600
   static TextStyle get sectionTitle => _figma(17, 24, FontWeight.w600);
+
+  /// doctor profile body copy: overview 14.5 / 22, working hours 15 / 23, 500
+  static TextStyle get overviewBody => _figma(14.5, 22, FontWeight.w500);
+  static TextStyle get profileBody => _figma(15, 23, FontWeight.w500);
+
+  /// booking day tile: weekday 12.5 / 20, date 16 / 22
+  static TextStyle get dayLabel => _figma(12.5, 20, FontWeight.w500);
+  static TextStyle get dayNumber => _figma(16, 22, FontWeight.w600);
+
+  /// booking success: title 24 / 30 semibold, body 18 / 22 medium
+  static TextStyle get successTitle => _figma(24, 30, FontWeight.w600);
+  static TextStyle get successBody => _figma(18, 22, FontWeight.w500);
+
+  /// "02 Doctors Available" line of a service card: 14.5 / 18, 500
+  static TextStyle get doctorsAvailable => _figma(14.5, 18, FontWeight.w500);
 
   /// doctor name: 17 / 26, 600
   static TextStyle get cardTitle => _figma(17, 26, FontWeight.w600);
@@ -122,9 +137,11 @@ class AppTextStyles {
   static TextStyle get rating => _figma(12, 13, FontWeight.w600);
 
   /// branches city tab: 15 / 24, +2% tracking, 600 active / 500 inactive
-  static TextStyle branchTab({required bool active}) =>
-      _figma(15, 24, active ? FontWeight.w600 : FontWeight.w500)
-          .copyWith(letterSpacing: 0.3.rf);
+  static TextStyle branchTab({required bool active}) => _figma(
+    15,
+    24,
+    active ? FontWeight.w600 : FontWeight.w500,
+  ).copyWith(letterSpacing: 0.3.rf);
 
   /// branch address line: 14 / 24, 400
   static TextStyle get branchAddress => _figma(14, 24, FontWeight.w400);

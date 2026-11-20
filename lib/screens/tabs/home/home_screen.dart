@@ -53,146 +53,142 @@ class HomeScreen extends StatelessWidget {
         );
 
         final body = vm.isBusy
-              ? Column(
+            ? Column(
+                children: [
+                  header,
+                  const Expanded(child: AppShimmerList()),
+                ],
+              )
+            : vm.hasFailure
+            ? Column(
+                children: [
+                  header,
+                  Expanded(
+                    child: AppErrorView(
+                      message: LocaleKeys.errors_unexpected.tr(),
+                      retryLabel: LocaleKeys.common_retry.tr(),
+                      onRetry: vm.load,
+                    ),
+                  ),
+                ],
+              )
+            : RefreshIndicator(
+                onRefresh: vm.refresh,
+                edgeOffset: MediaQuery.paddingOf(context).top,
+                child: ListView(
+                  padding: EdgeInsets.zero,
                   children: [
                     header,
-                    const Expanded(child: AppShimmerList()),
-                  ],
-                )
-              : vm.hasFailure
-                  ? Column(
-                      children: [
-                        header,
-                        Expanded(
-                          child: AppErrorView(
-                            message: LocaleKeys.errors_unexpected.tr(),
-                            retryLabel: LocaleKeys.common_retry.tr(),
-                            onRetry: vm.load,
-                          ),
+                    if (vm.offers.isNotEmpty) ...[
+                      SizedBox(height: 12.rh),
+                      Padding(
+                        padding: EdgeInsetsDirectional.symmetric(
+                          horizontal: 20.rw,
+                        ),
+                        child: HomeBanner(
+                          offers: vm.offers,
+                          index: vm.bannerIndex,
+                          onIndexChanged: vm.setBannerIndex,
+                        ),
+                      ),
+                    ],
+                    if (vm.specialities.isNotEmpty) ...[
+                      SizedBox(height: 12.rh),
+                      HomeServiceGrid(
+                        title: LocaleKeys.home_book_by_service.tr(),
+                        services: vm.visibleSpecialities,
+                        language: language,
+                        expanded: vm.servicesExpanded,
+                        canExpand: vm.canExpandServices,
+                        onToggle: vm.toggleServicesExpanded,
+                        onServiceTap: (service) => AppNavigator.push(
+                          AppRoutes.serviceDetail,
+                          arguments: IdArgsModel(id: service.id),
+                        ),
+                      ),
+                    ],
+                    SizedBox(height: 24.rh),
+                    HomeSectionTitle(text: LocaleKeys.home_virtual_title.tr()),
+                    SizedBox(height: 10.rh),
+                    HomeVirtualServices(
+                      items: [
+                        VirtualServiceItem(
+                          icon: AppAssets.iconVirtualVideo,
+                          label: LocaleKeys.home_video_consultation.tr(),
+                          onTap: () =>
+                              AppNavigator.push(AppRoutes.specialities),
+                        ),
+                        VirtualServiceItem(
+                          icon: AppAssets.iconVirtualAudio,
+                          label: LocaleKeys.home_audio_consultation.tr(),
+                          onTap: () =>
+                              AppNavigator.push(AppRoutes.specialities),
                         ),
                       ],
-                    )
-                  : RefreshIndicator(
-                      onRefresh: vm.refresh,
-                      edgeOffset: MediaQuery.paddingOf(context).top,
-                      child: ListView(
-                        padding: EdgeInsets.zero,
-                        children: [
-                          header,
-                          if (vm.offers.isNotEmpty) ...[
-                            SizedBox(height: 12.rh),
-                            Padding(
-                              padding: EdgeInsetsDirectional.symmetric(
-                                horizontal: 20.rw,
+                    ),
+                    if (vm.doctors.isNotEmpty) ...[
+                      SizedBox(height: 27.rh),
+                      HomeSectionTitle(
+                        text: LocaleKeys.home_available_doctors.tr(),
+                        actionLabel: LocaleKeys.home_view_all.tr(),
+                        onAction: () => onSelectTab(_doctorsTab),
+                      ),
+                      SizedBox(height: 15.rh),
+                      HomeDoctorsRail(
+                        doctors: vm.doctors,
+                        language: language,
+                        onDoctorTap: (doctor) => AppNavigator.push(
+                          AppRoutes.doctorDetail,
+                          arguments: IdArgsModel(id: doctor.id),
+                        ),
+                      ),
+                    ],
+                    SizedBox(height: 26.rh),
+                    HomeExpertCard(
+                      title: LocaleKeys.home_expert_title.tr(),
+                      body: LocaleKeys.home_expert_body.tr(),
+                      linkLabel: LocaleKeys.home_expert_link.tr(),
+                      onLinkTap: () =>
+                          AppNavigator.push(AppRoutes.specialities),
+                    ),
+                    if (vm.regions.isNotEmpty) ...[
+                      SizedBox(height: 20.rh),
+                      HomeSectionTitle(
+                        text: LocaleKeys.home_location_title.tr(),
+                        inset: 24,
+                      ),
+                      SizedBox(height: 13.rh),
+                      HomeRegionsRail(
+                        items: [
+                          for (final region in vm.regionsByDoctors)
+                            HomeRegionItem(
+                              name: region.names.display(language),
+                              imageAsset: AppAssets.regionImage(
+                                region.names.nameEn,
                               ),
-                              child: HomeBanner(
-                                offers: vm.offers,
-                                index: vm.bannerIndex,
-                                onIndexChanged: vm.setBannerIndex,
-                              ),
+                              doctorsLabel: LocaleKeys.home_doctors_available
+                                  .tr(args: ['${vm.doctorsIn(region.id)}']),
+                              onTap: () {
+                                BranchesRegionRequest.regionId.value =
+                                    region.id;
+                                onSelectTab(_branchesTab);
+                              },
                             ),
-                          ],
-                          if (vm.specialities.isNotEmpty) ...[
-                            SizedBox(height: 12.rh),
-                            HomeServiceGrid(
-                              title: LocaleKeys.home_book_by_service.tr(),
-                              services: vm.visibleSpecialities,
-                              language: language,
-                              expanded: vm.servicesExpanded,
-                              canExpand: vm.canExpandServices,
-                              onToggle: vm.toggleServicesExpanded,
-                              onServiceTap: (service) => AppNavigator.push(
-                                AppRoutes.serviceDetail,
-                                arguments: IdArgsModel(id: service.id),
-                              ),
-                            ),
-                          ],
-                          SizedBox(height: 24.rh),
-                          HomeSectionTitle(
-                            text: LocaleKeys.home_virtual_title.tr(),
-                          ),
-                          SizedBox(height: 10.rh),
-                          HomeVirtualServices(
-                            items: [
-                              VirtualServiceItem(
-                                icon: AppAssets.iconVirtualVideo,
-                                label: LocaleKeys.home_video_consultation.tr(),
-                                onTap: () =>
-                                    AppNavigator.push(AppRoutes.specialities),
-                              ),
-                              VirtualServiceItem(
-                                icon: AppAssets.iconVirtualAudio,
-                                label: LocaleKeys.home_audio_consultation.tr(),
-                                onTap: () =>
-                                    AppNavigator.push(AppRoutes.specialities),
-                              ),
-                            ],
-                          ),
-                          if (vm.doctors.isNotEmpty) ...[
-                            SizedBox(height: 27.rh),
-                            HomeSectionTitle(
-                              text: LocaleKeys.home_available_doctors.tr(),
-                              actionLabel: LocaleKeys.home_view_all.tr(),
-                              onAction: () => onSelectTab(_doctorsTab),
-                            ),
-                            SizedBox(height: 15.rh),
-                            HomeDoctorsRail(
-                              doctors: vm.doctors,
-                              language: language,
-                              onDoctorTap: (doctor) => AppNavigator.push(
-                                AppRoutes.doctorDetail,
-                                arguments: IdArgsModel(id: doctor.id),
-                              ),
-                            ),
-                          ],
-                          SizedBox(height: 26.rh),
-                          HomeExpertCard(
-                            title: LocaleKeys.home_expert_title.tr(),
-                            body: LocaleKeys.home_expert_body.tr(),
-                            linkLabel: LocaleKeys.home_expert_link.tr(),
-                            onLinkTap: () =>
-                                AppNavigator.push(AppRoutes.specialities),
-                          ),
-                          if (vm.regions.isNotEmpty) ...[
-                            SizedBox(height: 20.rh),
-                            HomeSectionTitle(
-                              text: LocaleKeys.home_location_title.tr(),
-                              inset: 24,
-                            ),
-                            SizedBox(height: 13.rh),
-                            HomeRegionsRail(
-                              items: [
-                                for (final region in vm.regionsByDoctors)
-                                  HomeRegionItem(
-                                    name: region.names.display(language),
-                                    imageAsset: AppAssets.regionImage(
-                                      region.names.nameEn,
-                                    ),
-                                    doctorsLabel:
-                                        LocaleKeys.home_doctors_available.tr(
-                                      args: ['${vm.doctorsIn(region.id)}'],
-                                    ),
-                                    onTap: () {
-                                      BranchesRegionRequest.regionId.value =
-                                          region.id;
-                                      onSelectTab(_branchesTab);
-                                    },
-                                  ),
-                              ],
-                            ),
-                          ],
-                          SizedBox(height: 32.rh),
-                          Center(
-                            child: SvgPicture.asset(
-                              AppAssets.logoCbahi,
-                              width: 208.rw,
-                              height: 65.rh,
-                            ),
-                          ),
-                          SizedBox(height: 32.rh),
                         ],
                       ),
-                    );
+                    ],
+                    SizedBox(height: 32.rh),
+                    Center(
+                      child: SvgPicture.asset(
+                        AppAssets.logoCbahi,
+                        width: 208.rw,
+                        height: 65.rh,
+                      ),
+                    ),
+                    SizedBox(height: 32.rh),
+                  ],
+                ),
+              );
 
         return Scaffold(
           backgroundColor: AppColors.white,
@@ -230,25 +226,25 @@ class _AiButton extends StatelessWidget {
       label: label,
       child: GestureDetector(
         onTap: onTap,
-        child: Container(
-          width: 52.rw,
-          height: 52.rw,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16.r),
-            gradient: const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [AppColors.primary, Color(0xFF7B3FE4)],
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.18),
-                offset: Offset(0, 6.rh),
-                blurRadius: 12.r,
+        // the Figma button: a 56 white tile with an orange / red / teal
+        // gradient ring and red sparkles. the exported svg is a 94 x 96 canvas
+        // that carries the tile's shadow, so it is drawn at canvas size inside
+        // the 56 box and nudged so the tile sits centred.
+        child: SizedBox(
+          width: 56.rw,
+          height: 56.rw,
+          child: OverflowBox(
+            maxWidth: 94.rw,
+            maxHeight: 96.rw,
+            child: Transform.translate(
+              offset: Offset(1.rw, -2.5.rw),
+              child: SvgPicture.asset(
+                AppAssets.iconAiButton,
+                width: 94.rw,
+                height: 96.rw,
               ),
-            ],
+            ),
           ),
-          child: Icon(Icons.auto_awesome, color: AppColors.white, size: 24.rw),
         ),
       ),
     );

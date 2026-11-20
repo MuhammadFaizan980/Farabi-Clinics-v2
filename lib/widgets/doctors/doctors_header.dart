@@ -1,11 +1,14 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../data/constants/app_assets.dart';
+import '../../data/constants/locale_keys.g.dart';
 import '../../data/models/discovery/discovery_models.dart';
 import '../../utils/app_text_styles.dart';
 import '../../utils/color/app_colors.dart';
 import '../../utils/extensions/responsive_extensions.dart';
+import '../sheet/app_sheet.dart';
 
 class DoctorsFilterChip {
   const DoctorsFilterChip({
@@ -164,6 +167,14 @@ class _SearchPill extends StatelessWidget {
   final String language;
   final ValueChanged<int> onRegionSelected;
 
+  /// the header only knows the label of the chosen region, so match on it
+  int? _selectedRegionId() {
+    for (final region in regions) {
+      if (region.names.display(language) == regionLabel) return region.id;
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -175,16 +186,29 @@ class _SearchPill extends StatelessWidget {
       ),
       child: Row(
         children: [
-          PopupMenuButton<int>(
-            padding: EdgeInsets.zero,
-            onSelected: onRegionSelected,
-            itemBuilder: (context) => [
-              for (final region in regions)
-                PopupMenuItem<int>(
-                  value: region.id,
-                  child: Text(region.names.display(language)),
-                ),
-            ],
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () async {
+              FocusScope.of(context).unfocus();
+              final pick = await showSelectSheet<int>(
+                context,
+                title: LocaleKeys.doctors_location.tr(),
+                selected: _selectedRegionId(),
+                options: [
+                  for (final region in regions)
+                    SheetOption<int>(
+                      value: region.id,
+                      label: region.names.display(language),
+                      leading: SvgPicture.asset(
+                        AppAssets.iconLocationPin,
+                        width: 22.rw,
+                        height: 22.rw,
+                      ),
+                    ),
+                ],
+              );
+              if (pick != null) onRegionSelected(pick.value);
+            },
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -196,8 +220,7 @@ class _SearchPill extends StatelessWidget {
                 SizedBox(width: 9.rw),
                 Text(
                   regionLabel,
-                  style: AppTextStyles.searchHint
-                      .copyWith(color: Colors.black),
+                  style: AppTextStyles.searchHint.copyWith(color: Colors.black),
                 ),
                 SizedBox(width: 6.rw),
                 SvgPicture.asset(
@@ -211,11 +234,7 @@ class _SearchPill extends StatelessWidget {
           SizedBox(width: 15.rw),
           Container(width: 1, height: 24.rh, color: AppColors.hairline8),
           SizedBox(width: 14.rw),
-          SvgPicture.asset(
-            AppAssets.iconSearch,
-            width: 18.rw,
-            height: 18.rw,
-          ),
+          SvgPicture.asset(AppAssets.iconSearch, width: 18.rw, height: 18.rw),
           SizedBox(width: 8.rw),
           Expanded(
             child: TextField(

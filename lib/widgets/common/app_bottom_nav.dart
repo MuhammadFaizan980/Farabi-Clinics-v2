@@ -6,9 +6,16 @@ import '../../utils/color/app_colors.dart';
 import '../../utils/extensions/responsive_extensions.dart';
 
 class AppBottomNavItem {
-  const AppBottomNavItem({required this.asset, required this.label});
+  const AppBottomNavItem({
+    required this.asset,
+    required this.selectedAsset,
+    required this.label,
+  });
 
+  /// the unselected and the selected Figma icon; both are two-tone, so they
+  /// are drawn as they are, never tinted
   final String asset;
+  final String selectedAsset;
   final String label;
 }
 
@@ -35,9 +42,7 @@ class AppBottomNav extends StatelessWidget {
       height: 72.rh + bottom,
       decoration: BoxDecoration(
         color: AppColors.white,
-        border: Border(
-          top: BorderSide(color: AppColors.cardBorder, width: 1),
-        ),
+        border: Border(top: BorderSide(color: AppColors.cardBorder, width: 1)),
       ),
       child: Padding(
         padding: EdgeInsets.only(bottom: bottom),
@@ -100,16 +105,16 @@ class _NavTab extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   SvgPicture.asset(
-                    item.asset,
+                    active ? item.selectedAsset : item.asset,
                     width: 26.rw,
                     height: 26.rw,
-                    colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
                   ),
                   SizedBox(height: 6.rh),
                   Text(
                     item.label,
-                    style: AppTextStyles.navLabel(active: active)
-                        .copyWith(color: color),
+                    style: AppTextStyles.navLabel(
+                      active: active,
+                    ).copyWith(color: color),
                   ),
                 ],
               ),

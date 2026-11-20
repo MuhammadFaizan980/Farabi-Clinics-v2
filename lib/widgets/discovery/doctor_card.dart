@@ -43,8 +43,7 @@ class DoctorCard extends StatelessWidget {
               doctor.names.display(language),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style:
-                  AppTextStyles.listCardTitle.copyWith(color: AppColors.ink),
+              style: AppTextStyles.listCardTitle.copyWith(color: AppColors.ink),
             ),
           ),
           if (branch != null)
@@ -63,8 +62,9 @@ class DoctorCard extends StatelessWidget {
                       branch,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.cardSubtitle
-                          .copyWith(color: AppColors.inkSecondary),
+                      style: AppTextStyles.cardSubtitle.copyWith(
+                        color: AppColors.inkSecondary,
+                      ),
                     ),
                   ),
                 ],
@@ -145,7 +145,7 @@ class _PhotoPanel extends StatelessWidget {
               PositionedDirectional(
                 top: 6.rh,
                 end: 6.rw,
-                child: _RatingPill(rating: doctor.ratingAverage),
+                child: DoctorRatingPill(rating: doctor.ratingAverage),
               ),
           ],
         ),
@@ -154,8 +154,8 @@ class _PhotoPanel extends StatelessWidget {
   }
 }
 
-class _RatingPill extends StatelessWidget {
-  const _RatingPill({required this.rating});
+class DoctorRatingPill extends StatelessWidget {
+  const DoctorRatingPill({super.key, required this.rating});
 
   final num rating;
 

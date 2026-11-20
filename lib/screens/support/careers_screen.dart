@@ -16,6 +16,7 @@ import '../../widgets/common/app_state_views.dart';
 import '../../widgets/common/app_text_field.dart';
 import '../../widgets/common/info_card.dart';
 import '../../widgets/more/more_header.dart';
+import '../../widgets/sheet/app_sheet.dart';
 import 'careers_vm.dart';
 
 /// jobs list: department dropdown and search both query the api, each card
@@ -43,7 +44,11 @@ class CareersScreen extends StatelessWidget {
                 onRefresh: vm.refresh,
                 child: ListView(
                   padding: EdgeInsetsDirectional.fromSTEB(
-                      16.rw, 16.rh, 16.rw, 24.rh),
+                    16.rw,
+                    16.rh,
+                    16.rw,
+                    24.rh,
+                  ),
                   children: [
                     Text.rich(
                       TextSpan(
@@ -55,61 +60,62 @@ class CareersScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      style: AppTextStyles.authTitle
-                          .copyWith(color: AppColors.ink),
+                      style: AppTextStyles.authTitle.copyWith(
+                        color: AppColors.ink,
+                      ),
                     ),
                     SizedBox(height: 8.rh),
                     Text(
                       LocaleKeys.careers_intro.tr(),
-                      style: AppTextStyles.cardSubtitle
-                          .copyWith(color: AppColors.inkSecondary),
+                      style: AppTextStyles.cardSubtitle.copyWith(
+                        color: AppColors.inkSecondary,
+                      ),
                     ),
                     SizedBox(height: 16.rh),
-                    Container(
-                      height: 52.rh,
-                      padding:
-                          EdgeInsetsDirectional.symmetric(horizontal: 16.rw),
-                      decoration: AppFieldDecoration.box(),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String?>(
-                          isExpanded: true,
-                          value: vm.department,
-                          style: AppTextStyles.fieldText
-                              .copyWith(color: AppColors.ink),
-                          items: [
-                            DropdownMenuItem<String?>(
+                    AppSelectBox(
+                      text:
+                          vm.department ??
+                          LocaleKeys.careers_all_departments.tr(),
+                      onTap: () async {
+                        final pick = await showSelectSheet<String?>(
+                          context,
+                          title: LocaleKeys.careers_department.tr(),
+                          selected: vm.department,
+                          options: [
+                            SheetOption<String?>(
                               value: null,
-                              child: Text(
-                                  LocaleKeys.careers_all_departments.tr()),
+                              label: LocaleKeys.careers_all_departments.tr(),
                             ),
                             for (final dept in vm.departments)
-                              DropdownMenuItem<String?>(
-                                value: dept,
-                                child: Text(dept),
-                              ),
+                              SheetOption<String?>(value: dept, label: dept),
                           ],
-                          onChanged: vm.setDepartment,
-                        ),
-                      ),
+                        );
+                        if (pick != null) vm.setDepartment(pick.value);
+                      },
                     ),
                     SizedBox(height: 12.rh),
                     Container(
                       height: 52.rh,
-                      padding:
-                          EdgeInsetsDirectional.symmetric(horizontal: 16.rw),
+                      padding: EdgeInsetsDirectional.symmetric(
+                        horizontal: 16.rw,
+                      ),
                       decoration: AppFieldDecoration.box(),
                       child: Row(
                         children: [
-                          Icon(Icons.search,
-                              size: 20.rw, color: AppColors.iconGrey),
+                          Icon(
+                            Icons.search,
+                            size: 20.rw,
+                            color: AppColors.iconGrey,
+                          ),
                           SizedBox(width: 10.rw),
                           Expanded(
                             child: TextField(
                               controller: vm.searchController,
                               onChanged: vm.onSearchChanged,
                               textInputAction: TextInputAction.search,
-                              style: AppTextStyles.fieldText
-                                  .copyWith(color: AppColors.ink),
+                              style: AppTextStyles.fieldText.copyWith(
+                                color: AppColors.ink,
+                              ),
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: LocaleKeys.careers_search_hint.tr(),
@@ -122,7 +128,9 @@ class CareersScreen extends StatelessWidget {
                     SizedBox(height: 16.rh),
                     if (vm.isBusy)
                       const SizedBox(
-                          height: 300, child: AppShimmerList(itemCount: 3))
+                        height: 300,
+                        child: AppShimmerList(itemCount: 3),
+                      )
                     else if (vm.hasFailure)
                       AppErrorView(
                         message: LocaleKeys.errors_unexpected.tr(),
@@ -169,7 +177,9 @@ class _JobCard extends StatelessWidget {
             SizedBox(height: 6.rh),
             Container(
               padding: EdgeInsetsDirectional.symmetric(
-                  horizontal: 10.rw, vertical: 3.rh),
+                horizontal: 10.rw,
+                vertical: 3.rh,
+              ),
               decoration: BoxDecoration(
                 color: AppColors.redSelected6,
                 borderRadius: BorderRadius.circular(100.r),
@@ -184,8 +194,9 @@ class _JobCard extends StatelessWidget {
             SizedBox(height: 6.rh),
             Text(
               job.department!,
-              style: AppTextStyles.cardSubtitle
-                  .copyWith(color: AppColors.inkSecondary),
+              style: AppTextStyles.cardSubtitle.copyWith(
+                color: AppColors.inkSecondary,
+              ),
             ),
           ],
           if (job.summary != null) ...[
@@ -194,8 +205,9 @@ class _JobCard extends StatelessWidget {
               job.summary!,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.cardSubtitle
-                  .copyWith(color: AppColors.inkSecondary),
+              style: AppTextStyles.cardSubtitle.copyWith(
+                color: AppColors.inkSecondary,
+              ),
             ),
           ],
           SizedBox(height: 10.rh),
@@ -204,11 +216,9 @@ class _JobCard extends StatelessWidget {
           if (job.experienceRange.isNotEmpty)
             _Meta(
               icon: Icons.work_outline,
-              text:
-                  '${job.experienceRange} ${LocaleKeys.careers_years.tr()}',
+              text: '${job.experienceRange} ${LocaleKeys.careers_years.tr()}',
             ),
-          if (days != null)
-            _Meta(icon: Icons.schedule, text: postedAgo(days)),
+          if (days != null) _Meta(icon: Icons.schedule, text: postedAgo(days)),
           SizedBox(height: 12.rh),
           OutlinedButton(
             onPressed: () => AppNavigator.push(
@@ -250,8 +260,9 @@ class _Meta extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: AppTextStyles.cardSubtitle
-                  .copyWith(color: AppColors.inkSecondary),
+              style: AppTextStyles.cardSubtitle.copyWith(
+                color: AppColors.inkSecondary,
+              ),
             ),
           ),
         ],

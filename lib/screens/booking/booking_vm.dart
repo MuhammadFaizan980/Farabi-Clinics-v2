@@ -154,7 +154,7 @@ class BookingVm extends AppBaseVm {
     if (!canConfirm) return;
 
     if (!AppDi.locator<AuthSession>().isLoggedIn) {
-      final signedIn = await AppNavigator.push<bool>(
+      final signedIn = await AppNavigator.push<Object?>(
         AppRoutes.login,
         arguments: const LoginArgsModel(popOnSuccess: true),
       );

@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import '../../data/constants/locale_keys.g.dart';
 import '../../utils/app_text_styles.dart';
 import '../../utils/color/app_colors.dart';
+import '../sheet/app_sheet.dart';
 import '../../utils/extensions/responsive_extensions.dart';
 import '../../utils/phone_country.dart';
 import '../../utils/phone_field_controller.dart';
@@ -52,8 +53,9 @@ class CountryPhoneField extends StatelessWidget {
                           : null,
                       behavior: HitTestBehavior.opaque,
                       child: Container(
-                        padding:
-                            EdgeInsetsDirectional.symmetric(horizontal: 12.rw),
+                        padding: EdgeInsetsDirectional.symmetric(
+                          horizontal: 12.rw,
+                        ),
                         decoration: const BoxDecoration(
                           border: Border(
                             right: BorderSide(color: AppColors.hairline8),
@@ -69,8 +71,9 @@ class CountryPhoneField extends StatelessWidget {
                             SizedBox(width: 6.rw),
                             Text(
                               selected?.dial ?? '',
-                              style: AppTextStyles.fieldText
-                                  .copyWith(color: AppColors.ink),
+                              style: AppTextStyles.fieldText.copyWith(
+                                color: AppColors.ink,
+                              ),
                             ),
                             if (controller.options.length > 1)
                               Icon(
@@ -93,12 +96,14 @@ class CountryPhoneField extends StatelessWidget {
                         ],
                         onChanged: (_) => onChanged?.call(),
                         cursorColor: AppColors.primary,
-                        style: AppTextStyles.fieldText
-                            .copyWith(color: AppColors.ink),
+                        style: AppTextStyles.fieldText.copyWith(
+                          color: AppColors.ink,
+                        ),
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          contentPadding:
-                              EdgeInsetsDirectional.symmetric(horizontal: 12.rw),
+                          contentPadding: EdgeInsetsDirectional.symmetric(
+                            horizontal: 12.rw,
+                          ),
                         ),
                       ),
                     ),
@@ -113,13 +118,8 @@ class CountryPhoneField extends StatelessWidget {
   }
 
   Future<void> _pick(BuildContext context) async {
-    final chosen = await showModalBottomSheet<PhoneCountry>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: AppColors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
-      ),
+    final chosen = await showAppSheet<PhoneCountry>(
+      context,
       builder: (_) => _CountrySheet(
         options: controller.options,
         selected: controller.selected,
@@ -152,75 +152,53 @@ class _CountrySheetState extends State<_CountrySheet> {
   Widget build(BuildContext context) {
     // filters by name or dial code, like the site's picker
     final q = _query.trim().toLowerCase();
-    final shown = widget.options.where((c) {
-      if (q.isEmpty) return true;
-      return c.label(widget.language).toLowerCase().contains(q) ||
-          c.dial.contains(q);
-    }).toList(growable: false);
+    final shown = widget.options
+        .where((c) {
+          if (q.isEmpty) return true;
+          return c.label(widget.language).toLowerCase().contains(q) ||
+              c.dial.contains(q);
+        })
+        .toList(growable: false);
 
-    return SafeArea(
-      child: Padding(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.viewInsetsOf(context).bottom,
-        ),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.sizeOf(context).height * 0.7,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(
-                    16.rw, 16.rh, 16.rw, 8.rh),
-                child: TextField(
-                  autofocus: false,
-                  onChanged: (v) => setState(() => _query = v),
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.search),
-                    hintText: LocaleKeys.auth_search_country.tr(),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                  ),
+    return AppSheet(
+      title: LocaleKeys.auth_select_country.tr(),
+      maxHeightFactor: 0.8,
+      header: AppSheetSearchField(
+        hint: LocaleKeys.auth_search_country.tr(),
+        onChanged: (v) => setState(() => _query = v),
+      ),
+      child: shown.isEmpty
+          ? Padding(
+              padding: EdgeInsetsDirectional.all(24.r),
+              child: Text(
+                LocaleKeys.auth_no_countries.tr(),
+                textAlign: TextAlign.center,
+                style: AppTextStyles.profileBody.copyWith(
+                  color: AppColors.inkSecondary,
                 ),
               ),
-              Flexible(
-                child: shown.isEmpty
-                    ? Padding(
-                        padding: EdgeInsetsDirectional.all(24.r),
-                        child: Text(
-                          LocaleKeys.auth_no_countries.tr(),
-                          style: AppTextStyles.cardSubtitle
-                              .copyWith(color: AppColors.inkSecondary),
-                        ),
-                      )
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: shown.length,
-                        itemBuilder: (context, i) {
-                          final c = shown[i];
-                          final selected = c.code == widget.selected?.code;
-                          return ListTile(
-                            selected: selected,
-                            selectedTileColor: AppColors.redSelected6,
-                            leading: Text(c.flag,
-                                style: TextStyle(fontSize: 22.rf)),
-                            title: Text(c.label(widget.language)),
-                            trailing: Text(
-                              c.dial,
-                              style: AppTextStyles.caption
-                                  .copyWith(color: AppColors.inkSecondary),
-                            ),
-                            onTap: () => Navigator.pop(context, c),
-                          );
-                        },
-                      ),
-              ),
-            ],
-          ),
-        ),
-      ),
+            )
+          : ListView.separated(
+              shrinkWrap: true,
+              padding: EdgeInsetsDirectional.fromSTEB(22.rw, 0, 22.rw, 8.rh),
+              itemCount: shown.length,
+              separatorBuilder: (_, __) => SizedBox(height: 8.rh),
+              itemBuilder: (context, i) {
+                final c = shown[i];
+                return AppSheetOption(
+                  title: c.label(widget.language),
+                  selected: c.code == widget.selected?.code,
+                  leading: Text(c.flag, style: TextStyle(fontSize: 22.rf)),
+                  trailing: Text(
+                    c.dial,
+                    style: AppTextStyles.profileBody.copyWith(
+                      color: AppColors.inkSecondary,
+                    ),
+                  ),
+                  onTap: () => Navigator.pop(context, c),
+                );
+              },
+            ),
     );
   }
 }

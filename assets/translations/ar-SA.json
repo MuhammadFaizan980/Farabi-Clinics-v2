@@ -80,6 +80,7 @@
     "forgot_sent_title": "تحقق من رسائلك",
     "forgot_sent_message": "إذا كان هناك حساب مرتبط بهذا الرقم، فقد أرسلنا إليه رابطًا لإعادة تعيين كلمة المرور.",
     "go_back_to": "العودة إلى",
+    "select_country": "اختر الدولة",
     "search_country": "ابحث عن دولة أو رمز…",
     "no_countries": "لا توجد دول"
   },
@@ -173,6 +174,13 @@
     "no_services": "لا توجد خدمات متاحة في هذه المنطقة"
   },
   "more": {
+    "language_sheet_title": "تغيير اللغة",
+    "language_english": "English",
+    "language_english_sub": "استخدم التطبيق باللغة الإنجليزية",
+    "language_arabic": "العربية",
+    "language_arabic_sub": "استخدم التطبيق باللغة العربية",
+    "logout_confirm_title": "تأكيد تسجيل الخروج",
+    "logout_confirm_body": "هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟",
     "title": "المزيد",
     "profile": "الملف الشخصي",
     "my_bookings": "حجوزاتي",
@@ -199,7 +207,7 @@
     "logout_sub": "تسجيل الخروج بأمان وإنهاء الجلسة"
   },
   "doctor_detail": {
-    "title": "الطبيب",
+    "title": "ملف الطبيب",
     "about": "نبذة",
     "branches": "الفروع",
     "specialities": "التخصصات",
@@ -259,6 +267,8 @@
     "login_required": "يرجى تسجيل الدخول للمتابعة",
     "success_title": "تم تأكيد الحجز",
     "success_body": "تم حجز موعدك.",
+    "see_all_details": "عرض كل التفاصيل",
+    "back_home": "العودة إلى الرئيسية",
     "reference": "الرقم المرجعي",
     "view_bookings": "عرض حجوزاتي",
     "service_fee": "رسوم الخدمة",

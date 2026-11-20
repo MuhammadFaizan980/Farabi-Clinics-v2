@@ -8,7 +8,8 @@ import '../../../router/app_navigator.dart';
 import '../../../router/app_routes.dart';
 import '../../../utils/color/app_colors.dart';
 import '../../../utils/extensions/responsive_extensions.dart';
-import '../../../utils/language_switcher.dart';
+import '../../../widgets/sheet/app_sheet.dart';
+import '../../../widgets/sheet/language_sheet.dart';
 import '../../../utils/extensions/vm_init_extension.dart';
 import '../../../widgets/more/more_header.dart';
 import '../../../widgets/more/more_menu.dart';
@@ -90,14 +91,9 @@ class MoreScreen extends StatelessWidget {
                       iconAsset: AppAssets.moreRowLanguage,
                       title: LocaleKeys.more_language.tr(),
                       subtitle: LocaleKeys.more_language_sub.tr(),
-                      // an in-place switch like the site's: English is off,
-                      // Arabic is on, and the whole app flips immediately
-                      onTap: () => toggleAppLanguage(context),
-                      trailing: Switch(
-                        value: context.locale.languageCode == 'ar',
-                        activeThumbColor: AppColors.primary,
-                        onChanged: (_) => toggleAppLanguage(context),
-                      ),
+                      // the Figma "Change Language" sheet; picking the other
+                      // language flips the whole app in place, as before
+                      onTap: () => showLanguageSheet(context),
                     ),
                     SizedBox(height: 4.rh),
                     MoreMenuRow(
@@ -118,7 +114,17 @@ class MoreScreen extends StatelessWidget {
                         title: LocaleKeys.common_logout.tr(),
                         subtitle: LocaleKeys.more_logout_sub.tr(),
                         destructive: true,
-                        onTap: vm.logout,
+                        onTap: () async {
+                          final confirmed = await showConfirmSheet(
+                            context,
+                            icon: Icons.logout,
+                            title: LocaleKeys.more_logout_confirm_title.tr(),
+                            message: LocaleKeys.more_logout_confirm_body.tr(),
+                            confirmLabel: LocaleKeys.common_logout.tr(),
+                            cancelLabel: LocaleKeys.common_cancel.tr(),
+                          );
+                          if (confirmed) await vm.logout();
+                        },
                       )
                     else
                       MoreMenuRow(

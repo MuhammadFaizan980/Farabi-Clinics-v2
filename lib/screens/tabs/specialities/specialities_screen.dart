@@ -75,7 +75,7 @@ class _Body extends StatelessWidget {
     return RefreshIndicator(
       onRefresh: vm.refresh,
       child: ListView(
-        padding: EdgeInsetsDirectional.fromSTEB(16.rw, 16.rh, 16.rw, 32.rh),
+        padding: EdgeInsetsDirectional.fromSTEB(16.rw, 8.rh, 16.rw, 32.rh),
         children: [
           SpecialityPicker(
             title: LocaleKeys.specialities_choose_speciality.tr(),
@@ -84,7 +84,7 @@ class _Body extends StatelessWidget {
             language: language,
             onSelected: (service) => vm.selectMainService(service.id),
           ),
-          SizedBox(height: 16.rh),
+          SizedBox(height: 8.rh),
           if (!vm.hasSelection)
             Padding(
               padding: EdgeInsetsDirectional.only(top: 24.rh),
@@ -109,7 +109,7 @@ class _Body extends StatelessWidget {
                   arguments: IdArgsModel(id: doctor.id),
                 ),
               ),
-              SizedBox(height: 12.rh),
+              SizedBox(height: 8.rh),
             ],
         ],
       ),

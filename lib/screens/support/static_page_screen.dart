@@ -2,8 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/app_text_styles.dart';
-import '../../utils/color/app_theme_colors.dart';
+import '../../utils/color/app_colors.dart';
 import '../../utils/extensions/responsive_extensions.dart';
+import '../../widgets/more/more_header.dart';
 import 'static_pages_content.dart';
 
 /// renders one of the site's static pages (about, privacy, terms) from its
@@ -20,28 +21,46 @@ class StaticPageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = AppThemeColors.of(context);
-
     return Scaffold(
-      backgroundColor: colors.background,
-      appBar: AppBar(
-        backgroundColor: colors.background,
-        surfaceTintColor: Colors.transparent,
-        title: Text(
-          titleKey.tr(),
-          style: AppTextStyles.h3.copyWith(color: colors.textPrimary),
-        ),
-      ),
-      body: SafeArea(
-        child: ListView(
-          padding: EdgeInsetsDirectional.symmetric(
-            horizontal: 20.rw,
-            vertical: 12.rh,
+      backgroundColor: AppColors.listBackground,
+      body: Column(
+        children: [
+          MoreHeader(
+            title: titleKey.tr(),
+            onBack: () => Navigator.of(context).maybePop(),
           ),
-          children: [
-            for (final block in blocks) _Block(block: block),
-          ],
-        ),
+          Expanded(
+            child: ListView(
+              padding: EdgeInsetsDirectional.fromSTEB(
+                16.rw,
+                8.rh,
+                16.rw,
+                16.rh,
+              ),
+              children: [
+                Container(
+                  padding: EdgeInsetsDirectional.fromSTEB(
+                    18.rw,
+                    6.rh,
+                    18.rw,
+                    12.rh,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(16.r),
+                    border: Border.all(color: AppColors.cardBorder),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      for (final block in blocks) _Block(block: block),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -54,7 +73,6 @@ class _Block extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = AppThemeColors.of(context);
     final text = block.key.tr();
 
     switch (block.type) {
@@ -63,7 +81,10 @@ class _Block extends StatelessWidget {
           padding: EdgeInsetsDirectional.only(top: 18.rh, bottom: 6.rh),
           child: Text(
             text,
-            style: AppTextStyles.h3.copyWith(color: colors.textPrimary),
+            style: AppTextStyles.listCardTitle.copyWith(
+              color: AppColors.ink,
+              height: 24 / 17,
+            ),
           ),
         );
       case StaticBlockType.bullet:
@@ -78,7 +99,7 @@ class _Block extends StatelessWidget {
                   width: 6.r,
                   height: 6.r,
                   decoration: BoxDecoration(
-                    color: colors.primary,
+                    color: AppColors.primary,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -86,8 +107,9 @@ class _Block extends StatelessWidget {
               Expanded(
                 child: Text(
                   text,
-                  style: AppTextStyles.bodyLarge
-                      .copyWith(color: colors.textPrimary),
+                  style: AppTextStyles.profileBody.copyWith(
+                    color: AppColors.ink,
+                  ),
                 ),
               ),
             ],
@@ -98,8 +120,9 @@ class _Block extends StatelessWidget {
           padding: EdgeInsetsDirectional.only(bottom: 12.rh),
           child: Text(
             text,
-            style:
-                AppTextStyles.bodyLarge.copyWith(color: colors.textSecondary),
+            style: AppTextStyles.profileBody.copyWith(
+              color: AppColors.inkSecondary,
+            ),
           ),
         );
     }

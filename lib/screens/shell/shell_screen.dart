@@ -40,23 +40,28 @@ class ShellScreen extends StatelessWidget {
           onSelected: vm.setIndex,
           items: [
             AppBottomNavItem(
-              asset: AppAssets.navHome,
+              asset: AppAssets.navHomeOff,
+              selectedAsset: AppAssets.navHomeOn,
               label: LocaleKeys.tabs_home.tr(),
             ),
             AppBottomNavItem(
-              asset: AppAssets.navDoctors,
+              asset: AppAssets.navDoctorsOff,
+              selectedAsset: AppAssets.navDoctorsOn,
               label: LocaleKeys.tabs_doctors.tr(),
             ),
             AppBottomNavItem(
-              asset: AppAssets.navOffers,
+              asset: AppAssets.navOffersOff,
+              selectedAsset: AppAssets.navOffersOn,
               label: LocaleKeys.tabs_offers.tr(),
             ),
             AppBottomNavItem(
-              asset: AppAssets.navBranches,
+              asset: AppAssets.navBranchesOff,
+              selectedAsset: AppAssets.navBranchesOn,
               label: LocaleKeys.tabs_branches.tr(),
             ),
             AppBottomNavItem(
-              asset: AppAssets.navMore,
+              asset: AppAssets.navMoreOff,
+              selectedAsset: AppAssets.navMoreOn,
               label: LocaleKeys.tabs_more.tr(),
             ),
           ],

@@ -81,6 +81,7 @@ abstract class  LocaleKeys {
   static const auth_forgot_sent_title = 'auth.forgot_sent_title';
   static const auth_forgot_sent_message = 'auth.forgot_sent_message';
   static const auth_go_back_to = 'auth.go_back_to';
+  static const auth_select_country = 'auth.select_country';
   static const auth_search_country = 'auth.search_country';
   static const auth_no_countries = 'auth.no_countries';
   static const auth = 'auth';
@@ -164,6 +165,13 @@ abstract class  LocaleKeys {
   static const specialities_view_profile = 'specialities.view_profile';
   static const specialities_no_services = 'specialities.no_services';
   static const specialities = 'specialities';
+  static const more_language_sheet_title = 'more.language_sheet_title';
+  static const more_language_english = 'more.language_english';
+  static const more_language_english_sub = 'more.language_english_sub';
+  static const more_language_arabic = 'more.language_arabic';
+  static const more_language_arabic_sub = 'more.language_arabic_sub';
+  static const more_logout_confirm_title = 'more.logout_confirm_title';
+  static const more_logout_confirm_body = 'more.logout_confirm_body';
   static const more_title = 'more.title';
   static const more_profile = 'more.profile';
   static const more_my_bookings = 'more.my_bookings';
@@ -246,6 +254,8 @@ abstract class  LocaleKeys {
   static const booking_login_required = 'booking.login_required';
   static const booking_success_title = 'booking.success_title';
   static const booking_success_body = 'booking.success_body';
+  static const booking_see_all_details = 'booking.see_all_details';
+  static const booking_back_home = 'booking.back_home';
   static const booking_reference = 'booking.reference';
   static const booking_view_bookings = 'booking.view_bookings';
   static const booking_service_fee = 'booking.service_fee';

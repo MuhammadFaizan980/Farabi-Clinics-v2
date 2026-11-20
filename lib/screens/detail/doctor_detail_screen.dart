@@ -1,8 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../data/constants/app_assets.dart';
 import '../../data/constants/locale_keys.g.dart';
 import '../../data/models/discovery/detail_args_models.dart';
 import '../../data/models/discovery/discovery_models.dart';
@@ -16,7 +17,7 @@ import '../../utils/working_hours.dart';
 import '../../widgets/common/app_state_views.dart';
 import '../../widgets/common/bottom_action_bar.dart';
 import '../../widgets/common/info_card.dart';
-import '../../widgets/common/verified_badge.dart';
+import '../../widgets/doctor/doctor_profile_card.dart';
 import '../../widgets/more/more_header.dart';
 import 'doctor_detail_vm.dart';
 
@@ -44,28 +45,27 @@ class DoctorDetailScreen extends StatelessWidget {
           body: Column(
             children: [
               MoreHeader(
-                title: doctor?.names.display(language) ??
-                    LocaleKeys.doctor_detail_title.tr(),
+                title: LocaleKeys.doctor_detail_title.tr(),
                 onBack: () => Navigator.of(context).maybePop(),
               ),
               Expanded(
                 child: vm.isBusy
                     ? const AppShimmerList(itemCount: 4)
                     : vm.hasFailure || doctor == null
-                        ? AppErrorView(
-                            message: LocaleKeys.errors_unexpected.tr(),
-                            retryLabel: LocaleKeys.common_retry.tr(),
-                            onRetry: vm.load,
-                          )
-                        : RefreshIndicator(
-                            onRefresh: vm.refresh,
-                            child: _Content(
-                              vm: vm,
-                              doctor: doctor,
-                              language: language,
-                              locale: locale,
-                            ),
-                          ),
+                    ? AppErrorView(
+                        message: LocaleKeys.errors_unexpected.tr(),
+                        retryLabel: LocaleKeys.common_retry.tr(),
+                        onRetry: vm.load,
+                      )
+                    : RefreshIndicator(
+                        onRefresh: vm.refresh,
+                        child: _Content(
+                          vm: vm,
+                          doctor: doctor,
+                          language: language,
+                          locale: locale,
+                        ),
+                      ),
               ),
               if (doctor != null)
                 BottomActionBar(
@@ -112,25 +112,23 @@ class _Content extends StatelessWidget {
     );
 
     return ListView(
-      padding: EdgeInsetsDirectional.fromSTEB(16.rw, 16.rh, 16.rw, 24.rh),
+      padding: EdgeInsetsDirectional.fromSTEB(16.rw, 8.rh, 16.rw, 16.rh),
       children: [
-        _AvatarCard(doctor: doctor, name: name),
-        SizedBox(height: 12.rh),
+        DoctorProfileCard(doctor: doctor, name: name),
+        SizedBox(height: 4.rh),
         _StatsCard(doctor: doctor),
-        SizedBox(height: 12.rh),
+        SizedBox(height: 4.rh),
         InfoCard(
           title: LocaleKeys.doctor_detail_overview.tr(),
           child: Text(
             summary.isNotEmpty
                 ? summary
-                : LocaleKeys.doctor_detail_overview_fallback
-                    .tr(args: [name]),
-            style: AppTextStyles.cardSubtitle
-                .copyWith(color: AppColors.inkSecondary),
+                : LocaleKeys.doctor_detail_overview_fallback.tr(args: [name]),
+            style: AppTextStyles.overviewBody.copyWith(color: AppColors.ink),
           ),
         ),
         if (vm.services.isNotEmpty) ...[
-          SizedBox(height: 12.rh),
+          SizedBox(height: 4.rh),
           InfoCard(
             title: LocaleKeys.doctor_detail_services_offered.tr(),
             child: Wrap(
@@ -144,14 +142,14 @@ class _Content extends StatelessWidget {
           ),
         ],
         if (hours.isNotEmpty) ...[
-          SizedBox(height: 12.rh),
+          SizedBox(height: 4.rh),
           InfoCard(
             title: LocaleKeys.doctor_detail_working_hours.tr(),
             child: _HoursLines(lines: hours),
           ),
         ],
         if (doctor.branches.isNotEmpty) ...[
-          SizedBox(height: 12.rh),
+          SizedBox(height: 4.rh),
           InfoCard(
             title: LocaleKeys.doctor_detail_branches_hours.tr(),
             child: SizedBox(
@@ -175,78 +173,6 @@ class _Content extends StatelessWidget {
   }
 }
 
-class _AvatarCard extends StatelessWidget {
-  const _AvatarCard({required this.doctor, required this.name});
-
-  final DoctorDataModel doctor;
-  final String name;
-
-  @override
-  Widget build(BuildContext context) {
-    final image = doctor.image;
-    final placeholder = Icon(
-      Icons.person_outline,
-      size: 34.rw,
-      color: AppColors.primary.withValues(alpha: 0.5),
-    );
-
-    return InfoCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              ClipOval(
-                child: Container(
-                  width: 64.rw,
-                  height: 64.rw,
-                  color: AppColors.redSelected6,
-                  child: (image == null || image.isEmpty)
-                      ? placeholder
-                      : CachedNetworkImage(
-                          imageUrl: image,
-                          fit: BoxFit.cover,
-                          errorWidget: (_, __, ___) => placeholder,
-                        ),
-                ),
-              ),
-              // static "online" dot, the same on every profile as on the site
-              PositionedDirectional(
-                top: 2.rh,
-                end: 0,
-                child: Container(
-                  width: 12.rw,
-                  height: 12.rw,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF3DB26B),
-                    shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.white, width: 2),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 12.rh),
-          Row(
-            children: [
-              Flexible(
-                child: Text(
-                  name,
-                  style: AppTextStyles.listCardTitle
-                      .copyWith(color: AppColors.ink),
-                ),
-              ),
-              SizedBox(width: 6.rw),
-              const VerifiedBadge(size: 18),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _StatsCard extends StatelessWidget {
   const _StatsCard({required this.doctor});
 
@@ -258,31 +184,32 @@ class _StatsCard extends StatelessWidget {
     final patients = doctor.patientsCount?.toString() ?? dash;
     final years = doctor.experienceYears == null
         ? dash
-        : LocaleKeys.doctor_detail_experience_value
-            .tr(args: ['${doctor.experienceYears}']);
+        : LocaleKeys.doctor_detail_experience_value.tr(
+            args: ['${doctor.experienceYears}'],
+          );
     final satisfaction = doctor.satisfactionPercentage == null
         ? dash
         : '${doctor.satisfactionPercentage!.round()}%';
 
     return InfoCard(
-      padding: EdgeInsetsDirectional.symmetric(vertical: 14.rh),
+      padding: EdgeInsetsDirectional.symmetric(vertical: 13.rh),
       child: IntrinsicHeight(
         child: Row(
           children: [
             _Stat(
-              icon: Icons.local_hospital_outlined,
+              iconAsset: AppAssets.iconStatPatients,
               value: patients,
               label: LocaleKeys.doctor_detail_patients.tr(),
             ),
-            VerticalDivider(width: 1, color: AppColors.hairline8),
+            const _StatDivider(),
             _Stat(
-              icon: Icons.workspace_premium_outlined,
+              iconAsset: AppAssets.iconStatExperience,
               value: years,
               label: LocaleKeys.doctor_detail_experience.tr(),
             ),
-            VerticalDivider(width: 1, color: AppColors.hairline8),
+            const _StatDivider(),
             _Stat(
-              icon: Icons.sentiment_satisfied_alt_outlined,
+              iconAsset: AppAssets.iconStatSatisfaction,
               value: satisfaction,
               label: LocaleKeys.doctor_detail_satisfaction.tr(),
             ),
@@ -293,10 +220,27 @@ class _StatsCard extends StatelessWidget {
   }
 }
 
-class _Stat extends StatelessWidget {
-  const _Stat({required this.icon, required this.value, required this.label});
+/// 1 x 16 hairline between the stats, #282828 at 32%
+class _StatDivider extends StatelessWidget {
+  const _StatDivider();
 
-  final IconData icon;
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: const Alignment(0, -0.55),
+      child: Container(width: 1, height: 16.rh, color: const Color(0x52282828)),
+    );
+  }
+}
+
+class _Stat extends StatelessWidget {
+  const _Stat({
+    required this.iconAsset,
+    required this.value,
+    required this.label,
+  });
+
+  final String iconAsset;
   final String value;
   final String label;
 
@@ -308,18 +252,23 @@ class _Stat extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 18.rw, color: AppColors.ink),
+              SvgPicture.asset(iconAsset, width: 18.rw, height: 18.rw),
               SizedBox(width: 6.rw),
               Text(
                 value,
-                style: AppTextStyles.rowTitle.copyWith(color: AppColors.ink),
+                style: AppTextStyles.statNumber.copyWith(
+                  color: AppColors.ink,
+                  fontSize: 18.rf,
+                ),
               ),
             ],
           ),
-          SizedBox(height: 2.rh),
           Text(
             label,
-            style: AppTextStyles.caption.copyWith(color: AppColors.inkSecondary),
+            style: AppTextStyles.statLabel.copyWith(
+              color: AppColors.inkSecondary,
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ],
       ),
@@ -335,14 +284,18 @@ class _Chip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsetsDirectional.symmetric(horizontal: 14.rw, vertical: 8.rh),
+      padding: EdgeInsetsDirectional.symmetric(
+        horizontal: 14.rw,
+        vertical: 8.rh,
+      ),
       decoration: BoxDecoration(
         color: AppColors.listBackground,
         borderRadius: BorderRadius.circular(100.r),
+        border: Border.all(color: AppColors.cardBorder),
       ),
       child: Text(
         label,
-        style: AppTextStyles.filterChip.copyWith(color: AppColors.ink),
+        style: AppTextStyles.profileBody.copyWith(color: AppColors.ink),
       ),
     );
   }
@@ -360,10 +313,10 @@ class _HoursLines extends StatelessWidget {
       children: [
         for (final line in lines)
           Padding(
-            padding: EdgeInsetsDirectional.only(bottom: 4.rh),
+            padding: EdgeInsetsDirectional.only(bottom: 2.rh),
             child: Text(
               line,
-              style: AppTextStyles.cardSubtitle.copyWith(color: AppColors.ink),
+              style: AppTextStyles.profileBody.copyWith(color: AppColors.ink),
             ),
           ),
       ],
@@ -419,8 +372,9 @@ class _BranchCard extends StatelessWidget {
                 branch.address!,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.caption
-                    .copyWith(color: AppColors.inkSecondary),
+                style: AppTextStyles.caption.copyWith(
+                  color: AppColors.inkSecondary,
+                ),
               ),
             ],
             const Spacer(),
