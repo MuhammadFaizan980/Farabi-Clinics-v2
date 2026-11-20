@@ -12,6 +12,7 @@ import '../../utils/color/app_theme_colors.dart';
 import '../../utils/extensions/responsive_extensions.dart';
 import '../../utils/extensions/vm_init_extension.dart';
 import '../../widgets/common/app_button.dart';
+import '../../widgets/common/app_error_banner.dart';
 import '../../widgets/common/app_state_views.dart';
 import 'bookings_vm.dart';
 
@@ -62,6 +63,16 @@ class BookingsScreen extends StatelessWidget {
               : Column(
                   children: [
                     _Filters(vm: vm),
+                    if (vm.actionError != null)
+                      Padding(
+                        padding: EdgeInsetsDirectional.symmetric(
+                            horizontal: 20.rw, vertical: 4.rh),
+                        child: AppErrorBanner(
+                          message: vm.actionError!.startsWith('bookings.')
+                              ? vm.actionError!.tr()
+                              : vm.actionError!,
+                        ),
+                      ),
                     Expanded(
                       child: vm.isBusy
                           ? const AppShimmerList()
@@ -109,6 +120,12 @@ class _Filters extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget chip(String label, BookingTab tab) => _FilterChip(
+          label: label,
+          selected: vm.tab == tab,
+          onTap: () => vm.setTab(tab),
+        );
+
     return Padding(
       padding: EdgeInsetsDirectional.symmetric(
         horizontal: 20.rw,
@@ -116,23 +133,11 @@ class _Filters extends StatelessWidget {
       ),
       child: Row(
         children: [
-          _FilterChip(
-            label: LocaleKeys.bookings_all.tr(),
-            selected: vm.statusFilter == null,
-            onTap: () => vm.setFilter(null),
-          ),
+          chip(LocaleKeys.bookings_upcoming.tr(), BookingTab.upcoming),
           SizedBox(width: 8.rw),
-          _FilterChip(
-            label: LocaleKeys.bookings_upcoming.tr(),
-            selected: vm.statusFilter == vm.createdStatus,
-            onTap: () => vm.setFilter(vm.createdStatus),
-          ),
+          chip(LocaleKeys.bookings_completed.tr(), BookingTab.completed),
           SizedBox(width: 8.rw),
-          _FilterChip(
-            label: LocaleKeys.bookings_cancelled.tr(),
-            selected: vm.statusFilter == vm.cancelledStatus,
-            onTap: () => vm.setFilter(vm.cancelledStatus),
-          ),
+          chip(LocaleKeys.bookings_cancelled.tr(), BookingTab.cancelled),
         ],
       ),
     );
@@ -186,7 +191,7 @@ class _BookingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppThemeColors.of(context);
-    final start = booking.startLocal;
+    final start = booking.startClinicTime;
 
     return Container(
       padding: EdgeInsetsDirectional.all(14.r),
@@ -230,7 +235,7 @@ class _BookingCard extends StatelessWidget {
           if (start != null) ...[
             SizedBox(height: 4.rh),
             Text(
-              // stored utc, shown local
+              // stored utc, shown at the clinic's local time (UTC+3)
               '${start.day}/${start.month}/${start.year}  '
               '${start.hour.toString().padLeft(2, '0')}:'
               '${start.minute.toString().padLeft(2, '0')}',

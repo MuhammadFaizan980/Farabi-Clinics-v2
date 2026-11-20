@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 
 import '../../../data/base/app_base_vm.dart';
@@ -16,6 +18,9 @@ class DoctorsListVm extends AppBaseVm {
   int? _regionId;
   int? _serviceId;
   String? _gender;
+  Set<int> _ratings = const {};
+  bool _gridView = false;
+  Timer? _searchDebounce;
   int _page = 1;
   int? _total;
   bool _isLoadingMore = false;
@@ -94,6 +99,7 @@ class DoctorsListVm extends AppBaseVm {
         serviceId: _serviceId,
         search: _searchController.text.trim(),
         gender: _gender,
+        ratings: _ratings.toList()..sort(),
       );
 
   void setRegion(int? regionId) {
@@ -112,17 +118,48 @@ class DoctorsListVm extends AppBaseVm {
     load();
   }
 
-  void onSearchSubmitted(String _) => load();
+  void onSearchSubmitted(String _) {
+    _searchDebounce?.cancel();
+    load();
+  }
+
+  /// the site searches as you type, so a short debounce keeps the request
+  /// count down without waiting for the keyboard's search key
+  void onSearchChanged(String _) {
+    _searchDebounce?.cancel();
+    _searchDebounce = Timer(const Duration(milliseconds: 450), load);
+  }
+
+  void toggleView() {
+    _gridView = !_gridView;
+    notifyListeners();
+  }
+
+  /// applies the whole filter sheet in one reload. region is the sheet's
+  /// "Location" (the api takes a single `region_id`), ratings is a multi-select
+  /// sent comma-joined.
+  void applyFilters({
+    required String? gender,
+    required int? regionId,
+    required Set<int> ratings,
+  }) {
+    _gender = gender;
+    _regionId = regionId ?? _regionId;
+    _ratings = ratings;
+    load();
+  }
 
   void clearFilters() {
     _serviceId = null;
     _gender = null;
+    _ratings = const {};
     _searchController.clear();
     load();
   }
 
   @override
   void dispose() {
+    _searchDebounce?.cancel();
     _searchController.dispose();
     super.dispose();
   }
@@ -136,6 +173,8 @@ class DoctorsListVm extends AppBaseVm {
   int? get regionId => _regionId;
   int? get serviceId => _serviceId;
   String? get gender => _gender;
+  Set<int> get ratings => _ratings;
+  bool get gridView => _gridView;
   bool get isLoadingMore => _isLoadingMore;
   bool get loadMoreFailed => _loadMoreFailed;
   bool get isEmpty => !isBusy && !hasFailure && _doctors.isEmpty;
@@ -154,5 +193,6 @@ class DoctorsListVm extends AppBaseVm {
   bool get hasActiveFilters =>
       _serviceId != null ||
       _gender != null ||
+      _ratings.isNotEmpty ||
       _searchController.text.isNotEmpty;
 }

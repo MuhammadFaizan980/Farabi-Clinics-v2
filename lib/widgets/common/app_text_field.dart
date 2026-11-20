@@ -40,11 +40,15 @@ class AppTextField extends StatefulWidget {
     this.textInputAction,
     this.textAlign = TextAlign.start,
     this.letterSpacing,
+    this.formatters,
   });
 
   final TextEditingController controller;
   final String label;
   final String? hint;
+
+  /// extra input formatters (a date mask, for instance)
+  final List<TextInputFormatter>? formatters;
 
   /// already-localised message. the view model decides when this is non-null.
   final String? errorText;
@@ -114,9 +118,11 @@ class _AppTextFieldState extends State<AppTextField> {
                   textInputAction: widget.textInputAction,
                   textAlign: widget.textAlign,
                   onChanged: widget.onChanged,
-                  inputFormatters: widget.digitsOnly
-                      ? [FilteringTextInputFormatter.digitsOnly]
-                      : null,
+                  inputFormatters: [
+                    if (widget.digitsOnly)
+                      FilteringTextInputFormatter.digitsOnly,
+                    ...?widget.formatters,
+                  ],
                   cursorColor: AppColors.primary,
                   style: textStyle,
                   decoration: InputDecoration(

@@ -36,6 +36,7 @@ class MoreMenuRow extends StatelessWidget {
     this.iconAsset,
     this.fallbackIcon,
     this.destructive = false,
+    this.trailing,
   });
 
   final String title;
@@ -44,6 +45,9 @@ class MoreMenuRow extends StatelessWidget {
   final IconData? fallbackIcon;
   final VoidCallback onTap;
   final bool destructive;
+
+  /// replaces the chevron (a switch, for the language row)
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +110,9 @@ class MoreMenuRow extends StatelessWidget {
                   ],
                 ),
               ),
-              if (!destructive)
+              if (trailing != null)
+                trailing!
+              else if (!destructive)
                 SvgPicture.asset(
                   AppAssets.moreChevron,
                   width: 18.rw,

@@ -22,10 +22,18 @@ class BranchesTab {
 /// radius 16, centred title, and one tab per city. the active tab carries a
 /// 32 x 2 yellow underline; inactive tabs are drawn at 64% opacity.
 class BranchesHeader extends StatelessWidget {
-  const BranchesHeader({super.key, required this.title, required this.tabs});
+  const BranchesHeader({
+    super.key,
+    required this.title,
+    required this.tabs,
+    this.onBack,
+  });
 
   final String title;
   final List<BranchesTab> tabs;
+
+  /// shows a back chevron at the leading edge on pushed screens
+  final VoidCallback? onBack;
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +60,17 @@ class BranchesHeader extends StatelessWidget {
               style: AppTextStyles.screenTitle.copyWith(color: AppColors.white),
             ),
           ),
+          if (onBack != null)
+            PositionedDirectional(
+              start: 8.rw,
+              top: top + 14.rh,
+              child: IconButton(
+                onPressed: onBack,
+                icon: const BackButtonIcon(),
+                color: AppColors.white,
+                iconSize: 22.rw,
+              ),
+            ),
           Positioned(
             left: 0,
             right: 0,

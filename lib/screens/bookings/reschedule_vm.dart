@@ -54,9 +54,27 @@ class RescheduleVm extends AppBaseVm {
     _loadingSlots = false;
     if (response.success && response.data != null) {
       _doctorOff = response.data!.isOff;
-      _slots = response.data!.slots;
+      // the api returns the whole day, so today's past times are dropped,
+      // as on the booking page
+      _slots = response.data!.slots.where(_isFutureToday).toList(growable: false);
     }
     notifyListeners();
+  }
+
+  bool _isFutureToday(SlotDataModel slot) {
+    final date = _date;
+    if (date == null) return true;
+    final now = DateTime.now();
+    final isToday = date.year == now.year &&
+        date.month == now.month &&
+        date.day == now.day;
+    if (!isToday) return true;
+
+    final parts = slot.startTime.split(':');
+    if (parts.length < 2) return true;
+    final minutes =
+        (int.tryParse(parts[0]) ?? 0) * 60 + (int.tryParse(parts[1]) ?? 0);
+    return minutes > now.hour * 60 + now.minute;
   }
 
   Future<void> confirm() async {

@@ -2,6 +2,7 @@ import '../../data/base/app_base_vm.dart';
 import '../../data/models/booking/booking_models.dart';
 import '../../data/models/discovery/discovery_models.dart';
 import '../../repos/discovery/doctors_repo.dart';
+import '../../repos/discovery/services_repo.dart';
 import '../../router/app_navigator.dart';
 import '../../router/app_routes.dart';
 
@@ -11,6 +12,7 @@ class DoctorDetailVm extends AppBaseVm {
   final int _doctorId;
 
   DoctorDataModel? _doctor;
+  List<ServiceDataModel> _services = const [];
 
   Future<void> onInit() => load();
 
@@ -18,14 +20,20 @@ class DoctorDetailVm extends AppBaseVm {
     setBusy(true);
     clearFailure(notify: false);
 
-    final response = await repo<DoctorsRepo>().doctorDetail(_doctorId);
+    // the profile and the services this doctor can be booked for are two
+    // separate endpoints, fetched together
+    final (detail, services) = await (
+      repo<DoctorsRepo>().doctorDetail(_doctorId),
+      repo<ServicesRepo>().services(doctorId: _doctorId),
+    ).wait;
 
     setBusy(false);
-    if (!response.success || response.data == null) {
-      captureFailure(response);
+    if (!detail.success || detail.data == null) {
+      captureFailure(detail);
       return;
     }
-    _doctor = response.data;
+    _doctor = detail.data;
+    _services = services.success ? (services.data ?? const []) : const [];
     notifyListeners();
   }
 
@@ -43,4 +51,5 @@ class DoctorDetailVm extends AppBaseVm {
   /// getters/setters below this line...
 
   DoctorDataModel? get doctor => _doctor;
+  List<ServiceDataModel> get services => _services;
 }

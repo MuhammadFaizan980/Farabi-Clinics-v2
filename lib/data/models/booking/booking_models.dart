@@ -158,6 +158,17 @@ class BookingDataModel {
   final String? paymentStatusLabel;
 
   DateTime? get startLocal => startTimeUtc?.toLocal();
+
+  /// the appointment's wall-clock time at the clinic. the clinics are all in
+  /// Saudi Arabia (UTC+3, no daylight saving), so it is shown in that zone no
+  /// matter where the phone is. the result is a plain (non-utc) DateTime.
+  DateTime? get startClinicTime {
+    final utc = startTimeUtc;
+    if (utc == null) return null;
+    final shifted = utc.add(const Duration(hours: 3));
+    return DateTime(shifted.year, shifted.month, shifted.day, shifted.hour,
+        shifted.minute);
+  }
 }
 
 /// returned instead of a booking when the chosen gateway needs a redirect.
@@ -199,6 +210,7 @@ class CreateBookingRequestModel {
     required this.paymentMethod,
     this.quantity = 1,
     this.couponCode,
+    this.qitafRedemptionId,
   });
 
   final int branchId;
@@ -211,6 +223,7 @@ class CreateBookingRequestModel {
   final String paymentMethod;
   final int quantity;
   final String? couponCode;
+  final int? qitafRedemptionId;
 
   Map<String, dynamic> toJson() => {
         'branch_id': branchId,
@@ -224,13 +237,15 @@ class CreateBookingRequestModel {
         // omitted entirely when unused, never sent as null
         if (couponCode != null && couponCode!.isNotEmpty)
           'coupon_code': couponCode,
+        if (qitafRedemptionId != null) 'qitaf_redemption_id': qitafRedemptionId,
       };
 }
 
 class BookingArgsModel {
-  const BookingArgsModel({required this.doctor});
+  const BookingArgsModel({required this.doctor, this.serviceId});
 
   final DoctorDataModel doctor;
+  final int? serviceId;
 }
 
 class BookingSuccessArgsModel {
@@ -243,4 +258,42 @@ class RescheduleArgsModel {
   const RescheduleArgsModel({required this.booking});
 
   final BookingDataModel booking;
+}
+
+/// what the checkout page needs to price and place one booking; built by the
+/// booking page from the user's choices
+class CheckoutArgsModel {
+  const CheckoutArgsModel({
+    required this.doctor,
+    required this.serviceId,
+    required this.branchId,
+    required this.date,
+    required this.time,
+  });
+
+  final DoctorDataModel doctor;
+  final int serviceId;
+  final int branchId;
+
+  /// "YYYY-MM-DD"
+  final String date;
+
+  /// "HH:MM:SS"
+  final String time;
+}
+
+/// `GET qitaf`: whether the STC Qitaf points option is switched on and any
+/// redemption already open for this patient
+class QitafStatusModel {
+  const QitafStatusModel({this.enabled = false, this.redemption});
+
+  final bool enabled;
+  final QitafRedemptionModel? redemption;
+}
+
+class QitafRedemptionModel {
+  const QitafRedemptionModel({required this.id, this.amount});
+
+  final int id;
+  final double? amount;
 }

@@ -14,6 +14,8 @@ import '../../../utils/extensions/responsive_extensions.dart';
 import '../../../utils/extensions/vm_init_extension.dart';
 import '../../../widgets/common/app_state_views.dart';
 import '../../../widgets/discovery/doctor_card.dart';
+import '../../../widgets/discovery/doctor_grid_card.dart';
+import '../../../widgets/doctors/doctors_filter_sheet.dart';
 import '../../../widgets/doctors/doctors_header.dart';
 import 'doctors_list_vm.dart';
 
@@ -38,6 +40,8 @@ class DoctorsListScreen extends StatelessWidget {
                   searchHint: LocaleKeys.doctors_find_hint.tr(),
                   searchController: vm.searchController,
                   onSearchSubmitted: vm.onSearchSubmitted,
+                  onSearchChanged: vm.onSearchChanged,
+                  onToggleView: vm.toggleView,
                   regionLabel: vm.selectedRegion?.names.display(language) ??
                       LocaleKeys.doctors_all_regions.tr(),
                   regions: vm.regions,
@@ -71,59 +75,22 @@ class DoctorsListScreen extends StatelessWidget {
     );
   }
 
-  /// the only filter the api and view model support beyond region, search and
-  /// speciality is gender, so that is what the sheet offers for now.
-  void _openFilters(BuildContext context, DoctorsListVm vm) {
-    showModalBottomSheet<void>(
-      context: context,
-      backgroundColor: AppColors.white,
-      showDragHandle: true,
-      builder: (sheetContext) => SafeArea(
-        child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(24.rw, 0, 24.rw, 24.rh),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                LocaleKeys.doctors_gender.tr(),
-                style:
-                    AppTextStyles.sectionTitle.copyWith(color: AppColors.ink),
-              ),
-              SizedBox(height: 12.rh),
-              Wrap(
-                spacing: 8.rw,
-                children: [
-                  _GenderOption(
-                    label: LocaleKeys.doctors_all.tr(),
-                    selected: vm.gender == null,
-                    onTap: () {
-                      vm.setGender(null);
-                      Navigator.pop(sheetContext);
-                    },
-                  ),
-                  _GenderOption(
-                    label: LocaleKeys.doctors_gender_male.tr(),
-                    selected: vm.gender == 'Male',
-                    onTap: () {
-                      vm.setGender('Male');
-                      Navigator.pop(sheetContext);
-                    },
-                  ),
-                  _GenderOption(
-                    label: LocaleKeys.doctors_gender_female.tr(),
-                    selected: vm.gender == 'Female',
-                    onTap: () {
-                      vm.setGender('Female');
-                      Navigator.pop(sheetContext);
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
+  /// the site's filter sheet: gender, location and rating (see
+  /// [showDoctorsFilterSheet]).
+  Future<void> _openFilters(BuildContext context, DoctorsListVm vm) async {
+    final result = await showDoctorsFilterSheet(
+      context,
+      gender: vm.gender,
+      regionId: vm.regionId,
+      ratings: vm.ratings,
+      regions: vm.regions,
+      language: context.locale.languageCode,
+    );
+    if (result == null) return;
+    vm.applyFilters(
+      gender: result.gender,
+      regionId: result.regionId,
+      ratings: result.ratings,
     );
   }
 }
@@ -150,42 +117,6 @@ class _FilterButton extends StatelessWidget {
           AppAssets.iconFilter,
           width: 24.rw,
           height: 24.rw,
-        ),
-      ),
-    );
-  }
-}
-
-class _GenderOption extends StatelessWidget {
-  const _GenderOption({
-    required this.label,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 40.rh,
-        alignment: Alignment.center,
-        padding: EdgeInsetsDirectional.symmetric(horizontal: 20.rw),
-        decoration: BoxDecoration(
-          color: selected ? AppColors.redSelected6 : AppColors.white,
-          borderRadius: BorderRadius.circular(100.r),
-          border: Border.all(
-            color: selected ? AppColors.primary : AppColors.hairline8,
-            width: 1,
-          ),
-        ),
-        child: Text(
-          label,
-          style: AppTextStyles.filterChip.copyWith(color: Colors.black),
         ),
       ),
     );
@@ -221,6 +152,32 @@ class _Body extends StatelessWidget {
               subtitle: LocaleKeys.common_empty_subtitle.tr(),
             ),
           ],
+        ),
+      );
+    }
+
+    if (vm.gridView) {
+      return RefreshIndicator(
+        onRefresh: vm.refresh,
+        child: GridView.builder(
+          padding: EdgeInsetsDirectional.fromSTEB(24.rw, 12.rh, 24.rw, 120.rh),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 12.rh,
+            crossAxisSpacing: 12.rw,
+            childAspectRatio: 0.82,
+          ),
+          itemCount: vm.doctors.length,
+          itemBuilder: (context, index) {
+            final doctor = vm.doctors[index];
+            return GestureDetector(
+              onTap: () => AppNavigator.push(
+                AppRoutes.doctorDetail,
+                arguments: IdArgsModel(id: doctor.id),
+              ),
+              child: DoctorGridCard(doctor: doctor, language: language),
+            );
+          },
         ),
       );
     }

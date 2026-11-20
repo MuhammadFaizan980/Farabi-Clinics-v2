@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +10,7 @@ import '../../utils/extensions/responsive_extensions.dart';
 /// offers carousel: 373 x 169, radius 16, with the pagination dots sitting 16
 /// above the bottom edge (active dot 13, inactive 6). the images are the
 /// offers' own, so this renders nothing until the api returns offers.
-class HomeBanner extends StatelessWidget {
+class HomeBanner extends StatefulWidget {
   const HomeBanner({
     super.key,
     required this.offers,
@@ -21,7 +23,41 @@ class HomeBanner extends StatelessWidget {
   final ValueChanged<int> onIndexChanged;
 
   @override
+  State<HomeBanner> createState() => _HomeBannerState();
+}
+
+class _HomeBannerState extends State<HomeBanner> {
+  final PageController _controller = PageController();
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    // advances on its own like the site's carousel, and pauses never: a manual
+    // swipe simply continues from the page it landed on
+    _timer = Timer.periodic(const Duration(seconds: 4), (_) {
+      if (!_controller.hasClients || widget.offers.length < 2) return;
+      final next = (_controller.page?.round() ?? 0) + 1;
+      _controller.animateToPage(
+        next % widget.offers.length,
+        duration: const Duration(milliseconds: 350),
+        curve: Curves.easeInOut,
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final offers = widget.offers;
+    final index = widget.index;
+    final onIndexChanged = widget.onIndexChanged;
     return SizedBox(
       height: 169.rh,
       child: ClipRRect(
@@ -30,6 +66,7 @@ class HomeBanner extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             PageView.builder(
+              controller: _controller,
               itemCount: offers.length,
               onPageChanged: onIndexChanged,
               itemBuilder: (context, i) {

@@ -22,6 +22,7 @@ class BranchCard extends StatelessWidget {
     required this.addressFallback,
     required this.callLabel,
     required this.onTap,
+    required this.onCall,
   });
 
   final BranchDataModel branch;
@@ -29,6 +30,7 @@ class BranchCard extends StatelessWidget {
   final String addressFallback;
   final String callLabel;
   final VoidCallback onTap;
+  final VoidCallback onCall;
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +85,7 @@ class BranchCard extends StatelessWidget {
               SizedBox(height: 12.rh),
               Padding(
                 padding: EdgeInsetsDirectional.symmetric(horizontal: 8.rw),
-                child: _CallButton(label: callLabel, onTap: onTap),
+                child: _CallButton(label: callLabel, onTap: onCall),
               ),
             ],
             SizedBox(height: 12.rh),

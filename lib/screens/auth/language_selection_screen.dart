@@ -4,6 +4,8 @@ import 'package:stacked/stacked.dart';
 
 import '../../data/constants/app_locales.dart';
 import '../../data/constants/locale_keys.g.dart';
+import '../../router/app_navigator.dart';
+import '../../router/app_routes.dart';
 import '../../utils/app_text_styles.dart';
 import '../../utils/color/app_colors.dart';
 import '../../utils/extensions/responsive_extensions.dart';
@@ -40,7 +42,11 @@ class LanguageSelectionScreen extends StatelessWidget {
               isLoading: vm.isBusy,
               onPressed: () async {
                 final locale = await vm.confirm();
-                if (context.mounted) await context.setLocale(locale);
+                if (!context.mounted) return;
+                await context.setLocale(locale);
+                if (context.mounted) {
+                  await AppNavigator.resetTo(AppRoutes.shell);
+                }
               },
             ),
           ],

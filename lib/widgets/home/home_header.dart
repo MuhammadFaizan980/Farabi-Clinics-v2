@@ -16,8 +16,14 @@ class HomeHeader extends StatelessWidget {
     required this.searchHint,
     required this.onSearchTap,
     required this.onProfileTap,
+    required this.languageLabel,
+    required this.onLanguageTap,
     this.onBellTap,
   });
+
+  /// short code of the language the toggle switches to ("AR" / "EN")
+  final String languageLabel;
+  final VoidCallback onLanguageTap;
 
   final String searchHint;
   final VoidCallback onSearchTap;
@@ -55,6 +61,26 @@ class HomeHeader extends StatelessWidget {
               AppAssets.logoWordmarkWhite,
               width: 102.53.rw,
               height: 21.rh,
+            ),
+          ),
+          PositionedDirectional(
+            end: 83.rw,
+            top: top + 24.rh,
+            child: GestureDetector(
+              onTap: onLanguageTap,
+              behavior: HitTestBehavior.opaque,
+              child: SizedBox(
+                height: 20.rw,
+                child: Center(
+                  child: Text(
+                    languageLabel,
+                    style: AppTextStyles.chip.copyWith(
+                      color: AppColors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
           PositionedDirectional(

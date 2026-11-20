@@ -13,12 +13,15 @@ class AppRoutes {
   static const String branchDetail = '/branch';
   static const String serviceDetail = '/service';
   static const String booking = '/booking';
+  static const String checkout = '/checkout';
   static const String bookingSuccess = '/booking-success';
   static const String bookings = '/bookings';
   static const String reschedule = '/reschedule';
   static const String profile = '/profile';
   static const String contactUs = '/contact-us';
   static const String careers = '/careers';
+  static const String jobDetail = '/career';
+  static const String jobApply = '/career-apply';
   static const String blogs = '/blogs';
   static const String specialities = '/specialities';
   static const String aboutUs = '/about';

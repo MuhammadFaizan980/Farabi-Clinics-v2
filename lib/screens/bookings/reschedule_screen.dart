@@ -94,7 +94,7 @@ class RescheduleScreen extends StatelessWidget {
                   children: vm.slots
                       .map(
                         (slot) => _Pill(
-                          label: slot.startTime,
+                          label: _clock(slot.startTime, context.locale.toString()),
                           selected: vm.slot?.slot == slot.slot,
                           enabled: slot.isBookable,
                           onTap: () => vm.selectSlot(slot),
@@ -160,4 +160,13 @@ class _Pill extends StatelessWidget {
       ),
     );
   }
+}
+
+/// "14:30" -> "2:30 PM", the same labels the booking page uses
+String _clock(String time, String locale) {
+  final parts = time.split(':');
+  final hour = parts.isEmpty ? null : int.tryParse(parts[0]);
+  final minute = parts.length < 2 ? null : int.tryParse(parts[1]);
+  if (hour == null || minute == null) return time;
+  return DateFormat.jm(locale).format(DateTime(2000, 1, 1, hour, minute));
 }

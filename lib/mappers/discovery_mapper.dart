@@ -60,6 +60,7 @@ class DiscoveryMapper extends AppBaseMapper {
       ratingAverage: AppBaseMapper.asDouble(map['rating_average']) ?? 0,
       ratingCount: AppBaseMapper.asInt(map['rating_count']) ?? 0,
       region: region(map['region']),
+      services: services(map['services']),
     );
   }
 
@@ -75,7 +76,32 @@ class DiscoveryMapper extends AppBaseMapper {
     return DoctorBranchDataModel(
       id: id,
       name: AppBaseMapper.asString(map['name']),
+      names: _names(map),
+      address: AppBaseMapper.asString(map['address']),
+      workingHours: _workingHours(map['working_hours']),
     );
+  }
+
+  /// `working_hours` is a list of days, each with its shifts; anything else
+  /// (the site's own mapper expects a string) is treated as "no hours"
+  List<WorkingDayDataModel> _workingHours(dynamic raw) {
+    if (raw is! List) return const [];
+    return [
+      for (final day in raw.whereType<Map>())
+        if (AppBaseMapper.asInt(day['day_of_week']) != null)
+          WorkingDayDataModel(
+            dayOfWeek: AppBaseMapper.asInt(day['day_of_week'])!,
+            shifts: [
+              for (final shift in AppBaseMapper.asList(day['shifts']))
+                if (AppBaseMapper.asString(shift['start_time']) != null &&
+                    AppBaseMapper.asString(shift['end_time']) != null)
+                  WorkingShiftDataModel(
+                    start: AppBaseMapper.asString(shift['start_time'])!,
+                    end: AppBaseMapper.asString(shift['end_time'])!,
+                  ),
+            ],
+          ),
+    ];
   }
 
   DoctorDataModel? doctor(dynamic raw) {
@@ -113,6 +139,8 @@ class DiscoveryMapper extends AppBaseMapper {
           .toList(growable: false),
       patientsCount: AppBaseMapper.asInt(map['patients_count']),
       experienceYears: AppBaseMapper.asInt(map['experience_years']),
+      satisfactionPercentage:
+          AppBaseMapper.asDouble(map['satisfaction_percentage']),
       briefSummary: AppBaseMapper.asString(map['brief_summary']),
     );
   }

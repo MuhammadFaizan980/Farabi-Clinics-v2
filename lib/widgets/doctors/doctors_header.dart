@@ -30,6 +30,8 @@ class DoctorsHeader extends StatelessWidget {
     required this.searchHint,
     required this.searchController,
     required this.onSearchSubmitted,
+    required this.onSearchChanged,
+    required this.onToggleView,
     required this.regionLabel,
     required this.regions,
     required this.language,
@@ -41,6 +43,8 @@ class DoctorsHeader extends StatelessWidget {
   final String searchHint;
   final TextEditingController searchController;
   final ValueChanged<String> onSearchSubmitted;
+  final ValueChanged<String> onSearchChanged;
+  final VoidCallback onToggleView;
   final String regionLabel;
   final List<RegionDataModel> regions;
   final String language;
@@ -94,10 +98,14 @@ class DoctorsHeader extends StatelessWidget {
           PositionedDirectional(
             end: 32.rw,
             top: top + 22.rh,
-            child: SvgPicture.asset(
-              AppAssets.iconGridView,
-              width: 24.rw,
-              height: 24.rw,
+            child: GestureDetector(
+              onTap: onToggleView,
+              behavior: HitTestBehavior.opaque,
+              child: SvgPicture.asset(
+                AppAssets.iconGridView,
+                width: 24.rw,
+                height: 24.rw,
+              ),
             ),
           ),
           PositionedDirectional(
@@ -109,6 +117,7 @@ class DoctorsHeader extends StatelessWidget {
               hint: searchHint,
               controller: searchController,
               onSubmitted: onSearchSubmitted,
+              onChanged: onSearchChanged,
               regionLabel: regionLabel,
               regions: regions,
               language: language,
@@ -139,6 +148,7 @@ class _SearchPill extends StatelessWidget {
     required this.hint,
     required this.controller,
     required this.onSubmitted,
+    required this.onChanged,
     required this.regionLabel,
     required this.regions,
     required this.language,
@@ -148,6 +158,7 @@ class _SearchPill extends StatelessWidget {
   final String hint;
   final TextEditingController controller;
   final ValueChanged<String> onSubmitted;
+  final ValueChanged<String> onChanged;
   final String regionLabel;
   final List<RegionDataModel> regions;
   final String language;
@@ -210,6 +221,7 @@ class _SearchPill extends StatelessWidget {
             child: TextField(
               controller: controller,
               onSubmitted: onSubmitted,
+              onChanged: onChanged,
               textInputAction: TextInputAction.search,
               style: AppTextStyles.searchHint.copyWith(color: Colors.black),
               decoration: InputDecoration(

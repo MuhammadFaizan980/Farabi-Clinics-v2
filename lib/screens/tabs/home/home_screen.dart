@@ -9,6 +9,8 @@ import '../../../data/models/discovery/detail_args_models.dart';
 import '../../../router/app_navigator.dart';
 import '../../../router/app_routes.dart';
 import '../../../utils/color/app_colors.dart';
+import '../../../utils/language_switcher.dart';
+import '../branches/branches_region_request.dart';
 import '../../../utils/extensions/responsive_extensions.dart';
 import '../../../utils/extensions/vm_init_extension.dart';
 import '../../../widgets/common/app_state_views.dart';
@@ -41,15 +43,16 @@ class HomeScreen extends StatelessWidget {
       builder: (context, vm, child) {
         final header = HomeHeader(
           searchHint: LocaleKeys.home_search_hint.tr(),
-          onSearchTap: () => onSelectTab(_doctorsTab),
+          // like the site, focusing search opens the specialities page
+          onSearchTap: () => AppNavigator.push(AppRoutes.specialities),
+          languageLabel: LocaleKeys.home_language_toggle.tr(),
+          onLanguageTap: () => toggleAppLanguage(context),
           onProfileTap: () => AppNavigator.push(
             vm.isLoggedIn ? AppRoutes.profile : AppRoutes.login,
           ),
         );
 
-        return Scaffold(
-          backgroundColor: AppColors.white,
-          body: vm.isBusy
+        final body = vm.isBusy
               ? Column(
                   children: [
                     header,
@@ -114,10 +117,14 @@ class HomeScreen extends StatelessWidget {
                               VirtualServiceItem(
                                 icon: AppAssets.iconVirtualVideo,
                                 label: LocaleKeys.home_video_consultation.tr(),
+                                onTap: () =>
+                                    AppNavigator.push(AppRoutes.specialities),
                               ),
                               VirtualServiceItem(
                                 icon: AppAssets.iconVirtualAudio,
                                 label: LocaleKeys.home_audio_consultation.tr(),
+                                onTap: () =>
+                                    AppNavigator.push(AppRoutes.specialities),
                               ),
                             ],
                           ),
@@ -125,6 +132,8 @@ class HomeScreen extends StatelessWidget {
                             SizedBox(height: 27.rh),
                             HomeSectionTitle(
                               text: LocaleKeys.home_available_doctors.tr(),
+                              actionLabel: LocaleKeys.home_view_all.tr(),
+                              onAction: () => onSelectTab(_doctorsTab),
                             ),
                             SizedBox(height: 15.rh),
                             HomeDoctorsRail(
@@ -142,7 +151,7 @@ class HomeScreen extends StatelessWidget {
                             body: LocaleKeys.home_expert_body.tr(),
                             linkLabel: LocaleKeys.home_expert_link.tr(),
                             onLinkTap: () =>
-                                AppNavigator.push(AppRoutes.contactUs),
+                                AppNavigator.push(AppRoutes.specialities),
                           ),
                           if (vm.regions.isNotEmpty) ...[
                             SizedBox(height: 20.rh),
@@ -163,7 +172,11 @@ class HomeScreen extends StatelessWidget {
                                         LocaleKeys.home_doctors_available.tr(
                                       args: ['${vm.doctorsIn(region.id)}'],
                                     ),
-                                    onTap: () => onSelectTab(_branchesTab),
+                                    onTap: () {
+                                      BranchesRegionRequest.regionId.value =
+                                          region.id;
+                                      onSelectTab(_branchesTab);
+                                    },
                                   ),
                               ],
                             ),
@@ -179,9 +192,65 @@ class HomeScreen extends StatelessWidget {
                           SizedBox(height: 32.rh),
                         ],
                       ),
-                    ),
+                    );
+
+        return Scaffold(
+          backgroundColor: AppColors.white,
+          body: Stack(
+            children: [
+              body,
+              // the site's floating AI assistant button, which opens
+              // the specialities page
+              PositionedDirectional(
+                end: 16.rw,
+                bottom: 24.rh,
+                child: _AiButton(
+                  label: LocaleKeys.home_ai_assistant.tr(),
+                  onTap: () => AppNavigator.push(AppRoutes.specialities),
+                ),
+              ),
+            ],
+          ),
         );
       },
+    );
+  }
+}
+
+class _AiButton extends StatelessWidget {
+  const _AiButton({required this.label, required this.onTap});
+
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: label,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          width: 52.rw,
+          height: 52.rw,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16.r),
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [AppColors.primary, Color(0xFF7B3FE4)],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.18),
+                offset: Offset(0, 6.rh),
+                blurRadius: 12.r,
+              ),
+            ],
+          ),
+          child: Icon(Icons.auto_awesome, color: AppColors.white, size: 24.rw),
+        ),
+      ),
     );
   }
 }

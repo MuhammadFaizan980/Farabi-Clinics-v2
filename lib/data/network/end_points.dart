@@ -76,5 +76,9 @@ class EndPoints {
   static const String contactUs = 'v1/portal/contact-us';
   static const String careers = 'v1/portal/careers';
   static const String careerDepartments = 'v1/portal/careers/departments';
-  static String careerApply(int id) => 'v1/portal/careers/$id/applications';
+  static String careerDetail(String slug) => 'v1/portal/careers/$slug';
+
+  /// the site posts applications to the job's slug, not its id
+  static String careerApply(String slug) =>
+      'v1/portal/careers/$slug/applications';
 }

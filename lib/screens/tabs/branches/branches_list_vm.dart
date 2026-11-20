@@ -2,6 +2,7 @@ import '../../../data/base/app_base_vm.dart';
 import '../../../data/models/discovery/discovery_models.dart';
 import '../../../repos/discovery/branches_repo.dart';
 import '../../../repos/discovery/regions_repo.dart';
+import 'branches_region_request.dart';
 
 class BranchesListVm extends AppBaseVm {
   List<BranchDataModel> _branches = const [];
@@ -9,11 +10,27 @@ class BranchesListVm extends AppBaseVm {
   int? _regionId;
 
   Future<void> onInit() async {
+    BranchesRegionRequest.regionId.addListener(_onRegionRequested);
     // the frame always has a city selected, so the first region (Riyadh, the
     // lowest id) is picked before the first fetch
     await _loadRegions();
-    _regionId ??= _regions.isEmpty ? null : _regions.first.id;
+    _regionId ??= BranchesRegionRequest.regionId.value ??
+        (_regions.isEmpty ? null : _regions.first.id);
+    BranchesRegionRequest.regionId.value = null;
     await load();
+  }
+
+  void _onRegionRequested() {
+    final requested = BranchesRegionRequest.regionId.value;
+    if (requested == null) return;
+    BranchesRegionRequest.regionId.value = null;
+    setRegion(requested);
+  }
+
+  @override
+  void dispose() {
+    BranchesRegionRequest.regionId.removeListener(_onRegionRequested);
+    super.dispose();
   }
 
   Future<void> _loadRegions() async {

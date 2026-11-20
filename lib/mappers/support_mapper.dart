@@ -5,11 +5,11 @@ import '../data/models/support/support_models.dart';
 class SupportMapper extends AppBaseMapper {
   const SupportMapper();
 
-  List<JobDataModel> jobs(dynamic raw) =>
-      AppBaseMapper.asList(raw).map((map) {
-        final branch = AppBaseMapper.asMap(map['branch']);
-        return JobDataModel(
+  JobDataModel job(Map<String, dynamic> map) {
+    final branch = AppBaseMapper.asMap(map['branch']);
+    return JobDataModel(
           id: AppBaseMapper.asInt(map['id']) ?? 0,
+          slug: AppBaseMapper.asString(map['slug']) ?? '',
           names: LocalisedName(
             name: AppBaseMapper.asString(map['title']),
             nameAr: AppBaseMapper.asString(map['title_ar']),
@@ -28,7 +28,28 @@ class SupportMapper extends AppBaseMapper {
           publishedAt: AppBaseMapper.asUtcDateTime(
               map['published_at'] ?? map['created_at']),
         );
-      }).toList(growable: false);
+  }
+
+  List<JobDataModel> jobs(dynamic raw) =>
+      AppBaseMapper.asList(raw).map(job).toList(growable: false);
+
+  List<String> _strings(dynamic raw) => raw is List
+      ? raw.map((e) => e?.toString() ?? '').where((e) => e.isNotEmpty).toList()
+      : const [];
+
+  JobDetailDataModel? jobDetail(dynamic raw) {
+    final map = AppBaseMapper.asMap(raw);
+    if (AppBaseMapper.asInt(map['id']) == null) return null;
+    return JobDetailDataModel(
+      job: job(map),
+      aboutRole: AppBaseMapper.asString(map['about_role']),
+      responsibilities: _strings(map['responsibilities']),
+      requirements: _strings(map['requirements']),
+      offers: _strings(map['offers']),
+      benefits: _strings(map['benefits']),
+      descriptionUrl: AppBaseMapper.asString(map['job_description_url']),
+    );
+  }
 
   List<String> departments(dynamic raw) => AppBaseMapper.asList(raw)
       .map((map) => AppBaseMapper.asString(map['department']))

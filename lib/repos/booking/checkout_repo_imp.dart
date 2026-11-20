@@ -43,4 +43,43 @@ class CheckoutRepoImp extends CheckoutRepo {
         await apiClient.post(EndPoints.bookings, body: request.toJson());
     return response.mapData(bookingMapper.createResult);
   }
+
+  @override
+  Future<ApiResponseModel<QitafStatusModel>> qitafStatus() async {
+    final response = await apiClient.get(EndPoints.qitaf);
+    return response.mapData(bookingMapper.qitafStatus);
+  }
+
+  @override
+  Future<ApiResponseModel<dynamic>> qitafSendCode(String mobile) =>
+      apiClient.post(EndPoints.qitafOtp, body: {'mobile': mobile});
+
+  @override
+  Future<ApiResponseModel<QitafRedemptionModel>> qitafRedeem({
+    required String mobile,
+    required String otp,
+    required int amount,
+  }) async {
+    final response = await apiClient.post(
+      EndPoints.qitafRedemptions,
+      body: {'mobile': mobile, 'otp': otp, 'amount': amount},
+    );
+    return response.mapData(bookingMapper.qitafRedemption);
+  }
+
+  @override
+  Future<ApiResponseModel<dynamic>> qitafRemove(int redemptionId) =>
+      apiClient.delete(EndPoints.qitafRedemptionDelete(redemptionId), body: {});
+
+  @override
+  Future<ApiResponseModel<BookingDataModel>> confirmPendingBooking(
+    int pendingBookingId, {
+    String? tranRef,
+  }) async {
+    final response = await apiClient.post(
+      EndPoints.confirmPendingBooking(pendingBookingId),
+      body: {if (tranRef != null && tranRef.isNotEmpty) 'tran_ref': tranRef},
+    );
+    return response.mapData(bookingMapper.confirmedBooking);
+  }
 }

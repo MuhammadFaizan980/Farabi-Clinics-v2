@@ -69,6 +69,26 @@ class BookingMapper extends AppBaseMapper {
     );
   }
 
+  /// the qitaf payloads are only contract-verified, so every field is read
+  /// defensively
+  QitafRedemptionModel? qitafRedemption(dynamic raw) {
+    final map = AppBaseMapper.asMap(raw);
+    final id = AppBaseMapper.asInt(map['id']);
+    if (id == null) return null;
+    return QitafRedemptionModel(
+      id: id,
+      amount: AppBaseMapper.asDouble(map['amount']),
+    );
+  }
+
+  QitafStatusModel qitafStatus(dynamic raw) {
+    final map = AppBaseMapper.asMap(raw);
+    return QitafStatusModel(
+      enabled: AppBaseMapper.asBool(map['enabled']),
+      redemption: qitafRedemption(map['redemption']),
+    );
+  }
+
   List<PaymentGatewayDataModel> gateways(dynamic raw) =>
       AppBaseMapper.asList(raw).map((map) {
         final name = AppBaseMapper.asMap(map['name']);
@@ -131,6 +151,16 @@ class BookingMapper extends AppBaseMapper {
       .map(booking)
       .whereType<BookingDataModel>()
       .toList(growable: false);
+
+  /// the confirm call answers `{ status: {key}, booking: {...} }`; only a
+  /// `completed` status with a booking counts as confirmed
+  BookingDataModel? confirmedBooking(dynamic raw) {
+    final map = AppBaseMapper.asMap(raw);
+    final status = AppBaseMapper.asString(
+        AppBaseMapper.asMap(map['status'])['key']);
+    if (status != 'completed') return null;
+    return booking(map['booking']);
+  }
 
   /// create-booking returns either a full booking or a pending gateway stub.
   /// the pending shape has no `id`, so that is what we branch on.

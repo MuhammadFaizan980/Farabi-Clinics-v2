@@ -10,6 +10,11 @@ import '../../router/app_navigator.dart';
 import '../../router/app_routes.dart';
 
 class LoginVm extends AppBaseVm {
+  LoginVm({this.popOnSuccess = false});
+
+  /// return to the caller instead of resetting the app to the shell
+  final bool popOnSuccess;
+
   final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -48,6 +53,10 @@ class LoginVm extends AppBaseVm {
     session.setPatient(auth.patient);
     AppDi.locator<AppBaseModel>().patient = auth.patient;
 
+    if (popOnSuccess && AppNavigator.canPop) {
+      AppNavigator.pop(true);
+      return;
+    }
     await AppNavigator.resetTo(AppRoutes.shell);
   }
 

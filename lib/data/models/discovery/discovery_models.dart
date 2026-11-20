@@ -57,6 +57,7 @@ class BranchDataModel {
     this.ratingAverage = 0,
     this.ratingCount = 0,
     this.region,
+    this.services = const [],
   });
 
   final int id;
@@ -70,17 +71,52 @@ class BranchDataModel {
   final int ratingCount;
   final RegionDataModel? region;
 
+  /// the services this branch offers (detail payload only)
+  final List<ServiceDataModel> services;
+
   /// every branch on the test host has these null, so the map and call actions
   /// have to degrade rather than fire an empty intent.
   bool get canOpenMap => latitude != null && longitude != null;
   bool get canCall => (phone ?? '').isNotEmpty;
 }
 
+/// one opening shift, times as the api sends them ("09:00:00")
+class WorkingShiftDataModel {
+  const WorkingShiftDataModel({required this.start, required this.end});
+
+  final String start;
+  final String end;
+}
+
+/// opening hours of one weekday. `dayOfWeek` follows the api: 0 is Sunday.
+class WorkingDayDataModel {
+  const WorkingDayDataModel({required this.dayOfWeek, this.shifts = const []});
+
+  final int dayOfWeek;
+  final List<WorkingShiftDataModel> shifts;
+}
+
 class DoctorBranchDataModel {
-  const DoctorBranchDataModel({required this.id, this.name});
+  const DoctorBranchDataModel({
+    required this.id,
+    this.name,
+    this.names,
+    this.address,
+    this.workingHours = const [],
+  });
 
   final int id;
   final String? name;
+
+  /// both languages, present on the doctor detail payload
+  final LocalisedName? names;
+  final String? address;
+
+  /// per-branch hours, only on the doctor detail payload
+  final List<WorkingDayDataModel> workingHours;
+
+  String displayName(String languageCode) =>
+      names?.display(languageCode) ?? name ?? '';
 }
 
 class DoctorDataModel {
@@ -96,6 +132,7 @@ class DoctorDataModel {
     this.specialities = const [],
     this.patientsCount,
     this.experienceYears,
+    this.satisfactionPercentage,
     this.briefSummary,
   });
 
@@ -114,6 +151,7 @@ class DoctorDataModel {
   // detail-only fields; null on the list endpoint
   final int? patientsCount;
   final int? experienceYears;
+  final num? satisfactionPercentage;
   final String? briefSummary;
 
   DoctorBranchDataModel? get primaryBranch =>

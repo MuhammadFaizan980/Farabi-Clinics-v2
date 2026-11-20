@@ -4,13 +4,14 @@ import '../data/constants/locale_keys.g.dart';
 import '../data/models/auth/otp_args_model.dart';
 import '../data/models/booking/booking_models.dart';
 import '../data/models/discovery/detail_args_models.dart';
+import '../data/models/auth/login_args_model.dart';
 import '../screens/booking/booking_screen.dart';
+import '../screens/booking/checkout_screen.dart';
 import '../screens/booking/booking_success_screen.dart';
 import '../screens/bookings/bookings_screen.dart';
 import '../screens/bookings/reschedule_screen.dart';
 import '../screens/detail/branch_detail_screen.dart';
 import '../screens/detail/doctor_detail_screen.dart';
-import '../screens/detail/service_detail_screen.dart';
 import '../screens/profile/profile_screen.dart';
 import '../screens/support/blogs_screen.dart';
 import '../screens/support/reviews_screen.dart';
@@ -18,6 +19,9 @@ import '../screens/support/static_page_screen.dart';
 import '../screens/support/static_pages_content.dart';
 import '../screens/tabs/specialities/specialities_screen.dart';
 import '../screens/support/careers_screen.dart';
+import '../screens/support/job_apply_screen.dart';
+import '../screens/support/job_detail_screen.dart';
+import '../data/models/support/support_models.dart';
 import '../screens/support/contact_us_screen.dart';
 import '../screens/auth/forgot_password_screen.dart';
 import '../screens/auth/language_selection_screen.dart';
@@ -41,7 +45,13 @@ class AppRoutesGenerator {
         return _page(settings, const LanguageSelectionScreen());
 
       case AppRoutes.login:
-        return _page(settings, const LoginScreen());
+        final loginArgs = settings.arguments;
+        return _page(
+          settings,
+          LoginScreen(
+            popOnSuccess: loginArgs is LoginArgsModel && loginArgs.popOnSuccess,
+          ),
+        );
 
       case AppRoutes.register:
         return _page(settings, const RegisterScreen());
@@ -73,14 +83,23 @@ class AppRoutesGenerator {
         return _page(settings, BranchDetailScreen(args: args));
 
       case AppRoutes.serviceDetail:
+        // a tapped service opens the specialities page on that service
         final args = settings.arguments;
         if (args is! IdArgsModel) return _unknown(settings);
-        return _page(settings, ServiceDetailScreen(args: args));
+        return _page(
+          settings,
+          SpecialitiesScreen(initialMainServiceId: args.id),
+        );
 
       case AppRoutes.booking:
         final args = settings.arguments;
         if (args is! BookingArgsModel) return _unknown(settings);
         return _page(settings, BookingScreen(args: args));
+
+      case AppRoutes.checkout:
+        final args = settings.arguments;
+        if (args is! CheckoutArgsModel) return _unknown(settings);
+        return _page(settings, CheckoutScreen(args: args));
 
       case AppRoutes.bookingSuccess:
         final args = settings.arguments;
@@ -103,6 +122,16 @@ class AppRoutesGenerator {
 
       case AppRoutes.careers:
         return _page(settings, const CareersScreen());
+
+      case AppRoutes.jobDetail:
+        final args = settings.arguments;
+        if (args is! SlugArgsModel) return _unknown(settings);
+        return _page(settings, JobDetailScreen(args: args));
+
+      case AppRoutes.jobApply:
+        final args = settings.arguments;
+        if (args is! JobDataModel) return _unknown(settings);
+        return _page(settings, JobApplyScreen(job: args));
 
       case AppRoutes.blogs:
         return _page(settings, const BlogsScreen());

@@ -22,4 +22,24 @@ abstract class CheckoutRepo with AppBaseRepo {
   Future<ApiResponseModel<CreateBookingResultModel>> createBooking(
     CreateBookingRequestModel request,
   );
+
+  /// STC Qitaf points: status, send code, redeem, undo
+  Future<ApiResponseModel<QitafStatusModel>> qitafStatus();
+
+  Future<ApiResponseModel<dynamic>> qitafSendCode(String mobile);
+
+  Future<ApiResponseModel<QitafRedemptionModel>> qitafRedeem({
+    required String mobile,
+    required String otp,
+    required int amount,
+  });
+
+  Future<ApiResponseModel<dynamic>> qitafRemove(int redemptionId);
+
+  /// confirms a gateway booking after the payment page; `tranRef` is omitted
+  /// when the gateway returned none
+  Future<ApiResponseModel<BookingDataModel>> confirmPendingBooking(
+    int pendingBookingId, {
+    String? tranRef,
+  });
 }

@@ -8,6 +8,7 @@ import '../../../router/app_navigator.dart';
 import '../../../router/app_routes.dart';
 import '../../../utils/color/app_colors.dart';
 import '../../../utils/extensions/responsive_extensions.dart';
+import '../../../utils/launcher.dart';
 import '../../../utils/extensions/vm_init_extension.dart';
 import '../../../widgets/branches/branch_card.dart';
 import '../../../widgets/branches/branches_header.dart';
@@ -94,6 +95,7 @@ class _Body extends StatelessWidget {
               AppRoutes.branchDetail,
               arguments: IdArgsModel(id: branch.id),
             ),
+            onCall: () => dial(branch.phone ?? ''),
           );
         },
       ),

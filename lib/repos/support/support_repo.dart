@@ -6,7 +6,19 @@ import '../../mappers/support_mapper.dart';
 abstract class SupportRepo with AppBaseRepo {
   final SupportMapper supportMapper = const SupportMapper();
 
-  Future<ApiResponseModel<List<JobDataModel>>> jobs({int? page});
+  /// the api filters by `department` and `search` itself
+  Future<ApiResponseModel<List<JobDataModel>>> jobs({
+    int? page,
+    String? department,
+    String? search,
+  });
+
+  Future<ApiResponseModel<JobDetailDataModel>> jobDetail(String slug);
+
+  Future<ApiResponseModel<dynamic>> applyToJob(
+    String slug,
+    JobApplicationModel application,
+  );
 
   Future<ApiResponseModel<List<String>>> departments();
 

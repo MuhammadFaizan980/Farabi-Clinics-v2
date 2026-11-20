@@ -5,6 +5,7 @@ import '../../data/constants/app_assets.dart';
 import '../../utils/app_text_styles.dart';
 import '../../utils/color/app_colors.dart';
 import '../../utils/extensions/responsive_extensions.dart';
+import '../common/verified_badge.dart';
 
 /// profile card of the more frame: 382 x 158, radius 16, an 80px avatar with a
 /// ring at the top left, the name (17 / 22 semibold) with the verified badge,
@@ -74,17 +75,14 @@ class MoreProfileCard extends StatelessWidget {
                         name,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.profileName
-                            .copyWith(color: AppColors.ink),
+                        style: AppTextStyles.profileName.copyWith(
+                          color: AppColors.ink,
+                        ),
                       ),
                     ),
                     if (verified) ...[
                       SizedBox(width: 6.rw),
-                      SvgPicture.asset(
-                        AppAssets.moreVerified,
-                        width: 17.rw,
-                        height: 17.rw,
-                      ),
+                      const VerifiedBadge(),
                     ],
                   ],
                 ),
@@ -108,8 +106,9 @@ class MoreProfileCard extends StatelessWidget {
                         subtitle,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.profileMeta
-                            .copyWith(color: AppColors.inkSecondary),
+                        style: AppTextStyles.profileMeta.copyWith(
+                          color: AppColors.inkSecondary,
+                        ),
                       ),
                     ),
                   ],

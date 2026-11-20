@@ -7,15 +7,21 @@ import '../../utils/color/app_colors.dart';
 import '../../utils/extensions/responsive_extensions.dart';
 
 class VirtualServiceItem {
-  const VirtualServiceItem({required this.icon, required this.label});
+  const VirtualServiceItem({
+    required this.icon,
+    required this.label,
+    this.onTap,
+  });
 
   final String icon;
   final String label;
+  final VoidCallback? onTap;
 }
 
 /// "Virtual Clinic Services": 180 x 134 cards (radius 20) with a top-down red
 /// to white gradient, a 28px icon, a two-line title and the arrow bottom-right.
-/// there is no endpoint behind these yet, so the cards are display only.
+/// like the site, a card opens the specialities page (no consultation
+/// endpoint exists behind them).
 class HomeVirtualServices extends StatelessWidget {
   const HomeVirtualServices({super.key, required this.items});
 
@@ -43,7 +49,9 @@ class _Card extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      onTap: item.onTap,
+      child: Container(
       width: 180.rw,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
@@ -80,6 +88,7 @@ class _Card extends StatelessWidget {
             ),
           ),
         ],
+      ),
       ),
     );
   }

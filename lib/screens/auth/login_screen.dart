@@ -13,12 +13,14 @@ import '../../widgets/common/app_text_field.dart';
 import 'login_vm.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({super.key, this.popOnSuccess = false});
+
+  final bool popOnSuccess;
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<LoginVm>.reactive(
-      viewModelBuilder: LoginVm.new,
+      viewModelBuilder: () => LoginVm(popOnSuccess: popOnSuccess),
       builder: (context, vm, child) => AuthScaffold(
         title: LocaleKeys.auth_login_title.tr(),
         subtitle: LocaleKeys.auth_login_subtitle.tr(),

@@ -8,6 +8,7 @@ import '../../../router/app_navigator.dart';
 import '../../../router/app_routes.dart';
 import '../../../utils/color/app_colors.dart';
 import '../../../utils/extensions/responsive_extensions.dart';
+import '../../../utils/language_switcher.dart';
 import '../../../utils/extensions/vm_init_extension.dart';
 import '../../../widgets/more/more_header.dart';
 import '../../../widgets/more/more_menu.dart';
@@ -89,8 +90,14 @@ class MoreScreen extends StatelessWidget {
                       iconAsset: AppAssets.moreRowLanguage,
                       title: LocaleKeys.more_language.tr(),
                       subtitle: LocaleKeys.more_language_sub.tr(),
-                      onTap: () =>
-                          AppNavigator.push(AppRoutes.languageSelection),
+                      // an in-place switch like the site's: English is off,
+                      // Arabic is on, and the whole app flips immediately
+                      onTap: () => toggleAppLanguage(context),
+                      trailing: Switch(
+                        value: context.locale.languageCode == 'ar',
+                        activeThumbColor: AppColors.primary,
+                        onChanged: (_) => toggleAppLanguage(context),
+                      ),
                     ),
                     SizedBox(height: 4.rh),
                     MoreMenuRow(
