@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- the debug and profile manifests carry this, a release build needs it here -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="farabi_booking_app"
         android:name="${applicationName}"
