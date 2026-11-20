@@ -29,6 +29,7 @@ Tested on the iPhone 17 simulator unless noted. UI is not matched to Figma yet, 
 | My Appointments: Upcoming / Completed / Canceled, inline cancel error, reschedule refresh | done, tested (cancel flow too). Fixed the site's empty-list bug on our side |
 | Reschedule: AM/PM labels, past slots hidden | done |
 | More: in-place language switch | done, tested |
+| Sign in, sign up, forgot password: same fields and steps as the web sheets; country picker (flag, dial code, search) filled from the countries API, Saudi Arabia first; national number and country code posted as the site does; no confirm-password; ID type starts empty; forgot ends on "Check your messages" | done, tested on the simulator. Red wordmark header kept (the web's colour logo was not downloaded) |
 | Language screen never applying the locale | fixed |
 
 Not done on purpose or blocked:

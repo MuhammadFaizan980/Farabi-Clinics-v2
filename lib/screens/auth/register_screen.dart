@@ -10,7 +10,9 @@ import '../../widgets/auth/auth_scaffold.dart';
 import '../../widgets/common/app_button.dart';
 import '../../widgets/common/app_dropdown_field.dart';
 import '../../widgets/common/app_error_banner.dart';
+import '../../utils/extensions/vm_init_extension.dart';
 import '../../widgets/common/app_text_field.dart';
+import '../../widgets/common/country_phone_field.dart';
 import 'register_vm.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -22,6 +24,7 @@ class RegisterScreen extends StatelessWidget {
 
     return ViewModelBuilder<RegisterVm>.reactive(
       viewModelBuilder: RegisterVm.new,
+      onViewModelReady: (vm) => runAfterFirstFrame(vm.onInit),
       builder: (context, vm, child) => AuthScaffold(
         title: LocaleKeys.auth_register_title.tr(),
         subtitle: LocaleKeys.auth_register_subtitle.tr(),
@@ -43,6 +46,7 @@ class RegisterScreen extends StatelessWidget {
                   child: AppTextField(
                     controller: vm.firstNameController,
                     label: LocaleKeys.auth_first_name_label.tr(),
+                    hint: LocaleKeys.auth_first_name_hint.tr(),
                     errorText: vm.fieldError('first_name'),
                     onChanged: vm.onFieldChanged,
                     textInputAction: TextInputAction.next,
@@ -53,6 +57,7 @@ class RegisterScreen extends StatelessWidget {
                   child: AppTextField(
                     controller: vm.lastNameController,
                     label: LocaleKeys.auth_last_name_label.tr(),
+                    hint: LocaleKeys.auth_last_name_hint.tr(),
                     errorText: vm.fieldError('last_name'),
                     onChanged: vm.onFieldChanged,
                     textInputAction: TextInputAction.next,
@@ -67,6 +72,7 @@ class RegisterScreen extends StatelessWidget {
                 Expanded(
                   child: AppDropdownField<int>(
                     label: LocaleKeys.auth_id_type_label.tr(),
+                    hint: LocaleKeys.auth_id_type_hint.tr(),
                     value: vm.idType?.value,
                     items: vm.idTypes
                         .map(
@@ -90,8 +96,7 @@ class RegisterScreen extends StatelessWidget {
                   child: AppTextField(
                     controller: vm.idNumberController,
                     label: LocaleKeys.auth_id_number_label.tr(),
-                    keyboardType: TextInputType.number,
-                    digitsOnly: true,
+                    hint: LocaleKeys.auth_id_number_hint.tr(),
                     errorText: vm.fieldError('citizen_id_number'),
                     onChanged: vm.onFieldChanged,
                     textInputAction: TextInputAction.next,
@@ -100,37 +105,23 @@ class RegisterScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 16.rh),
-            AppTextField(
-              controller: vm.mobileController,
-              label: LocaleKeys.auth_mobile_label.tr(),
-              hint: LocaleKeys.auth_mobile_hint.tr(),
-              keyboardType: TextInputType.phone,
-              digitsOnly: true,
-              maxLength: 10,
-              errorText: vm.fieldError('mobile'),
-              onChanged: vm.onFieldChanged,
-              textInputAction: TextInputAction.next,
+            CountryPhoneField(
+              controller: vm.phone,
+              onChanged: () => vm.onFieldChanged(''),
             ),
             SizedBox(height: 16.rh),
             AppTextField(
               controller: vm.passwordController,
               label: LocaleKeys.auth_password_label.tr(),
+              hint: LocaleKeys.auth_password_create_hint.tr(),
               obscure: true,
               errorText: vm.fieldError('password'),
               onChanged: vm.onFieldChanged,
               textInputAction: TextInputAction.next,
             ),
-            SizedBox(height: 16.rh),
-            AppTextField(
-              controller: vm.confirmPasswordController,
-              label: LocaleKeys.auth_confirm_password_label.tr(),
-              obscure: true,
-              onChanged: vm.onFieldChanged,
-              textInputAction: TextInputAction.done,
-            ),
             SizedBox(height: 24.rh),
             AppButton(
-              label: LocaleKeys.auth_sign_up.tr(),
+              label: LocaleKeys.auth_create_account.tr(),
               isLoading: vm.isBusy,
               onPressed: vm.canSubmit ? vm.submit : null,
             ),

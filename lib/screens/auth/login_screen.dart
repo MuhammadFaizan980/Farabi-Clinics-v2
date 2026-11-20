@@ -9,7 +9,9 @@ import '../../utils/extensions/responsive_extensions.dart';
 import '../../widgets/auth/auth_scaffold.dart';
 import '../../widgets/common/app_button.dart';
 import '../../widgets/common/app_error_banner.dart';
+import '../../utils/extensions/vm_init_extension.dart';
 import '../../widgets/common/app_text_field.dart';
+import '../../widgets/common/country_phone_field.dart';
 import 'login_vm.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -21,6 +23,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<LoginVm>.reactive(
       viewModelBuilder: () => LoginVm(popOnSuccess: popOnSuccess),
+      onViewModelReady: (vm) => runAfterFirstFrame(vm.onInit),
       builder: (context, vm, child) => AuthScaffold(
         title: LocaleKeys.auth_login_title.tr(),
         subtitle: LocaleKeys.auth_login_subtitle.tr(),
@@ -34,16 +37,9 @@ class LoginScreen extends StatelessWidget {
               AppErrorBanner(message: vm.errorMessage!),
               SizedBox(height: 14.rh),
             ],
-            AppTextField(
-              controller: vm.mobileController,
-              label: LocaleKeys.auth_mobile_label.tr(),
-              hint: LocaleKeys.auth_mobile_hint.tr(),
-              keyboardType: TextInputType.phone,
-              digitsOnly: true,
-              maxLength: 10,
-              errorText: vm.fieldError('mobile'),
-              onChanged: vm.onFieldChanged,
-              textInputAction: TextInputAction.next,
+            CountryPhoneField(
+              controller: vm.phone,
+              onChanged: () => vm.onFieldChanged(''),
             ),
             SizedBox(height: 16.rh),
             AppTextField(

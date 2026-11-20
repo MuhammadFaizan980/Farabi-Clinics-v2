@@ -27,14 +27,16 @@ void main() {
   });
 
   group('LoginRequestModel', () {
-    test('passes with a valid pair', () {
+    test('passes with a mobile and a password', () {
       const model = LoginRequestModel(mobile: '0564772491', password: 'secret');
       expect(model.validate(), isNull);
     });
 
-    test('rejects a bad mobile', () {
-      const model = LoginRequestModel(mobile: '12345', password: 'secret');
-      expect(model.validate(), LocaleKeys.errors_invalid_mobile);
+    test('like the site, only an empty mobile is rejected on the device', () {
+      const empty = LoginRequestModel(mobile: ' ', password: 'secret');
+      expect(empty.validate(), LocaleKeys.errors_invalid_mobile);
+      const odd = LoginRequestModel(mobile: '12345', password: 'secret');
+      expect(odd.validate(), isNull);
     });
 
     test('rejects an empty password', () {
@@ -42,13 +44,9 @@ void main() {
       expect(model.validate(), LocaleKeys.errors_field_required);
     });
 
-    test('serialises the mobile in national form', () {
-      const model =
-          LoginRequestModel(mobile: '+966564772491', password: 'secret');
-      expect(model.toJson(), {
-        'mobile': '0564772491',
-        'password': 'secret',
-      });
+    test('posts only the mobile and the password', () {
+      const model = LoginRequestModel(mobile: '0564772491', password: 'secret');
+      expect(model.toJson(), {'mobile': '0564772491', 'password': 'secret'});
     });
   });
 
@@ -56,67 +54,61 @@ void main() {
     RegisterRequestModel build({
       String first = 'Test',
       String last = 'Agent',
+      String countryCode = '+966',
       String mobile = '0552207570',
       String password = 'Test#12345',
-      String? confirm,
       String id = '2464148943',
       int? type = 5,
-    }) =>
-        RegisterRequestModel(
-          firstName: first,
-          lastName: last,
-          mobile: mobile,
-          password: password,
-          passwordConfirmation: confirm ?? password,
-          citizenIdNumber: id,
-          citizenIdType: type,
-        );
+    }) => RegisterRequestModel(
+      firstName: first,
+      lastName: last,
+      countryCode: countryCode,
+      mobile: mobile,
+      password: password,
+      citizenIdNumber: id,
+      citizenIdType: type,
+    );
 
     test('passes with the payload that really registered', () {
       expect(build().validate(), isNull);
     });
 
-    test('rejects a short name', () {
-      expect(build(first: 'A').validate(), LocaleKeys.errors_invalid_name);
-    });
-
-    test('rejects a short password', () {
-      expect(build(password: 'short').validate(),
-          LocaleKeys.errors_invalid_password);
-    });
-
-    test('rejects mismatched passwords', () {
-      expect(build(confirm: 'Different#1').validate(),
-          LocaleKeys.errors_password_mismatch);
-    });
-
-    test('rejects a short id number', () {
-      expect(build(id: '123').validate(), LocaleKeys.errors_invalid_id_number);
-    });
-
-    test('requires an id type', () {
+    test('asks for every field and nothing more', () {
+      expect(build(first: ' ').validate(), LocaleKeys.errors_invalid_name);
+      expect(
+        build(password: '').validate(),
+        LocaleKeys.errors_invalid_password,
+      );
+      expect(build(id: '').validate(), LocaleKeys.errors_invalid_id_number);
+      expect(build(mobile: '').validate(), LocaleKeys.errors_invalid_mobile);
       expect(build(type: null).validate(), LocaleKeys.errors_id_type_required);
+      // short passwords and ids are the server's call, as on the site
+      expect(build(password: 'short', id: '123').validate(), isNull);
     });
 
-    test('sends country_code alongside the national mobile', () {
-      final json = build().toJson();
-      expect(json['country_code'], '+966');
-      expect(json['mobile'], '0552207570');
+    test('sends the chosen country code and sends the password twice', () {
+      final json = build(countryCode: '+20', mobile: '01012345678').toJson();
+      expect(json['country_code'], '+20');
+      expect(json['mobile'], '01012345678');
+      expect(json['password_confirmation'], json['password']);
       expect(json['citizen_id_type'], 5);
-      expect(json.containsKey('password_confirmation'), isTrue);
     });
   });
 
   group('OtpConfirmRequestModel', () {
     test('requires exactly six digits', () {
       expect(
-        const OtpConfirmRequestModel(mobile: '0564772491', otp: '712633')
-            .validate(),
+        const OtpConfirmRequestModel(
+          mobile: '0564772491',
+          otp: '712633',
+        ).validate(),
         isNull,
       );
       expect(
-        const OtpConfirmRequestModel(mobile: '0564772491', otp: '7126')
-            .validate(),
+        const OtpConfirmRequestModel(
+          mobile: '0564772491',
+          otp: '7126',
+        ).validate(),
         LocaleKeys.errors_invalid_otp,
       );
     });

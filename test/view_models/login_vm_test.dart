@@ -7,9 +7,11 @@ import 'package:farabi_booking_app/data/models/auth/login_request_model.dart';
 import 'package:farabi_booking_app/data/models/auth/patient_data_model.dart';
 import 'package:farabi_booking_app/data/network/api_response_model.dart';
 import 'package:farabi_booking_app/repos/auth/login_repo.dart';
+import 'package:farabi_booking_app/repos/discovery/countries_repo.dart';
 import 'package:farabi_booking_app/screens/auth/login_vm.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../helpers/fake_countries_repo.dart';
 import '../helpers/fakes.dart';
 
 class _FakeLoginRepo extends LoginRepo {
@@ -45,28 +47,37 @@ void main() {
     AppDi.locator
       ..registerSingleton<AuthSession>(session)
       ..registerSingleton<AppBaseModel>(AppBaseModel())
+      ..registerSingleton<CountriesRepo>(FakeCountriesRepo())
       ..registerSingleton<LoginRepo>(repo);
     return repo;
   }
 
   tearDown(() => AppDi.reset());
 
-  test('blocks submit and surfaces a locale key when the mobile is invalid',
-      () async {
-    final repo = await setUpWith(
-      const ApiResponseModel<AuthResponseModel>(success: true),
-    );
-    final vm = LoginVm()
-      ..mobileController.text = '123'
-      ..passwordController.text = 'secret';
+  Future<LoginVm> vmWith(String mobile, String password) async {
+    final vm = LoginVm();
+    await vm.onInit();
+    vm.phone.text.text = mobile;
+    vm.passwordController.text = password;
+    return vm;
+  }
 
-    await vm.submit();
+  test(
+    'blocks submit and surfaces a locale key when the mobile is empty',
+    () async {
+      final repo = await setUpWith(
+        const ApiResponseModel<AuthResponseModel>(success: true),
+      );
+      final vm = await vmWith('', 'secret');
 
-    expect(vm.validationKey, LocaleKeys.errors_invalid_mobile);
-    // never reached the repo
-    expect(repo.received, isNull);
-    expect(session.isLoggedIn, isFalse);
-  });
+      await vm.submit();
+
+      expect(vm.validationKey, LocaleKeys.errors_invalid_mobile);
+      // never reached the repo
+      expect(repo.received, isNull);
+      expect(session.isLoggedIn, isFalse);
+    },
+  );
 
   test('stores the token and patient on success', () async {
     const patient = PatientDataModel(id: 17, firstName: 'Faizan');
@@ -76,9 +87,7 @@ void main() {
         data: AuthResponseModel(token: 'tok-abc', patient: patient),
       ),
     );
-    final vm = LoginVm()
-      ..mobileController.text = '0564772491'
-      ..passwordController.text = 'secret123';
+    final vm = await vmWith('0564772491', 'secret123');
 
     await vm.submit();
 
@@ -97,33 +106,31 @@ void main() {
         data: AuthResponseModel(token: 'tok'),
       ),
     );
-    final vm = LoginVm()
-      ..mobileController.text = '+966564772491'
-      ..passwordController.text = 'secret123';
+    final vm = await vmWith('+966564772491', 'secret123');
 
     await vm.submit();
 
     expect(repo.received!.toJson()['mobile'], '0564772491');
   });
 
-  test('surfaces the server message and leaves the session alone on failure',
-      () async {
-    await setUpWith(
-      ApiResponseModel<AuthResponseModel>.failure(
-        messages: const ['Invalid credentials.'],
-        statusCode: 401,
-      ),
-    );
-    final vm = LoginVm()
-      ..mobileController.text = '0564772491'
-      ..passwordController.text = 'wrong';
+  test(
+    'surfaces the server message and leaves the session alone on failure',
+    () async {
+      await setUpWith(
+        ApiResponseModel<AuthResponseModel>.failure(
+          messages: const ['Invalid credentials.'],
+          statusCode: 401,
+        ),
+      );
+      final vm = await vmWith('0564772491', 'wrong');
 
-    await vm.submit();
+      await vm.submit();
 
-    expect(vm.errorMessage, 'Invalid credentials.');
-    expect(session.isLoggedIn, isFalse);
-    expect(vm.isBusy, isFalse);
-  });
+      expect(vm.errorMessage, 'Invalid credentials.');
+      expect(session.isLoggedIn, isFalse);
+      expect(vm.isBusy, isFalse);
+    },
+  );
 
   test('maps 422 field errors back onto the right input', () async {
     await setUpWith(
@@ -131,13 +138,11 @@ void main() {
         messages: const ['The mobile field is required.'],
         statusCode: 422,
         fieldErrors: const {
-          'mobile': ['The mobile field is required.']
+          'mobile': ['The mobile field is required.'],
         },
       ),
     );
-    final vm = LoginVm()
-      ..mobileController.text = '0564772491'
-      ..passwordController.text = 'secret123';
+    final vm = await vmWith('0564772491', 'secret123');
 
     await vm.submit();
 
@@ -152,9 +157,7 @@ void main() {
         statusCode: 401,
       ),
     );
-    final vm = LoginVm()
-      ..mobileController.text = '0564772491'
-      ..passwordController.text = 'wrong';
+    final vm = await vmWith('0564772491', 'wrong');
 
     await vm.submit();
     expect(vm.hasFailure, isTrue);
@@ -167,10 +170,63 @@ void main() {
   test('canSubmit guards the button', () async {
     await setUpWith(const ApiResponseModel<AuthResponseModel>(success: true));
     final vm = LoginVm();
+    await vm.onInit();
     expect(vm.canSubmit, isFalse);
-    vm.mobileController.text = '0564772491';
+    vm.phone.text.text = '0564772491';
     expect(vm.canSubmit, isFalse);
     vm.passwordController.text = 'x';
     expect(vm.canSubmit, isTrue);
   });
+
+  test(
+    'the country list comes from the api and starts on Saudi Arabia',
+    () async {
+      await setUpWith(const ApiResponseModel<AuthResponseModel>(success: true));
+      final vm = LoginVm();
+      await vm.onInit();
+
+      expect(vm.phone.selected?.code, 'SA');
+      expect(vm.phone.countryCode, '+966');
+      // Pakistan's code in the test data is "3", which has no dial code
+      expect(vm.phone.options.map((c) => c.code), ['EG', 'SA', 'AE']);
+    },
+  );
+
+  test('another country sends its own national prefix', () async {
+    final repo = await setUpWith(
+      const ApiResponseModel<AuthResponseModel>(
+        success: true,
+        data: AuthResponseModel(token: 'tok'),
+      ),
+    );
+    final vm = await vmWith('1012345678', 'secret123');
+    vm.phone.select(vm.phone.options.firstWhere((c) => c.code == 'EG'));
+
+    await vm.submit();
+
+    expect(repo.received!.toJson()['mobile'], '01012345678');
+  });
+
+  test(
+    'without the country list the field still works with Saudi Arabia',
+    () async {
+      await AppDi.reset();
+      final session = AuthSession(FakeLocalData());
+      await session.restore();
+      AppDi.locator
+        ..registerSingleton<AuthSession>(session)
+        ..registerSingleton<AppBaseModel>(AppBaseModel())
+        ..registerSingleton<CountriesRepo>(FakeCountriesRepo(fail: true))
+        ..registerSingleton<LoginRepo>(
+          _FakeLoginRepo(
+            const ApiResponseModel<AuthResponseModel>(success: true),
+          ),
+        );
+      final vm = LoginVm();
+      await vm.onInit();
+
+      expect(vm.phone.options.map((c) => c.code), ['SA']);
+      expect(vm.phone.countryCode, '+966');
+    },
+  );
 }

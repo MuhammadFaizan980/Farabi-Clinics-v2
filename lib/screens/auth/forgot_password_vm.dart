@@ -1,22 +1,26 @@
-import 'package:flutter/widgets.dart';
-
 import '../../data/base/app_base_vm.dart';
-import '../../data/models/auth/otp_args_model.dart';
 import '../../data/models/auth/otp_request_model.dart';
 import '../../repos/auth/password_repo.dart';
+import '../../repos/discovery/countries_repo.dart';
 import '../../router/app_navigator.dart';
-import '../../router/app_routes.dart';
+import '../../utils/phone_field_controller.dart';
 
+/// forgot password, as on the site: send the national number, then show
+/// "Check your messages". the reset itself happens from the link the patient
+/// receives, so there is no code entry here.
 class ForgotPasswordVm extends AppBaseVm {
-  final TextEditingController _mobileController = TextEditingController();
+  final PhoneFieldController phone = PhoneFieldController();
 
   String? _validationKey;
+  bool _sent = false;
 
-  bool get canSubmit => _mobileController.text.trim().isNotEmpty;
+  Future<void> onInit() => phone.load(repo<CountriesRepo>());
+
+  bool get canSubmit => !phone.isEmpty;
 
   Future<void> submit() async {
     clearFailure(notify: false);
-    final request = MobileOnlyRequestModel(mobile: _mobileController.text);
+    final request = MobileOnlyRequestModel(mobile: phone.national);
     _validationKey = request.validate();
     if (_validationKey != null) {
       notifyListeners();
@@ -31,15 +35,8 @@ class ForgotPasswordVm extends AppBaseVm {
       captureFailure(response);
       return;
     }
-
-    await AppNavigator.replaceWith(
-      AppRoutes.otpVerification,
-      arguments: OtpArgsModel(
-        mobile: _mobileController.text,
-        purpose: OtpPurpose.passwordReset,
-        prefilledOtp: response.data?.otp,
-      ),
-    );
+    _sent = true;
+    notifyListeners();
   }
 
   void onFieldChanged(String _) {
@@ -50,14 +47,16 @@ class ForgotPasswordVm extends AppBaseVm {
     notifyListeners();
   }
 
+  void goBackToSignIn() => AppNavigator.pop();
+
   @override
   void dispose() {
-    _mobileController.dispose();
+    phone.dispose();
     super.dispose();
   }
 
   /// getters/setters below this line...
 
-  TextEditingController get mobileController => _mobileController;
   String? get validationKey => _validationKey;
+  bool get sent => _sent;
 }

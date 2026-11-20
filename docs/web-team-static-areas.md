@@ -13,11 +13,14 @@ Checked in the mobile view of v2.farabiclinics.com on 2026-11-20.
 | 7 | Doctors filter, "Consultation Fee" slider | Does nothing. The value is never sent anywhere. | A fee on the doctor and a fee filter on the doctors API |
 | 8 | Reviews page | All testimonials, names and the video are fixed text in the translation files. | A reviews / testimonials API |
 | 9 | About, Privacy, Terms | Fixed text. | An API for page content (if the text should be editable) |
-| 10 | Register, "ID Type" | The dropdown is empty. | An ID types API |
-| 11 | Home, "Virtual Clinic Services" (Video, Audio) | The cards only open the Specialities page. | A consultation API |
-| 12 | Home, "Get Expert Medical Consultation" and the AI assistant button | Both only open the Specialities page. | A consultation / AI API |
-| 13 | Header bell icon | Always shows an orange dot and does nothing. | A notifications API |
-| 14 | Profile, My Wallet, Notifications, Change Passwords, Rate us | Marked "Soon" and not working. | Wallet, notifications, change-password and rating APIs |
+| 10 | Home, "Virtual Clinic Services" (Video, Audio) | The cards only open the Specialities page. | A consultation API |
+| 11 | Home, "Get Expert Medical Consultation" and the AI assistant button | Both only open the Specialities page. | A consultation / AI API |
+| 12 | Header bell icon | Always shows an orange dot and does nothing. | A notifications API |
+| 13 | Profile, My Wallet, Notifications, Change Passwords, Rate us | Marked "Soon" and not working. | Wallet, notifications, change-password and rating APIs |
+
+Bad data, not static data: the countries service returns Pakistan with the code `3` instead of `PK`. The phone
+pickers on sign in, sign up and forgot password work out the flag and dial code from that code, so Pakistan shows
+with no flag and no dial code. The app leaves it out until the code is fixed.
 
 Not a static-data problem, but a bug: **My Appointments is always empty.** The page asks the server for
 `status=upcoming`, `completed` or `cancelled` (text). The server only accepts numbers (1 = created, 6 = cancelled)

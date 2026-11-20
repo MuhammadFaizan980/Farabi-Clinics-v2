@@ -14,6 +14,21 @@ class LocalisedName {
   }
 }
 
+/// one entry of `GET v1/portal/countries`. `code` is meant to be an ISO
+/// alpha-2 code ("SA"); the dial code is not in the payload, it is worked out
+/// from the code on the device.
+class CountryDataModel {
+  const CountryDataModel({
+    required this.id,
+    required this.code,
+    required this.names,
+  });
+
+  final int id;
+  final String code;
+  final LocalisedName names;
+}
+
 class RegionDataModel {
   const RegionDataModel({required this.id, required this.names});
 

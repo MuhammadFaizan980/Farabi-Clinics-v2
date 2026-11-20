@@ -5,13 +5,12 @@ import 'mobile_number.dart';
 class OtpConfirmRequestModel {
   const OtpConfirmRequestModel({required this.mobile, required this.otp});
 
+  /// the national number, as posted on register
   final String mobile;
   final String otp;
 
   String? validate() {
-    if (!MobileNumber.isValidSaudi(mobile)) {
-      return LocaleKeys.errors_invalid_mobile;
-    }
+    if (mobile.trim().isEmpty) return LocaleKeys.errors_invalid_mobile;
     if (MobileNumber.digitsOnly(otp).length != AppConstants.otpLength) {
       return LocaleKeys.errors_invalid_otp;
     }
@@ -19,7 +18,7 @@ class OtpConfirmRequestModel {
   }
 
   Map<String, dynamic> toJson() => {
-        'mobile': MobileNumber.national(mobile),
+        'mobile': mobile,
         'otp': otp.trim(),
       };
 }
@@ -29,9 +28,8 @@ class MobileOnlyRequestModel {
 
   final String mobile;
 
-  String? validate() => MobileNumber.isValidSaudi(mobile)
-      ? null
-      : LocaleKeys.errors_invalid_mobile;
+  String? validate() =>
+      mobile.trim().isEmpty ? LocaleKeys.errors_invalid_mobile : null;
 
-  Map<String, dynamic> toJson() => {'mobile': MobileNumber.national(mobile)};
+  Map<String, dynamic> toJson() => {'mobile': mobile};
 }

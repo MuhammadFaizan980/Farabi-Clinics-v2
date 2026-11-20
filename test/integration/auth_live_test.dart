@@ -146,9 +146,9 @@ void main() {
       RegisterRequestModel(
         firstName: 'Agent',
         lastName: 'Verify',
+        countryCode: '+966',
         mobile: mobile,
         password: password,
-        passwordConfirmation: password,
         citizenIdNumber: idNumber,
         citizenIdType: 5,
       ),
@@ -202,9 +202,9 @@ void main() {
       RegisterRequestModel(
         firstName: 'Agent',
         lastName: 'Duplicate',
+        countryCode: '+966',
         mobile: testMobile,
         password: 'Test#12345',
-        passwordConfirmation: 'Test#12345',
         citizenIdNumber: '2563356050',
         citizenIdType: 5,
       ),

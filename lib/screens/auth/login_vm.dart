@@ -6,6 +6,8 @@ import '../../data/base/app_base_model.dart';
 import '../../data/base/app_base_vm.dart';
 import '../../data/models/auth/login_request_model.dart';
 import '../../repos/auth/login_repo.dart';
+import '../../repos/discovery/countries_repo.dart';
+import '../../utils/phone_field_controller.dart';
 import '../../router/app_navigator.dart';
 import '../../router/app_routes.dart';
 
@@ -15,20 +17,21 @@ class LoginVm extends AppBaseVm {
   /// return to the caller instead of resetting the app to the shell
   final bool popOnSuccess;
 
-  final TextEditingController _mobileController = TextEditingController();
+  final PhoneFieldController phone = PhoneFieldController();
   final TextEditingController _passwordController = TextEditingController();
 
   String? _validationKey;
   bool _obscurePassword = true;
 
   LoginRequestModel get _request => LoginRequestModel(
-        mobile: _mobileController.text,
+        mobile: phone.national,
         password: _passwordController.text,
       );
 
+  Future<void> onInit() => phone.load(repo<CountriesRepo>());
+
   bool get canSubmit =>
-      _mobileController.text.trim().isNotEmpty &&
-      _passwordController.text.isNotEmpty;
+      !phone.isEmpty && _passwordController.text.isNotEmpty;
 
   Future<void> submit() async {
     clearFailure(notify: false);
@@ -79,14 +82,13 @@ class LoginVm extends AppBaseVm {
 
   @override
   void dispose() {
-    _mobileController.dispose();
+    phone.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
   /// getters/setters below this line...
 
-  TextEditingController get mobileController => _mobileController;
   TextEditingController get passwordController => _passwordController;
   String? get validationKey => _validationKey;
   bool get obscurePassword => _obscurePassword;

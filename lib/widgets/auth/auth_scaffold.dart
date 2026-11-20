@@ -14,13 +14,13 @@ import '../../utils/extensions/responsive_extensions.dart';
 class AuthScaffold extends StatelessWidget {
   const AuthScaffold({
     super.key,
-    required this.title,
+    this.title,
     required this.child,
     this.subtitle,
     this.showBack = true,
   });
 
-  final String title;
+  final String? title;
   final String? subtitle;
   final Widget child;
   final bool showBack;
@@ -102,11 +102,12 @@ class AuthScaffold extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      title,
-                      style: AppTextStyles.authTitle
-                          .copyWith(color: AppColors.ink),
-                    ),
+                    if (title != null)
+                      Text(
+                        title!,
+                        style: AppTextStyles.authTitle
+                            .copyWith(color: AppColors.ink),
+                      ),
                     if (subtitle != null) ...[
                       SizedBox(height: 4.rh),
                       Text(
@@ -115,7 +116,7 @@ class AuthScaffold extends StatelessWidget {
                             .copyWith(color: AppColors.inkSecondary),
                       ),
                     ],
-                    SizedBox(height: 20.rh),
+                    if (title != null) SizedBox(height: 20.rh),
                     child,
                   ],
                 ),

@@ -17,6 +17,14 @@ class DiscoveryMapper extends AppBaseMapper {
     return RegionDataModel(id: id, names: _names(map));
   }
 
+  List<CountryDataModel> countries(dynamic raw) =>
+      AppBaseMapper.asList(raw).map((map) {
+        final id = AppBaseMapper.asInt(map['id']);
+        final code = AppBaseMapper.asString(map['code']);
+        if (id == null || code == null) return null;
+        return CountryDataModel(id: id, code: code, names: _names(map));
+      }).whereType<CountryDataModel>().toList(growable: false);
+
   List<RegionDataModel> regions(dynamic raw) => AppBaseMapper.asList(raw)
       .map(region)
       .whereType<RegionDataModel>()

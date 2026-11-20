@@ -1,3 +1,5 @@
+import 'repos/discovery/countries_repo.dart';
+import 'repos/discovery/countries_repo_imp.dart';
 import 'package:get_it/get_it.dart';
 
 import 'data/app_local_data.dart';
@@ -73,6 +75,7 @@ class AppDi {
     locator.registerLazySingleton<PasswordRepo>(PasswordRepoImp.new);
     locator.registerLazySingleton<ProfileRepo>(ProfileRepoImp.new);
 
+    locator.registerLazySingleton<CountriesRepo>(CountriesRepoImp.new);
     locator.registerLazySingleton<RegionsRepo>(RegionsRepoImp.new);
     locator.registerLazySingleton<ServicesRepo>(ServicesRepoImp.new);
     locator.registerLazySingleton<BranchesRepo>(BranchesRepoImp.new);

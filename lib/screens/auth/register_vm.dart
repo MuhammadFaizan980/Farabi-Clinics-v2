@@ -5,38 +5,43 @@ import '../../data/enums/citizen_id_type.dart';
 import '../../data/models/auth/otp_args_model.dart';
 import '../../data/models/auth/register_request_model.dart';
 import '../../repos/auth/register_repo.dart';
+import '../../repos/discovery/countries_repo.dart';
+import '../../utils/phone_field_controller.dart';
 import '../../router/app_navigator.dart';
 import '../../router/app_routes.dart';
 
 class RegisterVm extends AppBaseVm {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _mobileController = TextEditingController();
+  final PhoneFieldController phone = PhoneFieldController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
   final TextEditingController _idNumberController = TextEditingController();
 
-  CitizenIdType? _idType = CitizenIdType.iqama;
+  // like the site, nothing is chosen until the user picks an ID type
+  CitizenIdType? _idType;
   String? _validationKey;
 
   RegisterRequestModel get _request => RegisterRequestModel(
         firstName: _firstNameController.text,
         lastName: _lastNameController.text,
-        mobile: _mobileController.text,
+        countryCode: phone.countryCode,
+        mobile: phone.national,
         password: _passwordController.text,
-        passwordConfirmation: _confirmPasswordController.text,
         citizenIdNumber: _idNumberController.text,
         citizenIdType: _idType?.value,
       );
 
+  Future<void> onInit() => phone.load(repo<CountriesRepo>());
+
+  /// the site disables Create Account until an ID type, a phone and a
+  /// password are set (and its names are required fields)
   bool get canSubmit =>
       _firstNameController.text.trim().isNotEmpty &&
       _lastNameController.text.trim().isNotEmpty &&
-      _mobileController.text.trim().isNotEmpty &&
-      _passwordController.text.isNotEmpty &&
-      _confirmPasswordController.text.isNotEmpty &&
-      _idNumberController.text.trim().isNotEmpty;
+      _idType != null &&
+      _idNumberController.text.trim().isNotEmpty &&
+      !phone.isEmpty &&
+      _passwordController.text.isNotEmpty;
 
   Future<void> submit() async {
     clearFailure(notify: false);
@@ -58,7 +63,7 @@ class RegisterVm extends AppBaseVm {
     await AppNavigator.replaceWith(
       AppRoutes.otpVerification,
       arguments: OtpArgsModel(
-        mobile: _mobileController.text,
+        mobile: phone.national,
         purpose: OtpPurpose.registration,
         // dev convenience only; never surfaced in release builds
         prefilledOtp: response.data?.otp,
@@ -85,9 +90,8 @@ class RegisterVm extends AppBaseVm {
   void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();
-    _mobileController.dispose();
+    phone.dispose();
     _passwordController.dispose();
-    _confirmPasswordController.dispose();
     _idNumberController.dispose();
     super.dispose();
   }
@@ -96,10 +100,7 @@ class RegisterVm extends AppBaseVm {
 
   TextEditingController get firstNameController => _firstNameController;
   TextEditingController get lastNameController => _lastNameController;
-  TextEditingController get mobileController => _mobileController;
   TextEditingController get passwordController => _passwordController;
-  TextEditingController get confirmPasswordController =>
-      _confirmPasswordController;
   TextEditingController get idNumberController => _idNumberController;
   CitizenIdType? get idType => _idType;
   String? get validationKey => _validationKey;
